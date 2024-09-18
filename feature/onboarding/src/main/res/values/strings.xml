@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message">Welcome to JellyDroid!</string>
+    <string name="data_collection_title">Data collection</string>
+
+    <string name="analytics_explanation">Allow analytics to be collected?</string>
+    <string name="crashlytics_explanation">Allow crash reports to be collected?</string>
+
+    <string name="data_collection_explanation">Data collection is off by default and can be changed below. Any data that is collected will be collected according to the privacy policy. Data is anonymised and collection can be switched on or off at anytime in the app\'s settings.</string>
+
+    <string name="continue_button">Continue</string>
+</resources>
