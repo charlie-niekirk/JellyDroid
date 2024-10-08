@@ -9,4 +9,6 @@ data class LandingState(
 sealed interface LandingEffect {
 
     data object NavigateToServerSelection : LandingEffect
+
+    data object NavigateToHome : LandingEffect
 }

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.jellydroid.android.application.flavors)
     alias(libs.plugins.jellydroid.android.hilt)
     alias(libs.plugins.com.google.gms.google.services)
+    alias(libs.plugins.com.google.firebase.crashlytics)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization)
 }

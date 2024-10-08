@@ -36,6 +36,10 @@ fun LandingRoute(
             LandingEffect.NavigateToServerSelection -> {
                 navigateToServerSelection()
             }
+
+            LandingEffect.NavigateToHome -> {
+
+            }
         }
     }
 

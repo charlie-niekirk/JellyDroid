@@ -5,4 +5,5 @@ option java_multiple_files = true;
 
 message AppPreferences {
   bool terms_screen_shown = 1;
+  string current_server = 2;
 }

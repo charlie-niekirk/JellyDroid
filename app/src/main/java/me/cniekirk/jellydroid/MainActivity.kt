@@ -4,7 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
@@ -17,9 +22,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JellyDroidTheme {
-                Surface {
+                Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
                     val navHostController = rememberNavController()
-                    JellydroidNavHost(navHostController = navHostController)
+                    JellydroidNavHost(
+                        modifier = Modifier.padding(paddingValues),
+                        navHostController = navHostController
+                    )
                 }
             }
         }
