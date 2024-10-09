@@ -4,6 +4,7 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
+import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.runCatching
 import kotlinx.coroutines.flow.Flow
@@ -34,6 +35,7 @@ import org.jellyfin.sdk.discovery.RecommendedServerInfo
 import org.jellyfin.sdk.discovery.RecommendedServerInfoScore
 import org.jellyfin.sdk.model.api.AuthenticateUserByName
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
+import timber.log.Timber
 import javax.inject.Inject
 
 class JellyfinRepositoryImpl @Inject constructor(
@@ -62,6 +64,9 @@ class JellyfinRepositoryImpl @Inject constructor(
 
                 if (id != null && name != null) {
                     serverDao.insertAll(Server(id, address, name))
+
+                    apiClient.update(baseUrl = address)
+
                     Ok(name)
                 } else {
                     Err(NetworkError.ServerError)
@@ -129,6 +134,7 @@ class JellyfinRepositoryImpl @Inject constructor(
         return runCatching {
             block()
         }.mapError { throwable ->
+            Timber.e(throwable)
             when (throwable) {
                 is ApiClientException -> {
                     when (throwable) {

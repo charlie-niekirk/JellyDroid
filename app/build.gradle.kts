@@ -77,6 +77,8 @@ dependencies {
 
     implementation(libs.timber)
 
+    implementation(libs.org.slf4j.simple)
+
     testImplementation(libs.androidx.junit)
 
     androidTestImplementation(libs.androidx.espresso.core)

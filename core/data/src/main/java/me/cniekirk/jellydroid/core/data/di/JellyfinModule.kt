@@ -9,8 +9,10 @@ import dagger.hilt.components.SingletonComponent
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.HttpClientOptions
+import org.jellyfin.sdk.api.ktor.KtorClient
 import org.jellyfin.sdk.createJellyfin
 import org.jellyfin.sdk.model.ClientInfo
+import org.jellyfin.sdk.util.ApiClientFactory
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 

@@ -3,6 +3,7 @@ package me.cniekirk.jellydroid.core.database.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import me.cniekirk.jellydroid.core.database.entity.Server
@@ -18,7 +19,7 @@ interface ServerDao {
     @Query("SELECT * FROM server WHERE name LIKE '%' || :name  || '%'")
     fun getByName(name: String): List<Server>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg servers: Server)
 
     @Delete

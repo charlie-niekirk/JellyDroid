@@ -9,4 +9,25 @@
     <string name="data_collection_explanation">Data collection is off by default and can be changed below. Any data that is collected will be collected according to the privacy policy. Data is anonymised and collection can be switched on or off at anytime in the app\'s settings.</string>
 
     <string name="continue_button">Continue</string>
+
+    <string name="connect_title">Connect to a server</string>
+    <string name="server_address">Server address</string>
+    <string name="server_address_placeholder">192.168.1.100</string>
+    <string name="connect_button">Connect</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="connect_dialog_title">Couldn\'t connect</string>
+    <string name="connect_dialog_body">Couldn\'t connect to the server with the address provided, please ensure the address is reachable from this device.</string>
+
+    <string name="login_title">Login to %1$s</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="login_dialog_title">Invalid credentials</string>
+    <string name="login_dialog_body">The provided credentials were not correct, please try again.</string>
+
+    <string name="generic_login_dialog_title">Error occurred</string>
+    <string name="generic_login_dialog_body">An unknown error occurred communicating with the Jellyfin server, please try again soon.</string>
+
+    <string name="login_button">Login</string>
 </resources>

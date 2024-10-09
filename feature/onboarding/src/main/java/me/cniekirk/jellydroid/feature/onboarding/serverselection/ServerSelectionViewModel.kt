@@ -1,0 +1,59 @@
+package me.cniekirk.jellydroid.feature.onboarding.serverselection
+
+import androidx.lifecycle.ViewModel
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
+import dagger.hilt.android.lifecycle.HiltViewModel
+import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
+import javax.inject.Inject
+
+@OptIn(OrbitExperimental::class)
+@HiltViewModel
+class ServerSelectionViewModel @Inject constructor(
+    private val jellyfinRepository: JellyfinRepository
+) : ViewModel(), ContainerHost<ServerSelectionState, ServerSelectionEffect> {
+
+    override val container = container<ServerSelectionState, ServerSelectionEffect>(ServerSelectionState())
+
+    fun serverAddressChanged(address: String) = blockingIntent {
+        reduce {
+            state.copy(serverAddressText = address)
+        }
+    }
+
+    fun connectToServer() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        jellyfinRepository.connectToServer(state.serverAddressText)
+            .onSuccess { serverName ->
+                Timber.d("Server name: $serverName")
+                // Navigate to login
+                postSideEffect(ServerSelectionEffect.NavigateToLogin(serverName))
+            }
+            .onFailure {
+                // Couldn't connect
+                Timber.e("Error occurred: $it")
+                reduce {
+                    state.copy(
+                        isLoading = false,
+                        serverErrorDialogDisplayed = true
+                    )
+                }
+            }
+    }
+
+    fun dismissDialog() = intent {
+        reduce {
+            state.copy(serverErrorDialogDisplayed = false)
+        }
+    }
+}
