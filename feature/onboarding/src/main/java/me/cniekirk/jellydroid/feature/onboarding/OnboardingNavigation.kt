@@ -11,6 +11,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import kotlinx.serialization.Serializable
+import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultExit
+import me.cniekirk.jellydroid.core.designsystem.theme.enterAnimation
+import me.cniekirk.jellydroid.core.designsystem.theme.exitAnimation
+import me.cniekirk.jellydroid.core.designsystem.theme.popEnterAnimation
+import me.cniekirk.jellydroid.core.designsystem.theme.popExitAnimation
 import me.cniekirk.jellydroid.feature.onboarding.landing.LandingRoute
 import me.cniekirk.jellydroid.feature.onboarding.landing.LandingViewModel
 import me.cniekirk.jellydroid.feature.onboarding.login.LoginRoute
@@ -33,42 +38,29 @@ internal sealed interface OnboardingRoute {
     data class Login(val serverName: String) : OnboardingRoute
 }
 
-fun NavGraphBuilder.onboardingUserJourney(navHostController: NavHostController) {
-    navigation<Onboarding>(startDestination = OnboardingRoute.Landing) {
+fun NavGraphBuilder.onboardingUserJourney(navHostController: NavHostController, navigateToHome: () -> Unit) {
+    navigation<Onboarding>(
+        startDestination = OnboardingRoute.Landing,
+        exitTransition = { activityDefaultExit() }
+    ) {
 
         composable<OnboardingRoute.Landing>(
-            exitTransition = {
-                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeOut(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            },
-            popEnterTransition = {
-                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeIn(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            }
+            exitTransition = { exitAnimation() },
+            popEnterTransition = { popEnterAnimation() }
         ) {
             val viewModel = hiltViewModel<LandingViewModel>()
-            LandingRoute(viewModel = viewModel) {
-                navHostController.navigate(OnboardingRoute.ServerSelection)
-            }
+            LandingRoute(
+                viewModel = viewModel,
+                navigateToServerSelection = { navHostController.navigate(OnboardingRoute.ServerSelection) },
+                navigateToHome = { navigateToHome() }
+            )
         }
 
         composable<OnboardingRoute.ServerSelection>(
-            exitTransition = {
-                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeOut(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            },
-            popEnterTransition = {
-                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeIn(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            },
-            enterTransition = {
-                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeIn(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            },
-            popExitTransition = {
-                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeOut(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            }
+            exitTransition = { exitAnimation() },
+            popEnterTransition = { popEnterAnimation() },
+            enterTransition = { enterAnimation() },
+            popExitTransition = { popExitAnimation() }
         ) {
             val viewModel = hiltViewModel<ServerSelectionViewModel>()
             ServerSelectionRoute(viewModel) { serverName ->
@@ -77,26 +69,14 @@ fun NavGraphBuilder.onboardingUserJourney(navHostController: NavHostController) 
         }
 
         composable<OnboardingRoute.Login>(
-            exitTransition = {
-                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeOut(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            },
-            popEnterTransition = {
-                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeIn(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            },
-            enterTransition = {
-                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeIn(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            },
-            popExitTransition = {
-                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(500, easing = FastOutSlowInEasing)) +
-                        fadeOut(animationSpec = tween(500, easing = FastOutSlowInEasing))
-            }
+            exitTransition = { exitAnimation() },
+            popEnterTransition = { popEnterAnimation() },
+            enterTransition = { enterAnimation() },
+            popExitTransition = { popExitAnimation() }
         ) {
             val viewModel = hiltViewModel<LoginViewModel>()
             LoginRoute(viewModel) {
-
+                navigateToHome()
             }
         }
     }

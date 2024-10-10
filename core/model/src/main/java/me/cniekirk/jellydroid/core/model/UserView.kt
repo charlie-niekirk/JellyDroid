@@ -6,5 +6,6 @@ data class UserView(
     val name: String,
     val path: String,
     val type: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val aspectRatio: Double
 )

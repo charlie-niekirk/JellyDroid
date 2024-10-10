@@ -7,4 +7,8 @@ interface AppPreferencesRepository {
     suspend fun setCurrentServer(serverId: String)
 
     suspend fun getCurrentServer(): String
+
+    suspend fun setLoggedInUser(userId: String)
+
+    suspend fun getLoggedInUser(): String
 }

@@ -10,6 +10,7 @@ import com.github.michaelbull.result.runCatching
 import kotlinx.coroutines.flow.Flow
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.data.mapping.toResumeItem
 import me.cniekirk.jellydroid.core.data.mapping.toServer
 import me.cniekirk.jellydroid.core.data.mapping.toUser
 import me.cniekirk.jellydroid.core.data.mapping.toUserView
@@ -17,6 +18,7 @@ import me.cniekirk.jellydroid.core.database.dao.ServerDao
 import me.cniekirk.jellydroid.core.database.dao.UserDao
 import me.cniekirk.jellydroid.core.database.entity.Server
 import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
+import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
@@ -27,6 +29,7 @@ import org.jellyfin.sdk.api.client.exception.MissingBaseUrlException
 import org.jellyfin.sdk.api.client.exception.MissingPathVariableException
 import org.jellyfin.sdk.api.client.exception.SecureConnectionException
 import org.jellyfin.sdk.api.client.exception.TimeoutException
+import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.userApi
 import org.jellyfin.sdk.api.client.extensions.userViewsApi
 import org.jellyfin.sdk.api.sockets.exception.SocketException
@@ -34,7 +37,9 @@ import org.jellyfin.sdk.api.sockets.exception.SocketStoppedException
 import org.jellyfin.sdk.discovery.RecommendedServerInfo
 import org.jellyfin.sdk.discovery.RecommendedServerInfoScore
 import org.jellyfin.sdk.model.api.AuthenticateUserByName
+import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
+import org.jellyfin.sdk.model.serializer.toUUID
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -64,6 +69,7 @@ class JellyfinRepositoryImpl @Inject constructor(
 
                 if (id != null && name != null) {
                     serverDao.insertAll(Server(id, address, name))
+                    appPreferencesRepository.setCurrentServer(id)
 
                     apiClient.update(baseUrl = address)
 
@@ -94,8 +100,10 @@ class JellyfinRepositoryImpl @Inject constructor(
                 )
             )
 
-            userDao.insertAll(authResult.toUser())
+            val user = authResult.toUser()
 
+            userDao.insertAll(user)
+            appPreferencesRepository.setLoggedInUser(user.userId)
             apiClient.update(accessToken = authResult.accessToken)
         }
     }
@@ -116,17 +124,31 @@ class JellyfinRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentServerAndUser(): Result<String, LocalDataError> {
         val currentServerId = appPreferencesRepository.getCurrentServer()
-        val serverWithUsers = serverDao.getAllServersWithUsers()
-            .firstOrNull { it.server.serverId.equals(currentServerId, true) }
+        val server = serverDao.getAllServersWithUsers()
+        val serverWithUsers = server.firstOrNull { it.server.serverId.equals(currentServerId, true) }
 
         return if (serverWithUsers != null) {
             val defaultUser = serverWithUsers.users.first()
 
-            apiClient.update(accessToken = defaultUser.accessToken)
+            apiClient.update(accessToken = defaultUser.accessToken, baseUrl = serverWithUsers.server.baseUrl)
 
             Ok(defaultUser.userId)
         } else {
             Err(LocalDataError.ServerNotExists)
+        }
+    }
+
+    override suspend fun getContinuePlayingItems(): Result<List<ResumeItem>, NetworkError> {
+        return safeApiCall {
+            apiClient.itemsApi.getResumeItems(
+                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                limit = 12,
+                includeItemTypes = listOf(BaseItemKind.MOVIE, BaseItemKind.EPISODE)
+            )
+        }.map { response ->
+            response.content.items?.map {
+                it.toResumeItem(apiClient.baseUrl)
+            } ?: listOf()
         }
     }
 

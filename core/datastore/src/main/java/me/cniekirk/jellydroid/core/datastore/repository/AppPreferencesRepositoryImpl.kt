@@ -26,4 +26,14 @@ class AppPreferencesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentServer(): String = datastore.data.first().currentServer
+
+    override suspend fun setLoggedInUser(userId: String) {
+        datastore.updateData { currentData ->
+            currentData.toBuilder()
+                .setCurrentUser(userId)
+                .build()
+        }
+    }
+
+    override suspend fun getLoggedInUser(): String = datastore.data.first().currentUser
 }

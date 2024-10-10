@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -22,10 +23,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JellyDroidTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
+                Surface(modifier = Modifier.fillMaxSize()) {
                     val navHostController = rememberNavController()
                     JellydroidNavHost(
-                        modifier = Modifier.padding(paddingValues),
+                        modifier = Modifier.statusBarsPadding(),
                         navHostController = navHostController
                     )
                 }

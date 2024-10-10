@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_title">Home</string>
+    <string name="media_title">My Media</string>
+    <string name="resume_title">Continue Playing</string>
+    <string name="home_search_placeholder">Search collection</string>
+    <string name="settings_content_description">Settings</string>
+</resources>

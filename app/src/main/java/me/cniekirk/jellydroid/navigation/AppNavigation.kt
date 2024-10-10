@@ -1,15 +1,145 @@
 package me.cniekirk.jellydroid.navigation
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.VideoLibrary
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuite
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import kotlinx.serialization.Serializable
+import me.cniekirk.jellydroid.R
+import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
+import me.cniekirk.jellydroid.feature.home.Home
+import me.cniekirk.jellydroid.feature.home.home
 import me.cniekirk.jellydroid.feature.onboarding.Onboarding
 import me.cniekirk.jellydroid.feature.onboarding.onboardingUserJourney
 
 @Composable
 fun JellydroidNavHost(modifier: Modifier = Modifier, navHostController: NavHostController) {
+    val bottomBarNavController = rememberNavController()
+
     NavHost(modifier = modifier, navController = navHostController, startDestination = Onboarding) {
-        onboardingUserJourney(navHostController)
+        onboardingUserJourney(navHostController) {
+            navHostController.navigate(MainApp)
+        }
+        composable<MainApp>(
+            enterTransition = { activityDefaultEnter() }
+        ) {
+            MainBottomBarNavigation(bottomBarNavController)
+        }
+    }
+}
+
+@Serializable
+data object MainApp
+
+@Serializable
+data object Favorites
+
+@Serializable
+data object Library
+
+@Serializable
+data object Downloads
+
+data class BottomNavRoute<T : Any>(
+    val name: String,
+    val route: T,
+    val icon: ImageVector
+)
+
+@Composable
+fun MainBottomBarNavigation(navHostController: NavHostController) {
+    val bottomNavRoutes = listOf(
+        BottomNavRoute(stringResource(R.string.bottom_nav_home), Home, Icons.Default.Home),
+        BottomNavRoute(stringResource(R.string.bottom_nav_favorites), Favorites, Icons.Default.Favorite),
+        BottomNavRoute(stringResource(R.string.bottom_nav_library), Library, Icons.Default.VideoLibrary),
+        BottomNavRoute(stringResource(R.string.bottom_nav_downloads), Downloads, Icons.Default.Download),
+    )
+
+    val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val navSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
+        currentWindowAdaptiveInfo()
+    )
+
+    NavigationSuiteScaffoldLayout(
+        navigationSuite = {
+            if (navSuiteType == NavigationSuiteType.NavigationRail) {
+                NavigationRail {
+                    Spacer(Modifier.weight(1f))
+                    bottomNavRoutes.forEach { item ->
+                        NavigationRailItem(
+                            icon = { Icon(item.icon, contentDescription = item.icon.name) },
+                            label = { Text(item.name) },
+                            selected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true,
+                            onClick = {
+                                navHostController.navigate(item.route) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navHostController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
+                                }
+                            }
+                        )
+                    }
+                    Spacer(Modifier.weight(1f))
+                }
+            } else {
+                NavigationSuite {
+                    bottomNavRoutes.forEach { item ->
+                        item(
+                            icon = { Icon(item.icon, contentDescription = item.icon.name) },
+                            label = { Text(item.name) },
+                            selected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true,
+                            onClick = {
+                                navHostController.navigate(item.route) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navHostController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    ) {
+        NavHost(navController = navHostController, startDestination = bottomNavRoutes.first().route) {
+            home()
+        }
     }
 }
