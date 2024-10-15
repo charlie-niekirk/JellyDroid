@@ -3,8 +3,11 @@ package me.cniekirk.jellydroid.feature.home.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,15 +27,15 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
-import me.cniekirk.jellydroid.core.model.UserView
+import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.feature.home.R
 
 @Composable
-fun UserViews(modifier: Modifier = Modifier, userViews: ImmutableList<UserView>) {
+fun LatestMovies(modifier: Modifier = Modifier, latestMovies: ImmutableList<LatestItem>) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(start = 16.dp),
-            text = stringResource(R.string.media_title),
+            text = stringResource(R.string.latest_movies_title),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -40,10 +43,12 @@ fun UserViews(modifier: Modifier = Modifier, userViews: ImmutableList<UserView>)
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(userViews) { userView ->
-                MediaView(
-                    modifier = Modifier.width(212.dp),
-                    userView = userView
+            items(latestMovies) { latestMovie ->
+                LatestMedia(
+                    modifier = Modifier
+                        .height(212.dp)
+                        .width(IntrinsicSize.Min),
+                    latestItem = latestMovie
                 )
             }
         }
@@ -51,7 +56,32 @@ fun UserViews(modifier: Modifier = Modifier, userViews: ImmutableList<UserView>)
 }
 
 @Composable
-fun MediaView(modifier: Modifier = Modifier, userView: UserView) {
+fun LatestShows(modifier: Modifier = Modifier, latestShows: ImmutableList<LatestItem>) {
+    Column(modifier = modifier) {
+        Text(
+            modifier = Modifier.padding(start = 16.dp),
+            text = stringResource(R.string.latest_shows_title),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        LazyRow(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(latestShows) { latestShow ->
+                LatestMedia(
+                    modifier = Modifier
+                        .height(212.dp)
+                        .width(IntrinsicSize.Min),
+                    latestItem = latestShow
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LatestMedia(modifier: Modifier = Modifier, latestItem: LatestItem) {
     val context = LocalContext.current
 
     Column(
@@ -59,23 +89,23 @@ fun MediaView(modifier: Modifier = Modifier, userView: UserView) {
     ) {
         Image(
             modifier = modifier
-                .fillMaxWidth()
-                .aspectRatio(userView.aspectRatio.toFloat())
+                .weight(1f)
+                .aspectRatio(2 / 3f)
                 .clip(RoundedCornerShape(8.dp)),
             painter = rememberAsyncImagePainter(
                 model = ImageRequest.Builder(context)
-                    .data(userView.imageUrl)
+                    .data(latestItem.imageUrl)
                     .crossfade(true)
                     .build(),
                 contentScale = ContentScale.Crop
             ),
             contentScale = ContentScale.Crop,
-            contentDescription = userView.name
+            contentDescription = latestItem.name
         )
 
         Text(
             modifier = Modifier.padding(top = 4.dp, start = 4.dp),
-            text = userView.name,
+            text = latestItem.name,
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

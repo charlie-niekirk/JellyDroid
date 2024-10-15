@@ -5,6 +5,8 @@ import com.github.michaelbull.result.coroutines.coroutineBinding
 import me.cniekirk.core.jellydroid.domain.model.HomeStructure
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.model.LatestItems
+import timber.log.Timber
 import javax.inject.Inject
 
 class GetHomeStructureUseCase @Inject constructor(
@@ -13,6 +15,12 @@ class GetHomeStructureUseCase @Inject constructor(
     suspend operator fun invoke(): Result<HomeStructure, NetworkError> = coroutineBinding {
         val userViews = jellyfinRepository.getUserViews().bind()
         val resumeItems = jellyfinRepository.getContinuePlayingItems().bind()
-        HomeStructure(userViews, resumeItems)
+        val latestMovies = jellyfinRepository.getLatestMovies().bind()
+        val latestShows = jellyfinRepository.getLatestShows().bind()
+
+        Timber.d("Movies $latestMovies")
+        Timber.d("Shows: $latestShows")
+
+        HomeStructure(userViews, resumeItems, LatestItems(latestMovies, latestShows))
     }
 }

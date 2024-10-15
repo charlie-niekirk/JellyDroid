@@ -25,8 +25,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.feature.home.R

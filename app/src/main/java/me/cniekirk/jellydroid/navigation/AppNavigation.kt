@@ -1,6 +1,7 @@
 package me.cniekirk.jellydroid.navigation
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Favorite
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -42,7 +44,12 @@ fun JellydroidNavHost(modifier: Modifier = Modifier, navHostController: NavHostC
 
     NavHost(modifier = modifier, navController = navHostController, startDestination = Onboarding) {
         onboardingUserJourney(navHostController) {
-            navHostController.navigate(MainApp)
+            navHostController.navigate(MainApp) {
+                launchSingleTop = true
+                popUpTo(MainApp) {
+                    inclusive = true
+                }
+            }
         }
         composable<MainApp>(
             enterTransition = { activityDefaultEnter() }
@@ -109,6 +116,8 @@ fun MainBottomBarNavigation(navHostController: NavHostController) {
                                 }
                             }
                         )
+
+                        Spacer(Modifier.height(8.dp))
                     }
                     Spacer(Modifier.weight(1f))
                 }

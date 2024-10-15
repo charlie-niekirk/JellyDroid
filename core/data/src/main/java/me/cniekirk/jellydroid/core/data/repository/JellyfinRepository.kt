@@ -4,6 +4,8 @@ import com.github.michaelbull.result.Result
 import kotlinx.coroutines.flow.Flow
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.model.LatestItem
+import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
@@ -23,4 +25,8 @@ interface JellyfinRepository {
     suspend fun getCurrentServerAndUser(): Result<String, LocalDataError>
 
     suspend fun getContinuePlayingItems(): Result<List<ResumeItem>, NetworkError>
+
+    suspend fun getLatestMovies(): Result<List<LatestItem>, NetworkError>
+
+    suspend fun getLatestShows(): Result<List<LatestItem>, NetworkError>
 }

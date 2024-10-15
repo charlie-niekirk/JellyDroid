@@ -10,6 +10,7 @@ import com.github.michaelbull.result.runCatching
 import kotlinx.coroutines.flow.Flow
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.data.mapping.toLatestItem
 import me.cniekirk.jellydroid.core.data.mapping.toResumeItem
 import me.cniekirk.jellydroid.core.data.mapping.toServer
 import me.cniekirk.jellydroid.core.data.mapping.toUser
@@ -18,6 +19,8 @@ import me.cniekirk.jellydroid.core.database.dao.ServerDao
 import me.cniekirk.jellydroid.core.database.dao.UserDao
 import me.cniekirk.jellydroid.core.database.entity.Server
 import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
+import me.cniekirk.jellydroid.core.model.LatestItem
+import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import org.jellyfin.sdk.Jellyfin
@@ -29,8 +32,10 @@ import org.jellyfin.sdk.api.client.exception.MissingBaseUrlException
 import org.jellyfin.sdk.api.client.exception.MissingPathVariableException
 import org.jellyfin.sdk.api.client.exception.SecureConnectionException
 import org.jellyfin.sdk.api.client.exception.TimeoutException
+import org.jellyfin.sdk.api.client.extensions.itemLookupApi
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.userApi
+import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.client.extensions.userViewsApi
 import org.jellyfin.sdk.api.sockets.exception.SocketException
 import org.jellyfin.sdk.api.sockets.exception.SocketStoppedException
@@ -149,6 +154,30 @@ class JellyfinRepositoryImpl @Inject constructor(
             response.content.items?.map {
                 it.toResumeItem(apiClient.baseUrl)
             } ?: listOf()
+        }
+    }
+
+    override suspend fun getLatestMovies(): Result<List<LatestItem>, NetworkError> {
+        return safeApiCall {
+            apiClient.userLibraryApi.getLatestMedia(
+                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                limit = 12,
+                includeItemTypes = listOf(BaseItemKind.MOVIE)
+            )
+        }.map { response ->
+            response.content.map { it.toLatestItem(apiClient.baseUrl) }
+        }
+    }
+
+    override suspend fun getLatestShows(): Result<List<LatestItem>, NetworkError> {
+        return safeApiCall {
+            apiClient.userLibraryApi.getLatestMedia(
+                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                limit = 12,
+                includeItemTypes = listOf(BaseItemKind.SERIES)
+            )
+        }.map { response ->
+            response.content.map { it.toLatestItem(apiClient.baseUrl) }
         }
     }
 

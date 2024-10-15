@@ -32,7 +32,9 @@ class HomeViewModel @Inject constructor(
                     state.copy(
                         isLoading = false,
                         userViews = homeStructure.userViews.toImmutableList(),
-                        resumeItems = homeStructure.resumeItems.toImmutableList()
+                        resumeItems = homeStructure.resumeItems.toImmutableList(),
+                        latestMovies = homeStructure.latestItems.movies.toImmutableList(),
+                        latestShows = homeStructure.latestItems.shows.toImmutableList()
                     )
                 }
             }

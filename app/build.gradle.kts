@@ -76,6 +76,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.org.jetbrains.kotlinx.serialization)
 
+    implementation(libs.ktor.android)
+    implementation(libs.coil.network.ktor2)
+
     implementation(libs.material.icons)
     implementation(libs.androidx.material3.adaptive)
     implementation(libs.androidx.material3.adaptive.navigation.suite)
