@@ -33,8 +33,8 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.R
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
-import me.cniekirk.jellydroid.feature.home.Home
-import me.cniekirk.jellydroid.feature.home.home
+import me.cniekirk.jellydroid.feature.home.mobile.Home
+import me.cniekirk.jellydroid.feature.home.mobile.home
 import me.cniekirk.jellydroid.feature.onboarding.Onboarding
 import me.cniekirk.jellydroid.feature.onboarding.onboardingUserJourney
 

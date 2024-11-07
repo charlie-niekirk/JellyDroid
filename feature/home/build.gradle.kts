@@ -21,7 +21,10 @@ dependencies {
     implementation(projects.core.domain)
 
     implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.tv.material)
     implementation(libs.immutable)
     implementation(libs.coil.compose)
     implementation(libs.immutable)
+    implementation(libs.haze)
+    implementation(libs.haze.materials)
 }

@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.feature.home
+package me.cniekirk.jellydroid.feature.home.mobile
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

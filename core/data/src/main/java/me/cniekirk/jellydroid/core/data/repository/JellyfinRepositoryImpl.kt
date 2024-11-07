@@ -41,6 +41,7 @@ import org.jellyfin.sdk.api.sockets.exception.SocketException
 import org.jellyfin.sdk.api.sockets.exception.SocketStoppedException
 import org.jellyfin.sdk.discovery.RecommendedServerInfo
 import org.jellyfin.sdk.discovery.RecommendedServerInfoScore
+import org.jellyfin.sdk.model.UUID
 import org.jellyfin.sdk.model.api.AuthenticateUserByName
 import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
@@ -180,6 +181,14 @@ class JellyfinRepositoryImpl @Inject constructor(
             response.content.map { it.toLatestItem(apiClient.baseUrl) }
         }
     }
+
+//    override suspend fun getMediaDetails(mediaId: String): Result<String, NetworkError> {
+//        return safeApiCall {
+//            apiClient.userLibraryApi.getItem(UUID.fromString(mediaId))
+//        }.map { response ->
+//            response.content
+//        }
+//    }
 
     private suspend fun <T> safeApiCall(block: suspend () -> T): Result<T, NetworkError> {
         return runCatching {

@@ -1,43 +1,49 @@
-package me.cniekirk.jellydroid.feature.home
+package me.cniekirk.jellydroid.feature.home.mobile
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeProgressive
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.haze
+import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.materials.HazeMaterials
 import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadingScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
-import me.cniekirk.jellydroid.feature.home.components.LatestMovies
-import me.cniekirk.jellydroid.feature.home.components.LatestShows
-import me.cniekirk.jellydroid.feature.home.components.ResumeItems
-import me.cniekirk.jellydroid.feature.home.components.UserViews
+import me.cniekirk.jellydroid.feature.home.HomeViewModel
+import me.cniekirk.jellydroid.feature.home.R
+import me.cniekirk.jellydroid.feature.home.mobile.components.LatestMovies
+import me.cniekirk.jellydroid.feature.home.mobile.components.LatestShows
+import me.cniekirk.jellydroid.feature.home.mobile.components.ResumeItems
+import me.cniekirk.jellydroid.feature.home.mobile.components.UserViews
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -66,49 +72,71 @@ fun HomeScreen(
     onQueryChange: (String) -> Unit
 ) {
     LoadingScreen(isLoading = state.isLoading) {
-        Column(
-            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-        ) {
-            TopAppBar(
-                title = { Text(stringResource(R.string.home_title)) },
-                actions = {
-                    IconButton(
-                        onClick = {}
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = stringResource(R.string.settings_content_description)
-                        )
+        val hazeSate = remember { HazeState() }
+
+        val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
+
+        Scaffold(
+            modifier = Modifier.fillMaxSize().background(color = Color.White),
+            topBar = {
+                TopAppBar(
+                    modifier = Modifier
+                        .hazeChild(hazeSate) {
+                            this.style = style
+                            progressive = HazeProgressive.verticalGradient(startIntensity = 1f, endIntensity = 0f)
+                        }
+                    ,
+                    colors = TopAppBarDefaults.topAppBarColors(Color.Transparent),
+                    title = { Text(stringResource(R.string.home_title)) },
+                    actions = {
+                        IconButton(
+                            onClick = {}
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = stringResource(R.string.settings_content_description)
+                            )
+                        }
                     }
+                )
+            }
+        ) { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.Transparent)
+                    .haze(hazeSate),
+                contentPadding = paddingValues,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    UserViews(
+                        modifier = Modifier.fillMaxWidth(),
+                        userViews = state.userViews
+                    )
                 }
-            )
 
-            UserViews(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                userViews = state.userViews
-            )
+                item {
+                    ResumeItems(
+                        modifier = Modifier.fillMaxWidth(),
+                        resumeItems = state.resumeItems
+                    )
+                }
 
-            ResumeItems(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                resumeItems = state.resumeItems
-            )
+                item {
+                    LatestMovies(
+                        modifier = Modifier.fillMaxWidth(),
+                        latestMovies = state.latestMovies
+                    )
+                }
 
-            LatestMovies(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                latestMovies = state.latestMovies
-            )
-
-            LatestShows(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                latestShows = state.latestShows
-            )
+                item {
+                    LatestShows(
+                        modifier = Modifier.fillMaxWidth(),
+                        latestShows = state.latestShows
+                    )
+                }
+            }
         }
     }
 }
