@@ -72,21 +72,10 @@ fun HomeScreen(
     onQueryChange: (String) -> Unit
 ) {
     LoadingScreen(isLoading = state.isLoading) {
-        val hazeSate = remember { HazeState() }
-
-        val style = HazeMaterials.regular(MaterialTheme.colorScheme.surface)
-
         Scaffold(
             modifier = Modifier.fillMaxSize().background(color = Color.White),
             topBar = {
                 TopAppBar(
-                    modifier = Modifier
-                        .hazeChild(hazeSate) {
-                            this.style = style
-                            progressive = HazeProgressive.verticalGradient(startIntensity = 1f, endIntensity = 0f)
-                        }
-                    ,
-                    colors = TopAppBarDefaults.topAppBarColors(Color.Transparent),
                     title = { Text(stringResource(R.string.home_title)) },
                     actions = {
                         IconButton(
@@ -104,8 +93,7 @@ fun HomeScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color.Transparent)
-                    .haze(hazeSate),
+                    .background(color = Color.Transparent),
                 contentPadding = paddingValues,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {

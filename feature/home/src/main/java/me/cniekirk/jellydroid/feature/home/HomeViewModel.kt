@@ -10,14 +10,10 @@ import me.cniekirk.jellydroid.feature.home.mobile.HomeEffect
 import me.cniekirk.jellydroid.feature.home.mobile.HomeState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
-import org.orbitmvi.orbit.syntax.simple.blockingIntent
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import javax.inject.Inject
 
-@OptIn(OrbitExperimental::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getHomeStructureUseCase: GetHomeStructureUseCase

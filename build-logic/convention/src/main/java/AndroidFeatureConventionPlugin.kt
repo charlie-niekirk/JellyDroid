@@ -30,7 +30,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 //                add("implementation", project(":core:analytics"))
 
                 add("testImplementation", kotlin("test"))
-//                add("testImplementation", project(":core:testing"))
+                add("testImplementation", project(":core:test"))
                 add("androidTestImplementation", kotlin("test"))
 //                add("androidTestImplementation", project(":core:testing"))
 

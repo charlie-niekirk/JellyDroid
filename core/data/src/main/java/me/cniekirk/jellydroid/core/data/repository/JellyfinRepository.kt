@@ -30,5 +30,5 @@ interface JellyfinRepository {
 
     suspend fun getLatestShows(): Result<List<LatestItem>, NetworkError>
 
-//    suspend fun getMediaDetails(mediaId: String): Result<MediaItem, NetworkError>
+    suspend fun getMediaDetails(mediaId: String): Result<String, NetworkError>
 }

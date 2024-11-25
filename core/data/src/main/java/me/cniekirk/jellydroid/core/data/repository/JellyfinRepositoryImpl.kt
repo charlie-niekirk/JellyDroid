@@ -182,13 +182,10 @@ class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
-//    override suspend fun getMediaDetails(mediaId: String): Result<String, NetworkError> {
-//        return safeApiCall {
-//            apiClient.userLibraryApi.getItem(UUID.fromString(mediaId))
-//        }.map { response ->
-//            response.content
-//        }
-//    }
+    override suspend fun getMediaDetails(mediaId: String): Result<String, NetworkError> {
+        // TODO: Implement logic
+        return Ok("")
+    }
 
     private suspend fun <T> safeApiCall(block: suspend () -> T): Result<T, NetworkError> {
         return runCatching {

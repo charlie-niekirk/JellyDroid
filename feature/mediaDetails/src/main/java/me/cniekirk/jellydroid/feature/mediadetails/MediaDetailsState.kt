@@ -1,6 +1,7 @@
 package me.cniekirk.jellydroid.feature.mediadetails
 
 data class MediaDetailsState(
+    val mediaId: String = "",
     val isLoading: Boolean = true,
     val title: String = "",
     val imageUrl: String =  "",
