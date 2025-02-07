@@ -2,6 +2,7 @@ package me.cniekirk.jellydroid.feature.home.mobile
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
@@ -18,5 +19,5 @@ data class HomeState(
 
 sealed interface HomeEffect {
 
-
+    data class ShowError(val error: NetworkError) : HomeEffect
 }

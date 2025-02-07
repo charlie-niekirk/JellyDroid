@@ -9,7 +9,6 @@ import me.cniekirk.core.jellydroid.domain.usecase.GetHomeStructureUseCase
 import me.cniekirk.jellydroid.feature.home.mobile.HomeEffect
 import me.cniekirk.jellydroid.feature.home.mobile.HomeState
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import javax.inject.Inject
@@ -36,8 +35,9 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
-            .onFailure {
-                Timber.e("Error: $it")
+            .onFailure { error ->
+                Timber.e("Error: $error")
+                postSideEffect(HomeEffect.ShowError(error))
             }
     }
 

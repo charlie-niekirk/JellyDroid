@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,13 +27,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
+import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.feature.home.R
+import me.cniekirk.jellydroid.feature.home.mobile.components.preview.ResumeItemPreviewProvider
 
 @Composable
 fun ResumeItems(modifier: Modifier = Modifier, resumeItems: ImmutableList<ResumeItem>) {
@@ -66,7 +74,7 @@ fun ResumePlayingItem(modifier: Modifier = Modifier, resumeItem: ResumeItem) {
     ) {
         Box {
             Image(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(resumeItem.aspectRatio.toFloat())
                     .clip(RoundedCornerShape(8.dp)),
@@ -108,6 +116,58 @@ fun ResumePlayingItem(modifier: Modifier = Modifier, resumeItem: ResumeItem) {
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun ResumeItemPreview() {
+    CoilPreview {
+        ResumePlayingItem(
+            modifier = Modifier.padding(16.dp),
+            resumeItem = ResumeItem(
+                id = "0",
+                name = "Inception",
+                imageUrl = "",
+                aspectRatio = (3 / 2f).toDouble(),
+                playedPercentage = 55f
+            )
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun ResumeItemsPreview() {
+    CoilPreview {
+        val items = persistentListOf(
+            ResumeItem(
+                id = "0",
+                name = "Inception",
+                imageUrl = "",
+                aspectRatio = (3 / 2f).toDouble(),
+                playedPercentage = 55f
+            ),
+            ResumeItem(
+                id = "0",
+                name = "Inception",
+                imageUrl = "",
+                aspectRatio = (3 / 2f).toDouble(),
+                playedPercentage = 55f
+            ),
+            ResumeItem(
+                id = "0",
+                name = "Inception",
+                imageUrl = "",
+                aspectRatio = (3 / 2f).toDouble(),
+                playedPercentage = 55f
+            )
+        )
+
+        ResumeItems(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+            resumeItems = items
         )
     }
 }
