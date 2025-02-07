@@ -31,11 +31,15 @@ import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.feature.home.R
 
 @Composable
-fun LatestMovies(modifier: Modifier = Modifier, latestMovies: ImmutableList<LatestItem>) {
+internal fun LatestMediaItems(
+    sectionTitle: String,
+    latestMedia: ImmutableList<LatestItem>,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(start = 16.dp),
-            text = stringResource(R.string.latest_movies_title),
+            text = sectionTitle,
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -43,7 +47,7 @@ fun LatestMovies(modifier: Modifier = Modifier, latestMovies: ImmutableList<Late
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(latestMovies) { latestMovie ->
+            items(latestMedia) { latestMovie ->
                 LatestMedia(
                     modifier = Modifier
                         .height(212.dp)
@@ -56,32 +60,7 @@ fun LatestMovies(modifier: Modifier = Modifier, latestMovies: ImmutableList<Late
 }
 
 @Composable
-fun LatestShows(modifier: Modifier = Modifier, latestShows: ImmutableList<LatestItem>) {
-    Column(modifier = modifier) {
-        Text(
-            modifier = Modifier.padding(start = 16.dp),
-            text = stringResource(R.string.latest_shows_title),
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        LazyRow(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(latestShows) { latestShow ->
-                LatestMedia(
-                    modifier = Modifier
-                        .height(212.dp)
-                        .width(IntrinsicSize.Min),
-                    latestItem = latestShow
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun LatestMedia(modifier: Modifier = Modifier, latestItem: LatestItem) {
+internal fun LatestMedia(modifier: Modifier = Modifier, latestItem: LatestItem) {
     val context = LocalContext.current
 
     Column(

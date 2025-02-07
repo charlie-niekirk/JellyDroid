@@ -2,55 +2,43 @@ package me.cniekirk.jellydroid.feature.home.mobile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import dev.chrisbanes.haze.HazeProgressive
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.haze
-import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.HazeMaterials
 import kotlinx.collections.immutable.persistentListOf
-import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadingScreen
+import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import me.cniekirk.jellydroid.feature.home.HomeViewModel
 import me.cniekirk.jellydroid.feature.home.R
-import me.cniekirk.jellydroid.feature.home.mobile.components.LatestMovies
-import me.cniekirk.jellydroid.feature.home.mobile.components.LatestShows
+import me.cniekirk.jellydroid.feature.home.mobile.components.LatestMediaItems
 import me.cniekirk.jellydroid.feature.home.mobile.components.ResumeItems
 import me.cniekirk.jellydroid.feature.home.mobile.components.UserViews
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun HomeRoute(
+internal fun HomeRoute(
     viewModel: HomeViewModel,
+    onUserViewClicked: (String) -> Unit,
+    onResumeItemClicked: (String) -> Unit,
+    onMediaItemClicked: (String) -> Unit,
 ) {
     val state = viewModel.collectAsState()
 
@@ -64,17 +52,23 @@ fun HomeRoute(
 
     HomeScreen(
         state = state.value,
-        onQueryChange = viewModel::queryChanged
+        onQueryChange = viewModel::queryChanged,
+        onUserViewClicked = { onUserViewClicked(it) },
+        onResumeItemClicked = { onResumeItemClicked(it) },
+        onMediaItemClicked = { onMediaItemClicked(it) }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     state: HomeState,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onUserViewClicked: (String) -> Unit,
+    onResumeItemClicked: (String) -> Unit,
+    onMediaItemClicked: (String) -> Unit,
 ) {
-    LoadingScreen(isLoading = state.isLoading) {
+    LoadableScreen(isLoading = state.isLoading) {
         Scaffold(
             modifier = Modifier.fillMaxSize().background(color = Color.White),
             topBar = {
@@ -103,28 +97,32 @@ fun HomeScreen(
                 item {
                     UserViews(
                         modifier = Modifier.fillMaxWidth(),
-                        userViews = state.userViews
+                        userViews = state.userViews,
+                        onUserViewClicked = { onUserViewClicked(it) }
                     )
                 }
 
                 item {
                     ResumeItems(
                         modifier = Modifier.fillMaxWidth(),
-                        resumeItems = state.resumeItems
+                        resumeItems = state.resumeItems,
+                        onResumeItemClicked = { onResumeItemClicked(it) }
                     )
                 }
 
                 item {
-                    LatestMovies(
+                    LatestMediaItems(
                         modifier = Modifier.fillMaxWidth(),
-                        latestMovies = state.latestMovies
+                        latestMedia = state.latestMovies,
+                        sectionTitle = stringResource(R.string.latest_movies_title)
                     )
                 }
 
                 item {
-                    LatestShows(
+                    LatestMediaItems(
                         modifier = Modifier.fillMaxWidth(),
-                        latestShows = state.latestShows
+                        latestMedia = state.latestShows,
+                        sectionTitle = stringResource(R.string.latest_shows_title)
                     )
                 }
             }
@@ -219,7 +217,10 @@ private fun HomeScreenPreview() {
 
         HomeScreen(
             state = state,
-            onQueryChange = {}
+            onQueryChange = {},
+            onUserViewClicked = {},
+            onResumeItemClicked = {},
+            onMediaItemClicked = {}
         )
     }
 }

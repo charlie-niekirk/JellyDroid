@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
 
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier, isLoading: Boolean, content: @Composable () -> Unit) {
+fun LoadableScreen(modifier: Modifier = Modifier, isLoading: Boolean, content: @Composable () -> Unit) {
     AnimatedContent(isLoading, label = "Loading") { loading ->
         if (loading) {
             Column(
@@ -34,7 +34,7 @@ fun LoadingScreen(modifier: Modifier = Modifier, isLoading: Boolean, content: @C
 private fun LoadingScreenPreview() {
     JellyDroidTheme {
         Surface {
-            LoadingScreen(isLoading = true) {
+            LoadableScreen(isLoading = true) {
 
             }
         }

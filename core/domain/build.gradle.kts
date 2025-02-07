@@ -19,4 +19,5 @@ dependencies {
     implementation(libs.org.jellyfin.sdk.jellyfin.core)
 
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
 }

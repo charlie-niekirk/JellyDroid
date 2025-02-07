@@ -14,7 +14,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
     private val getHomeStructureUseCase: GetHomeStructureUseCase
 ) : ViewModel(), ContainerHost<HomeState, HomeEffect> {
 

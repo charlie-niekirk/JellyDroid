@@ -3,6 +3,7 @@ package me.cniekirk.jellydroid.feature.home.mobile.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,7 +44,11 @@ import me.cniekirk.jellydroid.feature.home.R
 import me.cniekirk.jellydroid.feature.home.mobile.components.preview.ResumeItemPreviewProvider
 
 @Composable
-fun ResumeItems(modifier: Modifier = Modifier, resumeItems: ImmutableList<ResumeItem>) {
+internal fun ResumeItems(
+    modifier: Modifier = Modifier,
+    resumeItems: ImmutableList<ResumeItem>,
+    onResumeItemClicked: (String) -> Unit
+) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(start = 16.dp),
@@ -58,7 +63,8 @@ fun ResumeItems(modifier: Modifier = Modifier, resumeItems: ImmutableList<Resume
             items(resumeItems) { resumeItem ->
                 ResumePlayingItem(
                     modifier = Modifier.width(212.dp),
-                    resumeItem = resumeItem
+                    resumeItem = resumeItem,
+                    onResumeItemClicked = { onResumeItemClicked(it) }
                 )
             }
         }
@@ -66,11 +72,15 @@ fun ResumeItems(modifier: Modifier = Modifier, resumeItems: ImmutableList<Resume
 }
 
 @Composable
-fun ResumePlayingItem(modifier: Modifier = Modifier, resumeItem: ResumeItem) {
+internal fun ResumePlayingItem(
+    modifier: Modifier = Modifier,
+    resumeItem: ResumeItem,
+    onResumeItemClicked: (String) -> Unit
+) {
     val context = LocalContext.current
 
     Column(
-        modifier = modifier
+        modifier = modifier.clickable { onResumeItemClicked(resumeItem.id) }
     ) {
         Box {
             Image(
@@ -132,7 +142,8 @@ private fun ResumeItemPreview() {
                 imageUrl = "",
                 aspectRatio = (3 / 2f).toDouble(),
                 playedPercentage = 55f
-            )
+            ),
+            onResumeItemClicked = {}
         )
     }
 }
@@ -167,7 +178,8 @@ private fun ResumeItemsPreview() {
 
         ResumeItems(
             modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-            resumeItems = items
+            resumeItems = items,
+            onResumeItemClicked = {}
         )
     }
 }

@@ -1,13 +1,10 @@
 package me.cniekirk.jellydroid.feature.mediadetails
 
+import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
+
 data class MediaDetailsState(
-    val mediaId: String = "",
     val isLoading: Boolean = true,
-    val title: String = "",
-    val imageUrl: String =  "",
-    val codecs: List<String> = listOf(),
-    val rating: String = "",
-    val trailerUrl: String = ""
+    val mediaDetailsUiModel: MediaDetailsUiModel? = null
 )
 
 sealed interface MediaDetailsEffect {

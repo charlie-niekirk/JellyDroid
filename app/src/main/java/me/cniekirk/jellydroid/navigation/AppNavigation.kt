@@ -35,6 +35,8 @@ import me.cniekirk.jellydroid.R
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
 import me.cniekirk.jellydroid.feature.home.mobile.Home
 import me.cniekirk.jellydroid.feature.home.mobile.home
+import me.cniekirk.jellydroid.feature.mediadetails.MediaDetails
+import me.cniekirk.jellydroid.feature.mediadetails.mediaDetails
 import me.cniekirk.jellydroid.feature.onboarding.Onboarding
 import me.cniekirk.jellydroid.feature.onboarding.onboardingUserJourney
 
@@ -148,7 +150,12 @@ fun MainBottomBarNavigation(navHostController: NavHostController) {
         }
     ) {
         NavHost(navController = navHostController, startDestination = bottomNavRoutes.first().route) {
-            home()
+            home(
+                onUserViewClicked = {},
+                onResumeItemClicked = {},
+                onMediaItemClicked = { navHostController.navigate(MediaDetails(it)) }
+            )
+            mediaDetails()
         }
     }
 }

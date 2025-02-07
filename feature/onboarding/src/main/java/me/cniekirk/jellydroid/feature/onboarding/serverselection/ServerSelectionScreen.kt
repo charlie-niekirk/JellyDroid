@@ -17,13 +17,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
-import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadingScreen
+import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.feature.onboarding.R
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun ServerSelectionRoute(
+internal fun ServerSelectionRoute(
     viewModel: ServerSelectionViewModel,
     navigateToLogin: (String) -> Unit
 ) {
@@ -46,14 +46,14 @@ fun ServerSelectionRoute(
 }
 
 @Composable
-fun ServerSelectionScreen(
+private fun ServerSelectionScreen(
     modifier: Modifier = Modifier,
     state: ServerSelectionState,
     onAddressChanged: (String) -> Unit,
     connectClicked: () -> Unit,
     dismissErrorDialog: () -> Unit
 ) {
-    LoadingScreen(isLoading = state.isLoading) {
+    LoadableScreen(isLoading = state.isLoading) {
         Column(
             modifier = modifier.fillMaxSize()
         ) {

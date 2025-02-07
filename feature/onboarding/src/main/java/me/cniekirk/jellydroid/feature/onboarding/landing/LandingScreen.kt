@@ -15,11 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
 import me.cniekirk.jellydroid.core.designsystem.theme.components.CheckboxItem
-import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadingScreen
 import me.cniekirk.jellydroid.feature.onboarding.R
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

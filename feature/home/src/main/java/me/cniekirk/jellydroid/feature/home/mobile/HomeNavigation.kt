@@ -9,9 +9,18 @@ import me.cniekirk.jellydroid.feature.home.HomeViewModel
 @Serializable
 data object Home
 
-fun NavGraphBuilder.home() {
+fun NavGraphBuilder.home(
+    onUserViewClicked: (String) -> Unit,
+    onResumeItemClicked: (String) -> Unit,
+    onMediaItemClicked: (String) -> Unit,
+) {
     composable<Home> {
         val viewModel = hiltViewModel<HomeViewModel>()
-        HomeRoute(viewModel)
+        HomeRoute(
+            viewModel = viewModel,
+            onUserViewClicked = { onUserViewClicked(it) },
+            onResumeItemClicked = { onResumeItemClicked(it) },
+            onMediaItemClicked = { onMediaItemClicked(it) },
+        )
     }
 }

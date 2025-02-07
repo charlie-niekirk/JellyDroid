@@ -8,6 +8,7 @@ import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
+import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
 
 interface JellyfinRepository {
@@ -30,5 +31,5 @@ interface JellyfinRepository {
 
     suspend fun getLatestShows(): Result<List<LatestItem>, NetworkError>
 
-    suspend fun getMediaDetails(mediaId: String): Result<String, NetworkError>
+    suspend fun getMediaDetails(mediaId: String): Result<BaseItemDto, NetworkError>
 }

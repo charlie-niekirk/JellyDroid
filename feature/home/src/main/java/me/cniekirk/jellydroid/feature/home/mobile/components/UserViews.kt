@@ -1,7 +1,7 @@
 package me.cniekirk.jellydroid.feature.home.mobile.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -16,21 +16,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
+import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.UserView
 import me.cniekirk.jellydroid.feature.home.R
 
 @Composable
-fun UserViews(modifier: Modifier = Modifier, userViews: ImmutableList<UserView>) {
+internal fun UserViews(
+    modifier: Modifier = Modifier,
+    userViews: ImmutableList<UserView>,
+    onUserViewClicked: (String) -> Unit
+) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(start = 16.dp),
@@ -45,7 +50,8 @@ fun UserViews(modifier: Modifier = Modifier, userViews: ImmutableList<UserView>)
             items(userViews) { userView ->
                 MediaView(
                     modifier = Modifier.width(212.dp),
-                    userView = userView
+                    userView = userView,
+                    onUserViewClicked = { onUserViewClicked(it) }
                 )
             }
         }
@@ -53,14 +59,18 @@ fun UserViews(modifier: Modifier = Modifier, userViews: ImmutableList<UserView>)
 }
 
 @Composable
-fun MediaView(modifier: Modifier = Modifier, userView: UserView) {
+internal fun MediaView(
+    modifier: Modifier = Modifier,
+    userView: UserView,
+    onUserViewClicked: (String) -> Unit
+) {
     val context = LocalContext.current
 
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable { onUserViewClicked(userView.id) },
     ) {
         Image(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(userView.aspectRatio.toFloat())
                 .clip(RoundedCornerShape(8.dp)),
@@ -76,11 +86,33 @@ fun MediaView(modifier: Modifier = Modifier, userView: UserView) {
         )
 
         Text(
-            modifier = Modifier.padding(top = 4.dp, start = 4.dp),
+            modifier = Modifier.padding(top = 8.dp, start = 4.dp),
             text = userView.name,
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun MediaViewPreview() {
+    val userView = UserView(
+        id = "0",
+        parentId = "0",
+        name = "The Big Lebowski",
+        path = "",
+        type = "",
+        imageUrl = "",
+        aspectRatio = (3f / 2f).toDouble()
+    )
+
+    CoilPreview {
+        MediaView(
+            modifier = Modifier.padding(16.dp),
+            userView = userView,
+            onUserViewClicked = {}
         )
     }
 }

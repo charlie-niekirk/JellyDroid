@@ -61,9 +61,9 @@ android {
 
 dependencies {
     api(projects.core.designsystem)
-
     api(projects.feature.onboarding)
     api(projects.feature.home)
+    implementation(projects.feature.mediaDetails)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

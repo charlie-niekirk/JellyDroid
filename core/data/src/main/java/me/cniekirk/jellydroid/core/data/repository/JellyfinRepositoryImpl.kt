@@ -43,6 +43,7 @@ import org.jellyfin.sdk.discovery.RecommendedServerInfo
 import org.jellyfin.sdk.discovery.RecommendedServerInfoScore
 import org.jellyfin.sdk.model.UUID
 import org.jellyfin.sdk.model.api.AuthenticateUserByName
+import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
 import org.jellyfin.sdk.model.serializer.toUUID
@@ -182,9 +183,13 @@ class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMediaDetails(mediaId: String): Result<String, NetworkError> {
-        // TODO: Implement logic
-        return Ok("")
+    override suspend fun getMediaDetails(mediaId: String): Result<BaseItemDto, NetworkError> {
+        return safeApiCall {
+            apiClient.userLibraryApi.getItem(
+                UUID.fromString(mediaId),
+                userId = appPreferencesRepository.getLoggedInUser().toUUID()
+            ).content
+        }
     }
 
     private suspend fun <T> safeApiCall(block: suspend () -> T): Result<T, NetworkError> {

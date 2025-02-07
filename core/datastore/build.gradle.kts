@@ -44,7 +44,8 @@ protobuf {
 androidComponents {
     onVariants(selector().all()) { variant ->
         afterEvaluate {
-            val capName = variant.name.capitalized()
+            val capName = variant.name
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
             tasks.getByName<KotlinCompile>("ksp${capName}Kotlin") {
                 setSource(tasks.getByName("generate${capName}Proto").outputs)
             }
