@@ -38,7 +38,7 @@ internal fun HomeRoute(
     viewModel: HomeViewModel,
     onUserViewClicked: (String) -> Unit,
     onResumeItemClicked: (String) -> Unit,
-    onMediaItemClicked: (String) -> Unit,
+    onMediaItemClicked: (String, String) -> Unit,
 ) {
     val state = viewModel.collectAsState()
 
@@ -55,7 +55,9 @@ internal fun HomeRoute(
         onQueryChange = viewModel::queryChanged,
         onUserViewClicked = { onUserViewClicked(it) },
         onResumeItemClicked = { onResumeItemClicked(it) },
-        onMediaItemClicked = { onMediaItemClicked(it) }
+        onMediaItemClicked = { id, name ->
+            onMediaItemClicked(id, name)
+        }
     )
 }
 
@@ -66,7 +68,7 @@ internal fun HomeScreen(
     onQueryChange: (String) -> Unit,
     onUserViewClicked: (String) -> Unit,
     onResumeItemClicked: (String) -> Unit,
-    onMediaItemClicked: (String) -> Unit,
+    onMediaItemClicked: (String, String) -> Unit,
 ) {
     LoadableScreen(isLoading = state.isLoading) {
         Scaffold(
@@ -114,7 +116,10 @@ internal fun HomeScreen(
                     LatestMediaItems(
                         modifier = Modifier.fillMaxWidth(),
                         latestMedia = state.latestMovies,
-                        sectionTitle = stringResource(R.string.latest_movies_title)
+                        sectionTitle = stringResource(R.string.latest_movies_title),
+                        onMediaItemClicked = { id, name ->
+                            onMediaItemClicked(id, name)
+                        }
                     )
                 }
 
@@ -122,7 +127,10 @@ internal fun HomeScreen(
                     LatestMediaItems(
                         modifier = Modifier.fillMaxWidth(),
                         latestMedia = state.latestShows,
-                        sectionTitle = stringResource(R.string.latest_shows_title)
+                        sectionTitle = stringResource(R.string.latest_shows_title),
+                        onMediaItemClicked = { id, name ->
+                            onMediaItemClicked(id, name)
+                        }
                     )
                 }
             }
@@ -220,7 +228,7 @@ private fun HomeScreenPreview() {
             onQueryChange = {},
             onUserViewClicked = {},
             onResumeItemClicked = {},
-            onMediaItemClicked = {}
+            onMediaItemClicked = { _, _ -> }
         )
     }
 }

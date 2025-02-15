@@ -145,6 +145,15 @@ class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getServerBaseUrl(): Result<String, NetworkError> {
+        val baseUrl = apiClient.baseUrl
+        return if (baseUrl != null) {
+            Ok(baseUrl)
+        } else {
+            Err(NetworkError.AuthenticationError)
+        }
+    }
+
     override suspend fun getContinuePlayingItems(): Result<List<ResumeItem>, NetworkError> {
         return safeApiCall {
             apiClient.itemsApi.getResumeItems(
@@ -189,6 +198,16 @@ class JellyfinRepositoryImpl @Inject constructor(
                 UUID.fromString(mediaId),
                 userId = appPreferencesRepository.getLoggedInUser().toUUID()
             ).content
+        }
+    }
+
+    override suspend fun getMediaCollection(collectionId: String): Result<List<BaseItemDto>, NetworkError> {
+        return safeApiCall {
+            apiClient.itemsApi.getItems(
+                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                limit = 12,
+                includeItemTypes = listOf(BaseItemKind.MOVIE)
+            ).content.items ?: listOf()
         }
     }
 

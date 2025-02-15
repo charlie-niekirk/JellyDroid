@@ -18,20 +18,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -79,22 +83,23 @@ internal fun ResumePlayingItem(
 ) {
     val context = LocalContext.current
 
+    val placeholderColor = MaterialTheme.colorScheme.secondary
+    val placeholder = remember { ColorPainter(placeholderColor) }
+
     Column(
         modifier = modifier.clickable { onResumeItemClicked(resumeItem.id) }
     ) {
         Box {
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(resumeItem.aspectRatio.toFloat())
                     .clip(RoundedCornerShape(8.dp)),
-                painter =  rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(context)
-                        .data(resumeItem.imageUrl)
-                        .crossfade(true)
-                        .build(),
-                    contentScale = ContentScale.Crop
-                ),
+                model = ImageRequest.Builder(context)
+                    .data(resumeItem.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                placeholder = placeholder,
                 contentScale = ContentScale.Crop,
                 contentDescription = resumeItem.name,
             )

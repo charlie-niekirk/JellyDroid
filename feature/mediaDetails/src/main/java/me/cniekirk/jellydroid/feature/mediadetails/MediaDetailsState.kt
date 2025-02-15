@@ -3,6 +3,7 @@ package me.cniekirk.jellydroid.feature.mediadetails
 import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
 
 data class MediaDetailsState(
+    val mediaTitle: String,
     val isLoading: Boolean = true,
     val mediaDetailsUiModel: MediaDetailsUiModel? = null
 )

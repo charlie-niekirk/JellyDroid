@@ -153,9 +153,13 @@ fun MainBottomBarNavigation(navHostController: NavHostController) {
             home(
                 onUserViewClicked = {},
                 onResumeItemClicked = {},
-                onMediaItemClicked = { navHostController.navigate(MediaDetails(it)) }
+                onMediaItemClicked = { id, name ->
+                    navHostController.navigate(MediaDetails(id, name))
+                }
             )
-            mediaDetails()
+            mediaDetails(
+                onBackClicked = { navHostController.popBackStack() }
+            )
         }
     }
 }

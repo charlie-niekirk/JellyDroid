@@ -25,6 +25,8 @@ interface JellyfinRepository {
 
     suspend fun getCurrentServerAndUser(): Result<String, LocalDataError>
 
+    suspend fun getServerBaseUrl(): Result<String, NetworkError>
+
     suspend fun getContinuePlayingItems(): Result<List<ResumeItem>, NetworkError>
 
     suspend fun getLatestMovies(): Result<List<LatestItem>, NetworkError>
@@ -32,4 +34,6 @@ interface JellyfinRepository {
     suspend fun getLatestShows(): Result<List<LatestItem>, NetworkError>
 
     suspend fun getMediaDetails(mediaId: String): Result<BaseItemDto, NetworkError>
+
+    suspend fun getMediaCollection(collectionId: String): Result<List<BaseItemDto>, NetworkError>
 }
