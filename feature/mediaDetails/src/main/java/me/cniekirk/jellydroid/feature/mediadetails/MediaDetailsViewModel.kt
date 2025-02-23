@@ -39,4 +39,12 @@ class MediaDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun onPlayClicked() = intent {
+        state.mediaDetailsUiModel?.also {
+            postSideEffect(
+                MediaDetailsEffect.NavigateToPlayer(it.mediaId)
+            )
+        }
+    }
 }

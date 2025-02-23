@@ -33,10 +33,15 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.R
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
+import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultExit
+import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopEnter
+import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopExit
 import me.cniekirk.jellydroid.feature.home.mobile.Home
 import me.cniekirk.jellydroid.feature.home.mobile.home
 import me.cniekirk.jellydroid.feature.mediadetails.MediaDetails
 import me.cniekirk.jellydroid.feature.mediadetails.mediaDetails
+import me.cniekirk.jellydroid.feature.mediaplayer.MediaPlayer
+import me.cniekirk.jellydroid.feature.mediaplayer.mediaPlayer
 import me.cniekirk.jellydroid.feature.onboarding.Onboarding
 import me.cniekirk.jellydroid.feature.onboarding.onboardingUserJourney
 
@@ -54,9 +59,18 @@ fun JellydroidNavHost(modifier: Modifier = Modifier, navHostController: NavHostC
             }
         }
         composable<MainApp>(
-            enterTransition = { activityDefaultEnter() }
+            enterTransition = { activityDefaultEnter() },
+            exitTransition = { activityDefaultExit() },
+            popEnterTransition = { activityDefaultPopEnter() }
         ) {
-            MainBottomBarNavigation(bottomBarNavController)
+            MainBottomBarNavigation(
+                navHostController = bottomBarNavController,
+                navigateToPlayer = { navHostController.navigate(MediaPlayer(it)) }
+            )
+        }
+
+        mediaPlayer {
+            navHostController.popBackStack()
         }
     }
 }
@@ -80,7 +94,10 @@ data class BottomNavRoute<T : Any>(
 )
 
 @Composable
-fun MainBottomBarNavigation(navHostController: NavHostController) {
+fun MainBottomBarNavigation(
+    navHostController: NavHostController,
+    navigateToPlayer: (String) -> Unit
+) {
     val bottomNavRoutes = listOf(
         BottomNavRoute(stringResource(R.string.bottom_nav_home), Home, Icons.Default.Home),
         BottomNavRoute(stringResource(R.string.bottom_nav_favorites), Favorites, Icons.Default.Favorite),
@@ -158,6 +175,7 @@ fun MainBottomBarNavigation(navHostController: NavHostController) {
                 }
             )
             mediaDetails(
+                onPlayClicked = { navigateToPlayer(it) },
                 onBackClicked = { navHostController.popBackStack() }
             )
         }

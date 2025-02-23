@@ -1,10 +1,8 @@
 package me.cniekirk.jellydroid.feature.mediadetails
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,20 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
@@ -48,6 +43,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 internal fun MediaDetailsScreen(
     viewModel: MediaDetailsViewModel,
+    onPlayClicked: (String) -> Unit,
     onBackClicked: () -> Unit
 ) {
     val state = viewModel.collectAsState()
@@ -55,19 +51,22 @@ internal fun MediaDetailsScreen(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is MediaDetailsEffect.NavigateToPlayer -> {
-
+                onPlayClicked(sideEffect.mediaId)
             }
         }
     }
 
-    MediaDetailsContent(state.value) {
-        onBackClicked()
-    }
+    MediaDetailsContent(
+        state = state.value,
+        onBackClicked = { onBackClicked() },
+        onPlayClicked = viewModel::onPlayClicked
+    )
 }
 
 @Composable
 private fun MediaDetailsContent(
     state: MediaDetailsState,
+    onPlayClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
     TopBarPage(
@@ -79,7 +78,10 @@ private fun MediaDetailsContent(
             isLoading = state.isLoading
         ) {
             if (state.mediaDetailsUiModel != null) {
-                Success(state.mediaDetailsUiModel)
+                Success(
+                    mediaDetailsUiModel = state.mediaDetailsUiModel,
+                    onPlayClicked = { onPlayClicked() }
+                )
             } else {
                 // TODO: Deal with unlikely case
             }
@@ -88,7 +90,7 @@ private fun MediaDetailsContent(
 }
 
 @Composable
-private fun Success(mediaDetailsUiModel: MediaDetailsUiModel) {
+private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () -> Unit) {
     val context = LocalPlatformContext.current
 
     Column(
@@ -131,6 +133,16 @@ private fun Success(mediaDetailsUiModel: MediaDetailsUiModel) {
             )
         }
 
+        IconButton(
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp),
+            onClick = { onPlayClicked() }
+        ) {
+            Icon(
+                imageVector = Icons.Default.PlayArrow,
+                contentDescription = stringResource(R.string.play_button)
+            )
+        }
+
         Attributes(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             mediaAttributes = mediaDetailsUiModel.mediaAttributes
@@ -154,6 +166,7 @@ private fun MediaDetailsContentPreview(@PreviewParameter(LoremIpsum::class) word
         isLoading = false,
         mediaTitle = title,
         mediaDetailsUiModel = MediaDetailsUiModel(
+            mediaId = "1",
             synopsis = LoremIpsum(27).values.toList().first().toString(),
             primaryImageUrl = "",
             mediaAttributes = MediaAttributes(
@@ -162,11 +175,16 @@ private fun MediaDetailsContentPreview(@PreviewParameter(LoremIpsum::class) word
                     ratingImageUrl = null
                 ),
                 communityRating = CommunityRating.StarRating(7.6f),
-                runtime = "1h 32m"
-            )
+                runtime = "1h 32m",
+            ),
+            mediaPath = ""
         )
     )
     CoilPreview {
-        MediaDetailsContent(state) {}
+        MediaDetailsContent(
+            state = state,
+            onPlayClicked = {},
+            onBackClicked = {}
+        )
     }
 }

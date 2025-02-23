@@ -14,7 +14,9 @@ data class MediaAttributes(
 )
 
 data class MediaDetailsUiModel(
+    val mediaId: String,
     val synopsis: String?,
     val primaryImageUrl: String,
-    val mediaAttributes: MediaAttributes
+    val mediaAttributes: MediaAttributes,
+    val mediaPath: String
 )

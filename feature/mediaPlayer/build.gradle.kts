@@ -1,43 +1,28 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.jellydroid.android.feature)
+    alias(libs.plugins.jellydroid.android.library.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "me.cniekirk.jellydroid.feature.mediaplayer"
-    compileSdk = 35
 
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
 }
 
 dependencies {
+    implementation(projects.core.analytics)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.junit.ext)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.hls)
+    implementation(libs.androidx.media3.ui)
 }

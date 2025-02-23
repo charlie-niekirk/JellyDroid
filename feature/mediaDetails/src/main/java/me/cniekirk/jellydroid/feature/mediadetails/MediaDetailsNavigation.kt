@@ -16,6 +16,7 @@ data class MediaDetails(
 )
 
 fun NavGraphBuilder.mediaDetails(
+    onPlayClicked: (String) -> Unit,
     onBackClicked: () -> Unit
 ) {
     composable<MediaDetails>(
@@ -25,6 +26,7 @@ fun NavGraphBuilder.mediaDetails(
         val viewModel = hiltViewModel<MediaDetailsViewModel>()
         MediaDetailsScreen(
             viewModel = viewModel,
+            onPlayClicked = { onPlayClicked(it) },
             onBackClicked = { onBackClicked() }
         )
     }

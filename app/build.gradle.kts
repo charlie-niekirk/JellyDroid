@@ -64,6 +64,7 @@ dependencies {
     api(projects.feature.onboarding)
     api(projects.feature.home)
     implementation(projects.feature.mediaDetails)
+    implementation(projects.feature.mediaPlayer)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

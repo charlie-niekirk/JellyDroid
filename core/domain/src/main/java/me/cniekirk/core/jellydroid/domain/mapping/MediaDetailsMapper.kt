@@ -17,6 +17,7 @@ class MediaDetailsMapper @Inject constructor() {
         } ?: CommunityRating.NoRating
 
         return MediaDetailsUiModel(
+            mediaId = dataModel.id.toString(),
             synopsis = dataModel.overview,
             primaryImageUrl = "$baseUrl/Items/${dataModel.id}/Images/Backdrop",
             mediaAttributes = MediaAttributes(
@@ -28,7 +29,8 @@ class MediaDetailsMapper @Inject constructor() {
                     )
                 },
                 runtime = dataModel.runTimeTicks?.toRuntime()
-            )
+            ),
+            mediaPath = baseUrl + dataModel.path
         )
     }
 

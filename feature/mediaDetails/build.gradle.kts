@@ -23,6 +23,5 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.immutable)
     implementation(libs.coil.compose)
-    implementation(libs.immutable)
     implementation(libs.haze)
 }

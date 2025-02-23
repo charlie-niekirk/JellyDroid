@@ -44,6 +44,7 @@ fun TopBarPage(
                     Text(
                         modifier = Modifier.padding(end = 16.dp),
                         text = topBarTitle,
+                        maxLines = 1,
                         style = MaterialTheme.typography.titleLarge,
                         overflow = TextOverflow.Ellipsis
                     )

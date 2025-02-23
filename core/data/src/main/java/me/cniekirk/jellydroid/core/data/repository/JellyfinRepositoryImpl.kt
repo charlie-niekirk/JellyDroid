@@ -32,11 +32,16 @@ import org.jellyfin.sdk.api.client.exception.MissingBaseUrlException
 import org.jellyfin.sdk.api.client.exception.MissingPathVariableException
 import org.jellyfin.sdk.api.client.exception.SecureConnectionException
 import org.jellyfin.sdk.api.client.exception.TimeoutException
+import org.jellyfin.sdk.api.client.extensions.dynamicHlsApi
 import org.jellyfin.sdk.api.client.extensions.itemLookupApi
+import org.jellyfin.sdk.api.client.extensions.itemUpdateApi
 import org.jellyfin.sdk.api.client.extensions.itemsApi
+import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
+import org.jellyfin.sdk.api.client.extensions.playlistsApi
 import org.jellyfin.sdk.api.client.extensions.userApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.client.extensions.userViewsApi
+import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.sockets.exception.SocketException
 import org.jellyfin.sdk.api.sockets.exception.SocketStoppedException
 import org.jellyfin.sdk.discovery.RecommendedServerInfo
@@ -45,7 +50,22 @@ import org.jellyfin.sdk.model.UUID
 import org.jellyfin.sdk.model.api.AuthenticateUserByName
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
+import org.jellyfin.sdk.model.api.CodecProfile
+import org.jellyfin.sdk.model.api.CodecType
+import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.DirectPlayProfile
+import org.jellyfin.sdk.model.api.DlnaProfileType
+import org.jellyfin.sdk.model.api.EncodingContext
+import org.jellyfin.sdk.model.api.MediaStreamProtocol
+import org.jellyfin.sdk.model.api.PlaybackInfoDto
+import org.jellyfin.sdk.model.api.ProfileCondition
+import org.jellyfin.sdk.model.api.ProfileConditionType
+import org.jellyfin.sdk.model.api.ProfileConditionValue
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
+import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
+import org.jellyfin.sdk.model.api.SubtitleProfile
+import org.jellyfin.sdk.model.api.TranscodingProfile
+import org.jellyfin.sdk.model.deviceprofile.DirectPlayProfileBuilder
 import org.jellyfin.sdk.model.serializer.toUUID
 import timber.log.Timber
 import javax.inject.Inject
@@ -208,6 +228,205 @@ class JellyfinRepositoryImpl @Inject constructor(
                 limit = 12,
                 includeItemTypes = listOf(BaseItemKind.MOVIE)
             ).content.items ?: listOf()
+        }
+    }
+
+    override suspend fun getPlaybackInfo(
+        mediaSourceId: String,
+        startTimeTicks: Int,
+        audioStreamIndex: Int,
+        subtitleStreamIndex: Int,
+        maxStreamingBitrate: Int
+    ): Result<String, NetworkError> {
+        return safeApiCall {
+            val response = apiClient.mediaInfoApi.getPostedPlaybackInfo(
+                itemId = mediaSourceId.toUUID(),
+                data = PlaybackInfoDto(
+                    userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                    startTimeTicks = startTimeTicks.toLong(),
+                    maxStreamingBitrate = maxStreamingBitrate,
+                    deviceProfile = DeviceProfile(
+                        name = "Direct play all",
+                        maxStaticBitrate = 1_000_000_000,
+                        maxStreamingBitrate = 1_000_000_000,
+                        codecProfiles = listOf(
+                            CodecProfile(
+                                type = CodecType.VIDEO_AUDIO,
+                                codec = "aac",
+                                conditions = listOf(
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.EQUALS,
+                                        property = ProfileConditionValue.IS_SECONDARY_AUDIO,
+                                        value = "false",
+                                        isRequired = false
+                                    )
+                                ),
+                                applyConditions = listOf()
+                            ),
+                            CodecProfile(
+                                type = CodecType.VIDEO_AUDIO,
+                                conditions = listOf(
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.EQUALS,
+                                        property = ProfileConditionValue.IS_SECONDARY_AUDIO,
+                                        value = "false",
+                                        isRequired = false
+                                    )
+                                ),
+                                applyConditions = listOf()
+                            ),
+                            CodecProfile(
+                                type = CodecType.VIDEO,
+                                codec = "h264",
+                                conditions = listOf(
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.NOT_EQUALS,
+                                        property = ProfileConditionValue.IS_ANAMORPHIC,
+                                        value = "true",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.EQUALS_ANY,
+                                        property = ProfileConditionValue.VIDEO_PROFILE,
+                                        value = "main|baseline",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.EQUALS_ANY,
+                                        property = ProfileConditionValue.VIDEO_RANGE_TYPE,
+                                        value = "SDR",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.LESS_THAN_EQUAL,
+                                        property = ProfileConditionValue.VIDEO_LEVEL,
+                                        value = "52",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.NOT_EQUALS,
+                                        property = ProfileConditionValue.IS_INTERLACED,
+                                        value = "true",
+                                        isRequired = false
+                                    ),
+                                ),
+                                applyConditions = listOf()
+                            ),
+                            CodecProfile(
+                                type = CodecType.VIDEO,
+                                codec = "hevc",
+                                conditions = listOf(
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.NOT_EQUALS,
+                                        property = ProfileConditionValue.IS_ANAMORPHIC,
+                                        value = "true",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.EQUALS_ANY,
+                                        property = ProfileConditionValue.VIDEO_PROFILE,
+                                        value = "main|main 10",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.EQUALS_ANY,
+                                        property = ProfileConditionValue.VIDEO_RANGE_TYPE,
+                                        value = "SDR|HDR10|HLG",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.LESS_THAN_EQUAL,
+                                        property = ProfileConditionValue.VIDEO_LEVEL,
+                                        value = "183",
+                                        isRequired = false
+                                    ),
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.NOT_EQUALS,
+                                        property = ProfileConditionValue.IS_INTERLACED,
+                                        value = "true",
+                                        isRequired = false
+                                    ),
+                                ),
+                                applyConditions = listOf()
+                            ),
+                            CodecProfile(
+                                type = CodecType.VIDEO,
+                                codec = "vp9",
+                                conditions = listOf(
+                                    ProfileCondition(
+                                        condition = ProfileConditionType.EQUALS_ANY,
+                                        property = ProfileConditionValue.VIDEO_RANGE_TYPE,
+                                        value = "SDR",
+                                        isRequired = false
+                                    )
+                                ),
+                                applyConditions = listOf()
+                            ),
+                        ),
+                        containerProfiles = emptyList(),
+                        directPlayProfiles = listOf(
+                            DirectPlayProfile(
+                                container = "mp4",
+                                type = DlnaProfileType.VIDEO,
+                                audioCodec = "aac,flac,mp3,vorbis",
+                                videoCodec = "hevc,h264,h263",
+                            ),
+                            DirectPlayProfile(
+                                container = "mkv",
+                                type = DlnaProfileType.VIDEO,
+                                audioCodec = "mp3,vorbis,opus",
+                                videoCodec = "hevc,h264,h263,vp8,vp9",
+                            ),
+                            DirectPlayProfile(
+                                container = "m4a",
+                                type = DlnaProfileType.AUDIO,
+                                audioCodec = "aac,flac,mp3,vorbis"
+                            ),
+                            DirectPlayProfile(
+                                container = "hls",
+                                type = DlnaProfileType.VIDEO,
+                                audioCodec = "aac,flac",
+                                videoCodec = "hevc,h264",
+                            ),
+                        ),
+                        transcodingProfiles = listOf(
+                            TranscodingProfile(
+                                container = "mp4",
+                                type = DlnaProfileType.VIDEO,
+                                audioCodec = "aac,flac,mp3,vorbis",
+                                videoCodec = "hevc,h264,h263",
+                                context = EncodingContext.STREAMING,
+                                protocol = MediaStreamProtocol.HLS,
+                                maxAudioChannels = "2",
+                                minSegments = 1,
+                                breakOnNonKeyFrames = true,
+                                conditions = emptyList()
+                            )
+                        ),
+                        subtitleProfiles = listOf(
+                            SubtitleProfile("srt", SubtitleDeliveryMethod.EXTERNAL),
+                            SubtitleProfile("ass", SubtitleDeliveryMethod.EXTERNAL),
+                            SubtitleProfile("vtt", SubtitleDeliveryMethod.EXTERNAL),
+                            SubtitleProfile("ssa", SubtitleDeliveryMethod.EXTERNAL)
+                        ),
+
+                    ),
+                )
+            ).content
+
+            Timber.d("Response: $response")
+
+            apiClient.baseUrl + response.mediaSources.first().transcodingUrl
+        }
+    }
+
+    override suspend fun getStreamUrl(mediaSourceId: String): Result<String, NetworkError> {
+        return safeApiCall {
+            apiClient.videosApi.getVideoStreamUrl(
+                itemId = mediaSourceId.toUUID(),
+                static = true,
+                mediaSourceId = mediaSourceId
+            )
         }
     }
 
