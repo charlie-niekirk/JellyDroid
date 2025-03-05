@@ -23,6 +23,7 @@ dependencies {
     compileOnly(libs.firebase.crashlytics.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -66,6 +67,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "jellydroid.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
+        }
+        register("androidDetekt") {
+            id = "jellydroid.android.detekt"
+            implementationClass = "AndroidDetektConventionPlugin"
         }
         register("jvmLibrary") {
             id = "jellydroid.jvm.library"

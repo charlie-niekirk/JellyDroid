@@ -16,13 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
 
+const val IN_DURATION = 220
+const val OUT_DURATION = 90
+
 @Composable
 fun LoadableScreen(modifier: Modifier = Modifier, isLoading: Boolean, content: @Composable () -> Unit) {
     AnimatedContent(
         targetState = isLoading,
         transitionSpec = {
-            (fadeIn(animationSpec = tween(220, delayMillis = 90))
-                .togetherWith(fadeOut(animationSpec = tween(90))))
+            fadeIn(animationSpec = tween(IN_DURATION, delayMillis = OUT_DURATION))
+                .togetherWith(fadeOut(animationSpec = tween(OUT_DURATION)))
         },
         label = "Loading"
     ) { loading ->
@@ -45,9 +48,7 @@ fun LoadableScreen(modifier: Modifier = Modifier, isLoading: Boolean, content: @
 private fun LoadingScreenPreview() {
     JellyDroidTheme {
         Surface {
-            LoadableScreen(isLoading = true) {
-
-            }
+            LoadableScreen(isLoading = true, content = {})
         }
     }
 }

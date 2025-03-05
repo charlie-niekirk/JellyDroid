@@ -35,7 +35,7 @@ class GetMediaDetailsUseCaseImplTest {
     }
 
     @Test
-    fun `when invoked and success returned from repository then verify data mapped to ui model with success`() = runTest {
+    fun `when invoked and success returned then verify data mapped to ui model with success`() = runTest {
         // Given
         coEvery { jellyfinRepository.getMediaDetails(any()) } returns Ok(baseItemDto)
         every { mediaDetailsMapper.toUiModel(any()) } returns successMediaDetails
@@ -49,7 +49,7 @@ class GetMediaDetailsUseCaseImplTest {
     }
 
     @Test
-    fun `when invoked and error returned from repository then verify data not mapped with error`() = runTest {
+    fun `when invoked and error returned then verify data not mapped with error`() = runTest {
         // Given
         coEvery { jellyfinRepository.getMediaDetails(any()) } returns unknownError
 

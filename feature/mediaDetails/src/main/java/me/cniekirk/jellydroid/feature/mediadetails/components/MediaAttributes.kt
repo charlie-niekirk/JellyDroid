@@ -93,11 +93,13 @@ private fun Attribute(
     }
 }
 
+const val PREVIEW_STAR_RATING = 7.6f
+
 @Preview
 @Composable
 private fun MediaAttributesPreview() {
     val mediaAttributes = MediaAttributes(
-        communityRating = CommunityRating.StarRating(7.6f),
+        communityRating = CommunityRating.StarRating(PREVIEW_STAR_RATING),
         ageRating = AgeRating(
             ratingName = "12A",
             ratingImageUrl = null,

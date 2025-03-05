@@ -7,11 +7,6 @@ import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopExit
 
-@Serializable
-data class MediaPlayer(
-    val mediaId: String
-)
-
 fun NavGraphBuilder.mediaPlayer(onBackClicked: () -> Unit) {
     composable<MediaPlayer>(
         enterTransition = { activityDefaultEnter() },
@@ -24,3 +19,8 @@ fun NavGraphBuilder.mediaPlayer(onBackClicked: () -> Unit) {
         )
     }
 }
+
+@Serializable
+data class MediaPlayer(
+    val mediaId: String
+)

@@ -20,7 +20,6 @@ import me.cniekirk.jellydroid.core.database.dao.UserDao
 import me.cniekirk.jellydroid.core.database.entity.Server
 import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.model.LatestItem
-import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import org.jellyfin.sdk.Jellyfin
@@ -32,12 +31,8 @@ import org.jellyfin.sdk.api.client.exception.MissingBaseUrlException
 import org.jellyfin.sdk.api.client.exception.MissingPathVariableException
 import org.jellyfin.sdk.api.client.exception.SecureConnectionException
 import org.jellyfin.sdk.api.client.exception.TimeoutException
-import org.jellyfin.sdk.api.client.extensions.dynamicHlsApi
-import org.jellyfin.sdk.api.client.extensions.itemLookupApi
-import org.jellyfin.sdk.api.client.extensions.itemUpdateApi
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
-import org.jellyfin.sdk.api.client.extensions.playlistsApi
 import org.jellyfin.sdk.api.client.extensions.userApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.client.extensions.userViewsApi
@@ -65,11 +60,11 @@ import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.jellyfin.sdk.model.api.SubtitleProfile
 import org.jellyfin.sdk.model.api.TranscodingProfile
-import org.jellyfin.sdk.model.deviceprofile.DirectPlayProfileBuilder
 import org.jellyfin.sdk.model.serializer.toUUID
 import timber.log.Timber
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class JellyfinRepositoryImpl @Inject constructor(
     private val jellyfin: Jellyfin,
     private val apiClient: ApiClient,
@@ -231,6 +226,7 @@ class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
+    @Suppress("LongMethod")
     override suspend fun getPlaybackInfo(
         mediaSourceId: String,
         startTimeTicks: Int,
@@ -438,7 +434,10 @@ class JellyfinRepositoryImpl @Inject constructor(
             when (throwable) {
                 is ApiClientException -> {
                     when (throwable) {
-                        is SocketStoppedException, is SocketException, is SecureConnectionException, is TimeoutException -> {
+                        is SocketStoppedException,
+                        is SocketException,
+                        is SecureConnectionException,
+                        is TimeoutException -> {
                             NetworkError.ConnectionError
                         }
                         is MissingPathVariableException, is MissingBaseUrlException -> {

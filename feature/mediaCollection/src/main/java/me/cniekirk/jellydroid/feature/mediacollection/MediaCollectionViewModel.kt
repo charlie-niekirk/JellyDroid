@@ -15,9 +15,9 @@ class MediaCollectionViewModel @Inject constructor(
 
     private val args = savedStateHandle.toRoute<MediaCollection>()
 
-    override val container = container<MediaCollectionState, MediaCollectionEffect>(MediaCollectionState(args.collectionName)) {
+    override val container = container<MediaCollectionState, MediaCollectionEffect>(
+        MediaCollectionState(collectionName = args.collectionName)
+    ) {
         // TODO: Load media collection
     }
-
-
 }

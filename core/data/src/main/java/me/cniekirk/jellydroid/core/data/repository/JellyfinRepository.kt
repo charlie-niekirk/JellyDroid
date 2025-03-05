@@ -1,17 +1,16 @@
 package me.cniekirk.jellydroid.core.data.repository
 
-import androidx.annotation.StringRes
 import com.github.michaelbull.result.Result
 import kotlinx.coroutines.flow.Flow
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.model.LatestItem
-import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
 
+@Suppress("TooManyFunctions")
 interface JellyfinRepository {
 
     suspend fun discoverServers(): Flow<ServerDiscoveryInfo>

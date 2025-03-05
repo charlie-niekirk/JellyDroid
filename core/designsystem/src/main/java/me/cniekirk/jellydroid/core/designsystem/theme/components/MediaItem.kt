@@ -20,6 +20,8 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
+const val ASPECT_RATIO = 2 / 3f
+
 @Composable
 fun MediaItem(
     name: String,
@@ -38,7 +40,7 @@ fun MediaItem(
         AsyncImage(
             modifier = modifier
                 .weight(1f)
-                .aspectRatio(2 / 3f)
+                .aspectRatio(ASPECT_RATIO)
                 .clip(RoundedCornerShape(8.dp)),
             model = ImageRequest.Builder(context)
                 .data(imageUrl)

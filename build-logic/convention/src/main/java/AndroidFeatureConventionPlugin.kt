@@ -21,13 +21,13 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 //            }
 
             dependencies {
-//                add("implementation", project(":core:model"))
+                add("implementation", project(":core:model"))
 //                add("implementation", project(":core:ui"))
-//                add("implementation", project(":core:designsystem"))
+                add("implementation", project(":core:designsystem"))
                 add("implementation", project(":core:data"))
-//                add("implementation", project(":core:common"))
-//                add("implementation", project(":core:domain"))
-//                add("implementation", project(":core:analytics"))
+                add("implementation", project(":core:common"))
+                add("implementation", project(":core:domain"))
+                add("implementation", project(":core:analytics"))
 
                 add("testImplementation", kotlin("test"))
                 add("testImplementation", project(":core:test"))
@@ -50,8 +50,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("testImplementation", libs.findLibrary("androidx.navigation.testing").get())
                 add("testImplementation", libs.findLibrary("androidx.junit.ext").get())
                 add("testImplementation", libs.findLibrary("robolectric").get())
-//                add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
-//                add("implementation", libs.findLibrary("kotlinx.coroutines.android").get())
             }
         }
     }

@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import coil3.compose.LocalPlatformContext
@@ -89,6 +88,9 @@ private fun MediaDetailsContent(
     }
 }
 
+const val THREE_BY_TWO_ASPECT_RATIO = 3f / 2f
+const val MIDDLE_GRADIENT = 0.8f
+
 @Composable
 private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () -> Unit) {
     val context = LocalPlatformContext.current
@@ -101,12 +103,12 @@ private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(3f / 2f)
+                .aspectRatio(THREE_BY_TWO_ASPECT_RATIO)
         ) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(3f / 2f),
+                    .aspectRatio(THREE_BY_TWO_ASPECT_RATIO),
                 painter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
                         .data(mediaDetailsUiModel.primaryImageUrl)
@@ -120,7 +122,7 @@ private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () 
 
             val colorStops = arrayOf(
                 0.0f to Color.Transparent,
-                0.8f to Color.Transparent,
+                MIDDLE_GRADIENT to Color.Transparent,
                 1.0f to MaterialTheme.colorScheme.background
             )
             val brush = Brush.verticalGradient(colorStops = colorStops)
@@ -128,7 +130,7 @@ private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () 
             Canvas(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(3f / 2f),
+                    .aspectRatio(THREE_BY_TWO_ASPECT_RATIO),
                 onDraw = { drawRect(brush = brush) }
             )
         }
@@ -158,23 +160,26 @@ private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () 
     }
 }
 
+const val PREVIEW_STAR_RATING = 7.6f
+const val PREVIEW_LOREM_IPSUM_LENGTH = 27
+
 @PreviewLightDark
 @Composable
-private fun MediaDetailsContentPreview(@PreviewParameter(LoremIpsum::class) words: String) {
+private fun MediaDetailsContentPreview() {
     val title = "Inception"
     val state = MediaDetailsState(
         isLoading = false,
         mediaTitle = title,
         mediaDetailsUiModel = MediaDetailsUiModel(
             mediaId = "1",
-            synopsis = LoremIpsum(27).values.toList().first().toString(),
+            synopsis = LoremIpsum(PREVIEW_LOREM_IPSUM_LENGTH).values.toList().first().toString(),
             primaryImageUrl = "",
             mediaAttributes = MediaAttributes(
                 ageRating = AgeRating(
                     ratingName = "12A",
                     ratingImageUrl = null
                 ),
-                communityRating = CommunityRating.StarRating(7.6f),
+                communityRating = CommunityRating.StarRating(PREVIEW_STAR_RATING),
                 runtime = "1h 32m",
             ),
             mediaPath = ""

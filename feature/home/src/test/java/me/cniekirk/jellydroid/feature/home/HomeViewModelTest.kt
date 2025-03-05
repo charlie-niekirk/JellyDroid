@@ -12,6 +12,7 @@ import me.cniekirk.core.jellydroid.domain.usecase.GetHomeStructureUseCase
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.feature.home.mobile.HomeEffect
+import me.cniekirk.jellydroid.feature.home.mobile.HomeViewModel
 import org.junit.Before
 import org.junit.Test
 import org.orbitmvi.orbit.test.test
@@ -28,7 +29,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when initialised and getHomeStructureUseCase returns success then verify state mutated correctly`() = runTest {
+    fun `when initialised and getHomeStructureUseCase returns success then verify state`() = runTest {
         // Given
         coEvery { getHomeStructureUseCase.invoke() } returns Ok(expectedHomeStructure)
 
@@ -53,7 +54,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when initialised and getHomeStructureUseCase returns error then verify ShowError effect posted correctly`() = runTest {
+    fun `when initialised and getHomeStructureUseCase returns error then verify ShowError effect`() = runTest {
         // Given
         coEvery { getHomeStructureUseCase.invoke() } returns Err(expectedError)
 

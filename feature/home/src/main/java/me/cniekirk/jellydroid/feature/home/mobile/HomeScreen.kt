@@ -25,7 +25,6 @@ import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
-import me.cniekirk.jellydroid.feature.home.HomeViewModel
 import me.cniekirk.jellydroid.feature.home.R
 import me.cniekirk.jellydroid.feature.home.mobile.components.LatestMediaItems
 import me.cniekirk.jellydroid.feature.home.mobile.components.ResumeItems
@@ -44,15 +43,12 @@ internal fun HomeRoute(
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is HomeEffect.ShowError -> {
-                
-            }
+            is HomeEffect.ShowError -> {}
         }
     }
 
     HomeScreen(
         state = state.value,
-        onQueryChange = viewModel::queryChanged,
         onUserViewClicked = { onUserViewClicked(it) },
         onResumeItemClicked = { onResumeItemClicked(it) },
         onMediaItemClicked = { id, name ->
@@ -65,7 +61,6 @@ internal fun HomeRoute(
 @Composable
 internal fun HomeScreen(
     state: HomeState,
-    onQueryChange: (String) -> Unit,
     onUserViewClicked: (String) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
@@ -138,6 +133,11 @@ internal fun HomeScreen(
     }
 }
 
+const val PREVIEW_ASPECT_RATIO = 1.7
+const val PREVIEW_PLAYED_PERCENTAGE = 44f
+
+// TODO: Refactor
+@Suppress("LongMethod")
 @PreviewLightDark
 @Composable
 private fun HomeScreenPreview() {
@@ -152,7 +152,7 @@ private fun HomeScreenPreview() {
                     "",
                     "",
                     "",
-                    1.7
+                    PREVIEW_ASPECT_RATIO
                 ),
                 UserView(
                     "",
@@ -161,7 +161,7 @@ private fun HomeScreenPreview() {
                     "",
                     "",
                     "",
-                    1.7
+                    PREVIEW_ASPECT_RATIO
                 )
             ),
             resumeItems = persistentListOf(
@@ -169,22 +169,22 @@ private fun HomeScreenPreview() {
                     "",
                     "Lord of the Rings: Return of the King",
                     "",
-                    1.7,
-                    44f
+                    PREVIEW_ASPECT_RATIO,
+                    PREVIEW_PLAYED_PERCENTAGE
                 ),
                 ResumeItem(
                     "",
                     "Interstellar",
                     "",
-                    1.7,
-                    20f
+                    PREVIEW_ASPECT_RATIO,
+                    PREVIEW_PLAYED_PERCENTAGE
                 ),
                 ResumeItem(
                     "",
                     "Inception",
                     "",
-                    1.7,
-                    80f
+                    PREVIEW_ASPECT_RATIO,
+                    PREVIEW_PLAYED_PERCENTAGE
                 )
             ),
             latestMovies = persistentListOf(
@@ -225,7 +225,6 @@ private fun HomeScreenPreview() {
 
         HomeScreen(
             state = state,
-            onQueryChange = {},
             onUserViewClicked = {},
             onResumeItemClicked = {},
             onMediaItemClicked = { _, _ -> }

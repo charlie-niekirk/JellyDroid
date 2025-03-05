@@ -12,5 +12,7 @@ import me.cniekirk.jellydroid.feature.mediaplayer.usecase.GetPlaybackInfoUseCase
 abstract class MediaPlayerModule {
 
     @Binds
-    abstract fun bindGetPlaybackInfoUseCase(getPlaybackInfoUseCaseImpl: GetPlaybackInfoUseCaseImpl): GetPlaybackInfoUseCase
+    abstract fun bindGetPlaybackInfoUseCase(
+        getPlaybackInfoUseCaseImpl: GetPlaybackInfoUseCaseImpl
+    ): GetPlaybackInfoUseCase
 }

@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.feature.home
+package me.cniekirk.jellydroid.feature.home.mobile
 
 import androidx.lifecycle.ViewModel
 import com.github.michaelbull.result.onFailure
@@ -6,8 +6,6 @@ import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import me.cniekirk.core.jellydroid.domain.usecase.GetHomeStructureUseCase
-import me.cniekirk.jellydroid.feature.home.mobile.HomeEffect
-import me.cniekirk.jellydroid.feature.home.mobile.HomeState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
@@ -39,11 +37,5 @@ internal class HomeViewModel @Inject constructor(
                 Timber.e("Error: $error")
                 postSideEffect(HomeEffect.ShowError(error))
             }
-    }
-
-    fun queryChanged(query: String) = blockingIntent {
-        reduce {
-            state.copy(searchQuery = query)
-        }
     }
 }

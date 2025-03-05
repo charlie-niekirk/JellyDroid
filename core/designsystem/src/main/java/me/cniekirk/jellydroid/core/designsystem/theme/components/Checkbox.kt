@@ -41,7 +41,8 @@ private fun CheckboxItemPreview() {
         Surface {
             CheckboxItem(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Here is some very long checkbox text to see what multiline behaviour looks like and here is some more text again",
+                text = "Here is some very long checkbox text to see what multiline behaviour " +
+                    "looks like and here is some more text again",
                 checked = true,
                 onCheckedChanged = {}
             )

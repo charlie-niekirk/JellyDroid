@@ -1,6 +1,5 @@
 package me.cniekirk.jellydroid.feature.mediacollection
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -9,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
-import me.cniekirk.jellydroid.core.designsystem.theme.components.MediaItem
 import me.cniekirk.jellydroid.core.designsystem.theme.components.TopBarPage
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -20,9 +18,7 @@ internal fun MediaCollectionRoute(viewModel: MediaCollectionViewModel) {
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            else -> {
-
-            }
+            else -> {}
         }
     }
 
@@ -48,11 +44,7 @@ private fun MediaCollectionScreen(
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Adaptive(128.dp)
-            ) {
-                MediaItem(
-
-                )
-            }
+            ) {}
         }
     }
 }

@@ -12,5 +12,7 @@ import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
 abstract class RepositoryBinding {
 
     @Binds
-    abstract fun bindAppPreferencesRepository(appPreferencesRepositoryImpl: AppPreferencesRepositoryImpl): AppPreferencesRepository
+    abstract fun bindAppPreferencesRepository(
+        appPreferencesRepositoryImpl: AppPreferencesRepositoryImpl
+    ): AppPreferencesRepository
 }

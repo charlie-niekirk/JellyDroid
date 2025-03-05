@@ -7,12 +7,6 @@ import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.core.designsystem.theme.enterAnimation
 import me.cniekirk.jellydroid.core.designsystem.theme.popExitAnimation
 
-@Serializable
-data class MediaCollection(
-    val collectionName: String,
-    val collectionId: String
-)
-
 fun NavGraphBuilder.mediaCollection() {
     composable<MediaCollection>(
         enterTransition = { enterAnimation() },
@@ -22,3 +16,9 @@ fun NavGraphBuilder.mediaCollection() {
         MediaCollectionRoute(viewModel)
     }
 }
+
+@Serializable
+data class MediaCollection(
+    val collectionName: String,
+    val collectionId: String
+)

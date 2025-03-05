@@ -1,10 +1,5 @@
 package me.cniekirk.jellydroid.feature.onboarding
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -23,27 +18,11 @@ import me.cniekirk.jellydroid.feature.onboarding.login.LoginViewModel
 import me.cniekirk.jellydroid.feature.onboarding.serverselection.ServerSelectionRoute
 import me.cniekirk.jellydroid.feature.onboarding.serverselection.ServerSelectionViewModel
 
-@Serializable
-data object Onboarding
-
-internal sealed interface OnboardingRoute {
-
-    @Serializable
-    data object Landing : OnboardingRoute
-
-    @Serializable
-    data object ServerSelection : OnboardingRoute
-
-    @Serializable
-    data class Login(val serverName: String) : OnboardingRoute
-}
-
 fun NavGraphBuilder.onboardingUserJourney(navHostController: NavHostController, navigateToHome: () -> Unit) {
     navigation<Onboarding>(
         startDestination = OnboardingRoute.Landing,
         exitTransition = { activityDefaultExit() }
     ) {
-
         composable<OnboardingRoute.Landing>(
             exitTransition = { exitAnimation() },
             popEnterTransition = { popEnterAnimation() }
@@ -80,4 +59,19 @@ fun NavGraphBuilder.onboardingUserJourney(navHostController: NavHostController, 
             }
         }
     }
+}
+
+@Serializable
+data object Onboarding
+
+internal sealed interface OnboardingRoute {
+
+    @Serializable
+    data object Landing : OnboardingRoute
+
+    @Serializable
+    data object ServerSelection : OnboardingRoute
+
+    @Serializable
+    data class Login(val serverName: String) : OnboardingRoute
 }

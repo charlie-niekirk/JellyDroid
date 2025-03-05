@@ -12,5 +12,7 @@ import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCaseImpl
 abstract class UseCaseModule {
 
     @Binds
-    abstract fun bindGetMediaDetailsUseCase(getMediaDetailsUseCaseImpl: GetMediaDetailsUseCaseImpl): GetMediaDetailsUseCase
+    abstract fun bindGetMediaDetailsUseCase(
+        getMediaDetailsUseCaseImpl: GetMediaDetailsUseCaseImpl
+    ): GetMediaDetailsUseCase
 }
