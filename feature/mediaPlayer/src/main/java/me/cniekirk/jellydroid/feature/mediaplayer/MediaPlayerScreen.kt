@@ -1,8 +1,10 @@
 package me.cniekirk.jellydroid.feature.mediaplayer
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
@@ -25,6 +27,7 @@ internal fun MediaPlayerScreen(
 
     MediaPlayerContent(
         state = state.value,
+        saveCurrentPosition = viewModel::saveCurrentPosition,
         onBackClicked = { onBackClicked() }
     )
 }
@@ -33,15 +36,22 @@ internal fun MediaPlayerScreen(
 @Composable
 private fun MediaPlayerContent(
     state: MediaPlayerState,
+    saveCurrentPosition: (Long) -> Unit,
     onBackClicked: () -> Unit
 ) {
     LoadableScreen(isLoading = state.isLoading) {
         val mediaUrl = state.mediaStreamUrl
         if (mediaUrl != null) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.background)
+            ) {
                 MediaPlayer(
                     modifier = Modifier.fillMaxSize(),
-                    mediaUrl = mediaUrl
+                    mediaUrl = mediaUrl,
+                    currentPosition = state.mediaPosition,
+                    saveCurrentPosition = { saveCurrentPosition(it) }
                 )
             }
         }

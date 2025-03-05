@@ -47,4 +47,12 @@ class MediaPlayerViewModel @Inject constructor(
             Timber.e(error.toString())
         }
     }
+
+    fun saveCurrentPosition(currentPosition: Long) = intent {
+        reduce {
+            state.copy(
+                mediaPosition = currentPosition
+            )
+        }
+    }
 }

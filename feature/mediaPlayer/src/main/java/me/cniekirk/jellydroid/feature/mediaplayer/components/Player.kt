@@ -25,7 +25,9 @@ import timber.log.Timber
 @Composable
 internal fun MediaPlayer(
     mediaUrl: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    currentPosition: Long? = null,
+    saveCurrentPosition: (Long) -> Unit = {}
 ) {
     Timber.d("Media URL: $mediaUrl")
     val context = LocalPlatformContext.current
@@ -37,18 +39,16 @@ internal fun MediaPlayer(
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             setMediaSource(hlsMediaSource)
+            currentPosition?.also { seekTo(it) }
             playWhenReady = true
             addAnalyticsListener(EventLogger())
             prepare()
         }
     }
 
-    LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) {
-        exoPlayer.currentPosition
-    }
-
     DisposableEffect(Unit) {
         onDispose {
+            saveCurrentPosition(exoPlayer.currentPosition)
             exoPlayer.release()
         }
     }
