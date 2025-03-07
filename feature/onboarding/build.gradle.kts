@@ -6,12 +6,6 @@ plugins {
 
 android {
     namespace = "me.cniekirk.jellydroid.feature.onboarding"
-
-    testOptions {
-        unitTests {
-            isReturnDefaultValues = true
-        }
-    }
 }
 
 dependencies {
@@ -19,8 +13,6 @@ dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.data)
 
-    implementation(libs.androidx.compose.foundation)
     implementation(libs.immutable)
     implementation(libs.coil.compose)
-    implementation(libs.immutable)
 }

@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
 class AndroidHiltConventionPlugin : Plugin<Project> {
+
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
@@ -17,8 +18,6 @@ class AndroidHiltConventionPlugin : Plugin<Project> {
                 "kspAndroidTest"(libs.findLibrary("hilt.compiler").get())
                 "kspTest"(libs.findLibrary("hilt.compiler").get())
             }
-
         }
     }
-
 }

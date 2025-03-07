@@ -6,12 +6,6 @@ plugins {
 
 android {
     namespace = "me.cniekirk.jellydroid.feature.home"
-
-    testOptions {
-        unitTests {
-            isReturnDefaultValues = true
-        }
-    }
 }
 
 dependencies {
@@ -20,7 +14,6 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.domain)
 
-    implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.tv.material)
     implementation(libs.immutable)
     implementation(libs.coil.compose)

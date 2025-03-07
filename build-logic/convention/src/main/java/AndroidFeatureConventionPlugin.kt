@@ -1,6 +1,8 @@
+import com.android.build.api.dsl.LibraryExtension
 import me.cniekirk.jellydroid.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
 
@@ -12,13 +14,15 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply("jellydroid.android.hilt")
                 apply("org.jetbrains.kotlin.plugin.serialization")
             }
-//            extensions.configure<LibraryExtension> {
-//                defaultConfig {
-//                    testInstrumentationRunner =
-//                        "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
-//                }
-//                configureGradleManagedDevices(this)
-//            }
+
+            extensions.configure<LibraryExtension> {
+                @Suppress("UnstableApiUsage")
+                testOptions {
+                    unitTests {
+                        isIncludeAndroidResources = true
+                    }
+                }
+            }
 
             dependencies {
                 add("implementation", project(":core:model"))
