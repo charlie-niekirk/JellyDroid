@@ -12,6 +12,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,8 +43,6 @@ fun LoginRoute(
 
     LoginScreen(
         state = state.value,
-        usernameTextChanged = viewModel::usernameTextChanged,
-        passwordTextChanged = viewModel::passwordTextChanged,
         loginClicked = viewModel::loginToServer,
         loginErrorDialogDismissed = viewModel::dismissLoginError,
         genericErrorDialogDismissed = viewModel::dismissGenericError
@@ -51,9 +53,7 @@ fun LoginRoute(
 fun LoginScreen(
     modifier: Modifier = Modifier,
     state: LoginState,
-    usernameTextChanged: (String) -> Unit,
-    passwordTextChanged: (String) -> Unit,
-    loginClicked: () -> Unit,
+    loginClicked: (String, String) -> Unit,
     loginErrorDialogDismissed: () -> Unit,
     genericErrorDialogDismissed: () -> Unit
 ) {
@@ -66,12 +66,15 @@ fun LoginScreen(
             style = MaterialTheme.typography.titleLarge,
         )
 
+        var usernameInput by remember { mutableStateOf("") }
+        var passwordInput by remember { mutableStateOf("") }
+
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 32.dp, end = 32.dp, top = 32.dp),
-            value = state.usernameText,
-            onValueChange = { text -> usernameTextChanged(text) },
+            value = usernameInput,
+            onValueChange = { usernameInput = it },
             label = { Text(stringResource(R.string.username)) },
         )
 
@@ -79,15 +82,15 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 32.dp, end = 32.dp, top = 8.dp),
-            value = state.passwordText,
-            onValueChange = { text -> passwordTextChanged(text) },
+            value = passwordInput,
+            onValueChange = { passwordInput = it },
             label = { Text(stringResource(R.string.password)) },
             visualTransformation = PasswordVisualTransformation()
         )
 
         Button(
             modifier = Modifier.padding(start = 32.dp, top = 16.dp),
-            onClick = { loginClicked() }
+            onClick = { loginClicked(usernameInput, passwordInput) }
         ) {
             Text(stringResource(R.string.login_button))
         }
@@ -139,9 +142,7 @@ private fun LoginScreenPreview() {
         Surface {
             LoginScreen(
                 state = LoginState("abcde123"),
-                usernameTextChanged = {},
-                passwordTextChanged = {},
-                loginClicked = {},
+                loginClicked = { _, _ -> },
                 loginErrorDialogDismissed = {},
                 genericErrorDialogDismissed = {}
             )
@@ -156,9 +157,7 @@ private fun LoginScreenWithLoginDialogPreview() {
         Surface {
             LoginScreen(
                 state = LoginState("abcde123", isLoginErrorDialogDisplayed = true),
-                usernameTextChanged = {},
-                passwordTextChanged = {},
-                loginClicked = {},
+                loginClicked = { _, _ -> },
                 loginErrorDialogDismissed = {},
                 genericErrorDialogDismissed = {}
             )
@@ -173,9 +172,7 @@ private fun LoginScreenWithGenericDialogPreview() {
         Surface {
             LoginScreen(
                 state = LoginState("abcde123", isGenericErrorDialogDisplayed = true),
-                usernameTextChanged = {},
-                passwordTextChanged = {},
-                loginClicked = {},
+                loginClicked = { _, _ -> },
                 loginErrorDialogDismissed = {},
                 genericErrorDialogDismissed = {}
             )

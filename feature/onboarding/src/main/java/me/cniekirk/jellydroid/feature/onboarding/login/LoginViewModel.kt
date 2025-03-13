@@ -7,7 +7,7 @@ import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.feature.onboarding.OnboardingRoute
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -16,27 +16,15 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val jellyfinRepository: JellyfinRepository
+    private val authenticationRepository: AuthenticationRepository
 ) : ViewModel(), ContainerHost<LoginState, LoginEffect> {
 
     private val args = savedStateHandle.toRoute<OnboardingRoute.Login>()
 
     override val container = container<LoginState, LoginEffect>(LoginState(serverName = args.serverName))
 
-    fun usernameTextChanged(username: String) = blockingIntent {
-        reduce {
-            state.copy(usernameText = username)
-        }
-    }
-
-    fun passwordTextChanged(password: String) = blockingIntent {
-        reduce {
-            state.copy(passwordText = password)
-        }
-    }
-
-    fun loginToServer() = intent {
-        jellyfinRepository.authenticateUser(state.usernameText, state.passwordText)
+    fun loginToServer(username: String, password: String) = intent {
+        authenticationRepository.authenticateUser(username, password)
             .onSuccess {
                 postSideEffect(LoginEffect.NavigateToHome)
             }

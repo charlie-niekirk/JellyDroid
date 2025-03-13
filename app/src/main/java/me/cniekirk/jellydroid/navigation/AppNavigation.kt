@@ -69,9 +69,7 @@ fun JellydroidNavHost(modifier: Modifier = Modifier, navHostController: NavHostC
             )
         }
 
-        mediaPlayer {
-            navHostController.popBackStack()
-        }
+        mediaPlayer()
     }
 }
 

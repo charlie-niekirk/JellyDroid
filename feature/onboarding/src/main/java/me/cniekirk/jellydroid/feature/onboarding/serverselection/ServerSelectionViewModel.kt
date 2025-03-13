@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepository
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ServerSelectionViewModel @Inject constructor(
-    private val jellyfinRepository: JellyfinRepository
+    private val authenticationRepository: AuthenticationRepository
 ) : ViewModel(), ContainerHost<ServerSelectionState, ServerSelectionEffect> {
 
     override val container = container<ServerSelectionState, ServerSelectionEffect>(ServerSelectionState())
@@ -27,7 +27,7 @@ class ServerSelectionViewModel @Inject constructor(
         reduce {
             state.copy(isLoading = true)
         }
-        jellyfinRepository.connectToServer(state.serverAddressText)
+        authenticationRepository.connectToServer(state.serverAddressText)
             .onSuccess { serverName ->
                 Timber.d("Server name: $serverName")
                 // Navigate to login
