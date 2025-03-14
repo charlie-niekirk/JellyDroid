@@ -1,9 +1,8 @@
 package me.cniekirk.jellydroid.feature.onboarding.serverselection
 
 data class ServerSelectionState(
-    val serverAddressText: String = "",
-    val serverErrorDialogDisplayed: Boolean = false,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val serverErrorDialogDisplayed: Boolean = false
 )
 
 sealed interface ServerSelectionEffect {

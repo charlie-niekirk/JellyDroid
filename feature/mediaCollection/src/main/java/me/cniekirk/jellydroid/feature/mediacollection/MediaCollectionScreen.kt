@@ -44,7 +44,9 @@ private fun MediaCollectionScreen(
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Adaptive(128.dp)
-            ) {}
+            ) {
+
+            }
         }
     }
 }

@@ -11,6 +11,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -44,8 +48,6 @@ fun LandingRoute(
 
     LandingScreen(
         state = state.value,
-        onAnalyticsCheckedChanged = viewModel::analyticsCheckedChanged,
-        onCrashlyticsCheckedChanged = viewModel::crashlyticsCheckedChanged,
         onContinueClicked = viewModel::onContinueButtonPressed
     )
 }
@@ -53,9 +55,7 @@ fun LandingRoute(
 @Composable
 fun LandingScreen(
     state: LandingState,
-    onAnalyticsCheckedChanged: (Boolean) -> Unit,
-    onCrashlyticsCheckedChanged: (Boolean) -> Unit,
-    onContinueClicked: () -> Unit
+    onContinueClicked: (Boolean, Boolean) -> Unit
 ) {
     if (!state.isLoading) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -82,14 +82,17 @@ fun LandingScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             HorizontalDivider(modifier = Modifier.padding(bottom = 16.dp))
+            
+            var analyticsChecked by remember { mutableStateOf(false) }
+            var crashlyticsChecked by remember { mutableStateOf(false) }
 
             CheckboxItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 text = stringResource(R.string.analytics_explanation),
-                checked = state.analyticsChecked,
-                onCheckedChanged = { onAnalyticsCheckedChanged(it) }
+                checked = analyticsChecked,
+                onCheckedChanged = { checked -> analyticsChecked = checked }
             )
 
             CheckboxItem(
@@ -97,15 +100,15 @@ fun LandingScreen(
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                 text = stringResource(R.string.crashlytics_explanation),
-                checked = state.crashlyticsChecked,
-                onCheckedChanged = { onCrashlyticsCheckedChanged(it) }
+                checked = crashlyticsChecked,
+                onCheckedChanged = { checked -> crashlyticsChecked = checked }
             )
 
             Button(
                 modifier = Modifier
                     .padding(bottom = 32.dp)
                     .align(Alignment.CenterHorizontally),
-                onClick = { onContinueClicked() }
+                onClick = { onContinueClicked(analyticsChecked, crashlyticsChecked) }
             ) {
                 Text(
                     text = stringResource(R.string.continue_button)
@@ -121,13 +124,8 @@ private fun LandingScreenPreview() {
     JellyDroidTheme {
         Surface {
             LandingScreen(
-                state = LandingState(
-                    analyticsChecked = true,
-                    crashlyticsChecked = false
-                ),
-                onAnalyticsCheckedChanged = {},
-                onCrashlyticsCheckedChanged = {},
-                onContinueClicked = {}
+                state = LandingState(),
+                onContinueClicked = { _,_ -> }
             )
         }
     }

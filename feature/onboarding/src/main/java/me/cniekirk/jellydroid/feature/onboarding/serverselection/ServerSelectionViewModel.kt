@@ -17,25 +17,18 @@ class ServerSelectionViewModel @Inject constructor(
 
     override val container = container<ServerSelectionState, ServerSelectionEffect>(ServerSelectionState())
 
-    fun serverAddressChanged(address: String) = blockingIntent {
-        reduce {
-            state.copy(serverAddressText = address)
-        }
-    }
-
-    fun connectToServer() = intent {
+    fun connectToServer(serverAddress: String) = intent {
         reduce {
             state.copy(isLoading = true)
         }
-        authenticationRepository.connectToServer(state.serverAddressText)
+        authenticationRepository.connectToServer(serverAddress)
             .onSuccess { serverName ->
-                Timber.d("Server name: $serverName")
                 // Navigate to login
                 postSideEffect(ServerSelectionEffect.NavigateToLogin(serverName))
             }
-            .onFailure {
+            .onFailure { error ->
                 // Couldn't connect
-                Timber.e("Error occurred: $it")
+                Timber.e("Error occurred while connecting to server: $error")
                 reduce {
                     state.copy(
                         isLoading = false,
@@ -45,7 +38,7 @@ class ServerSelectionViewModel @Inject constructor(
             }
     }
 
-    fun dismissDialog() = intent {
+    fun dismissErrorDialog() = intent {
         reduce {
             state.copy(serverErrorDialogDisplayed = false)
         }

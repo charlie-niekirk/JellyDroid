@@ -40,25 +40,9 @@ class LandingViewModel @Inject constructor(
         }
     }
 
-    fun analyticsCheckedChanged(checked: Boolean) = intent {
-        reduce {
-            state.copy(
-                analyticsChecked = checked
-            )
-        }
-    }
-
-    fun crashlyticsCheckedChanged(checked: Boolean) = intent {
-        reduce {
-            state.copy(
-                crashlyticsChecked = checked
-            )
-        }
-    }
-
-    fun onContinueButtonPressed() = intent {
-        analyticsRepository.setAnalyticsEnabled(state.analyticsChecked)
-        analyticsRepository.setCrashlyticsEnabled(state.crashlyticsChecked)
+    fun onContinueButtonPressed(analyticsChecked: Boolean, crashlyticsChecked: Boolean) = intent {
+        analyticsRepository.setAnalyticsEnabled(analyticsChecked)
+        analyticsRepository.setCrashlyticsEnabled(crashlyticsChecked)
         postSideEffect(LandingEffect.NavigateToServerSelection)
     }
 }

@@ -9,7 +9,7 @@ import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
 import javax.inject.Inject
 
-class GetMediaDetailsUseCaseImpl @Inject constructor(
+internal class GetMediaDetailsUseCaseImpl @Inject constructor(
     private val jellyfinRepository: JellyfinRepository,
     private val mediaDetailsMapper: MediaDetailsMapper
 ) : GetMediaDetailsUseCase {

@@ -1,5 +1,6 @@
 package me.cniekirk.jellydroid.feature.onboarding.serverselection
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,9 +44,8 @@ internal fun ServerSelectionRoute(
 
     ServerSelectionScreen(
         state = state.value,
-        onAddressChanged = viewModel::serverAddressChanged,
-        connectClicked = viewModel::connectToServer,
-        dismissErrorDialog = viewModel::dismissDialog
+        onConnectClicked = viewModel::connectToServer,
+        onDismissErrorDialog = viewModel::dismissErrorDialog
     )
 }
 
@@ -49,33 +53,39 @@ internal fun ServerSelectionRoute(
 private fun ServerSelectionScreen(
     modifier: Modifier = Modifier,
     state: ServerSelectionState,
-    onAddressChanged: (String) -> Unit,
-    connectClicked: () -> Unit,
-    dismissErrorDialog: () -> Unit
+    onConnectClicked: (String) -> Unit,
+    onDismissErrorDialog: () -> Unit
 ) {
     LoadableScreen(isLoading = state.isLoading) {
         Column(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
+                .padding(32.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                modifier = Modifier.padding(top = 32.dp, start = 32.dp),
                 text = stringResource(id = R.string.connect_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.headlineMedium,
             )
+
+            var serverAddress by remember { mutableStateOf("") }
 
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 32.dp, end = 32.dp, top = 32.dp),
-                value = state.serverAddressText,
-                onValueChange = { text -> onAddressChanged(text) },
+                    .fillMaxWidth(),
+                value = serverAddress,
+                onValueChange = { text -> serverAddress = text },
                 label = { Text(stringResource(R.string.server_address)) },
                 placeholder = { Text(stringResource(R.string.server_address_placeholder)) }
             )
 
             Button(
-                modifier = Modifier.padding(start = 32.dp, top = 16.dp),
-                onClick = { connectClicked() }
+                onClick = {
+                    if (serverAddress.isNotBlank()) {
+                        onConnectClicked(serverAddress)
+                    }
+                },
+                enabled = serverAddress.isNotBlank(),
             ) {
                 Text(stringResource(R.string.connect_button))
             }
@@ -84,7 +94,7 @@ private fun ServerSelectionScreen(
 
     if (state.serverErrorDialogDisplayed) {
         AlertDialog(
-            onDismissRequest = { dismissErrorDialog() },
+            onDismissRequest = { onDismissErrorDialog() },
             title = {
                 Text(stringResource(R.string.connect_dialog_title))
             },
@@ -93,7 +103,7 @@ private fun ServerSelectionScreen(
             },
             confirmButton = {
                 TextButton(
-                    onClick = { dismissErrorDialog() }
+                    onClick = { onDismissErrorDialog() }
                 ) {
                     Text(stringResource(R.string.dialog_ok))
                 }
@@ -109,9 +119,8 @@ private fun ServerSelectionScreenPreview() {
         Surface {
             ServerSelectionScreen(
                 state = ServerSelectionState(isLoading = false),
-                onAddressChanged = {},
-                connectClicked = {},
-                dismissErrorDialog = {}
+                onConnectClicked = {},
+                onDismissErrorDialog = {}
             )
         }
     }
@@ -124,9 +133,8 @@ private fun ServerSelectionScreenWithDialogPreview() {
         Surface {
             ServerSelectionScreen(
                 state = ServerSelectionState(isLoading = false, serverErrorDialogDisplayed = true),
-                onAddressChanged = {},
-                connectClicked = {},
-                dismissErrorDialog = {}
+                onConnectClicked = {},
+                onDismissErrorDialog = {}
             )
         }
     }

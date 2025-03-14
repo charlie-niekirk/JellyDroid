@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.feature.onboarding
+package me.cniekirk.jellydroid.feature.onboarding.login
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
@@ -8,9 +8,7 @@ import kotlinx.coroutines.test.runTest
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.core.test.SavedStateHandleRule
-import me.cniekirk.jellydroid.feature.onboarding.login.LoginEffect
-import me.cniekirk.jellydroid.feature.onboarding.login.LoginState
-import me.cniekirk.jellydroid.feature.onboarding.login.LoginViewModel
+import me.cniekirk.jellydroid.feature.onboarding.OnboardingRoute
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -54,79 +52,87 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `on AuthenticationError login failure then verify isLoginErrorDialogDisplayed set true`() = runTest {
-        // Given
-        coEvery {
-            authenticationRepository.authenticateUser(USERNAME, PASSWORD)
-        } returns Err(NetworkError.AuthenticationError)
+    fun `on AuthenticationError login failure then verify isLoginErrorDialogDisplayed set true`() =
+        runTest {
+            // Given
+            coEvery {
+                authenticationRepository.authenticateUser(USERNAME, PASSWORD)
+            } returns Err(NetworkError.AuthenticationError)
 
-        underTest.test(this) {
-            expectInitialState()
+            underTest.test(this) {
+                expectInitialState()
 
-            // When
-            underTest.loginToServer(USERNAME, PASSWORD)
+                // When
+                underTest.loginToServer(USERNAME, PASSWORD)
 
-            // Then
-            expectState { copy(isLoginErrorDialogDisplayed = true) }
+                // Then
+                expectState { copy(isLoginErrorDialogDisplayed = true) }
+            }
         }
-    }
 
     @Test
-    fun `on ClientConfigurationError login failure then verify isGenericErrorDialogDisplayed set true`() = runTest {
-        // Given
-        coEvery {
-            authenticationRepository.authenticateUser(USERNAME, PASSWORD)
-        } returns Err(NetworkError.ClientConfigurationError)
+    fun `on ClientConfigurationError login failure then verify isGenericErrorDialogDisplayed set true`() =
+        runTest {
+            // Given
+            coEvery {
+                authenticationRepository.authenticateUser(USERNAME, PASSWORD)
+            } returns Err(NetworkError.ClientConfigurationError)
 
-        underTest.test(this) {
-            expectInitialState()
+            underTest.test(this) {
+                expectInitialState()
 
-            // When
-            underTest.loginToServer(USERNAME, PASSWORD)
+                // When
+                underTest.loginToServer(USERNAME, PASSWORD)
 
-            // Then
-            expectState { copy(isGenericErrorDialogDisplayed = true) }
+                // Then
+                expectState { copy(isGenericErrorDialogDisplayed = true) }
+            }
         }
-    }
 
     @Test
-    fun `on ConnectionError login failure then verify isGenericErrorDialogDisplayed set true`() = runTest {
-        // Given
-        coEvery {
-            authenticationRepository.authenticateUser(USERNAME, PASSWORD)
-        } returns Err(NetworkError.ConnectionError)
+    fun `on ConnectionError login failure then verify isGenericErrorDialogDisplayed set true`() =
+        runTest {
+            // Given
+            coEvery {
+                authenticationRepository.authenticateUser(USERNAME, PASSWORD)
+            } returns Err(NetworkError.ConnectionError)
 
-        underTest.test(this) {
-            expectInitialState()
+            underTest.test(this) {
+                expectInitialState()
 
-            // When
-            underTest.loginToServer(USERNAME, PASSWORD)
+                // When
+                underTest.loginToServer(USERNAME, PASSWORD)
 
-            // Then
-            expectState { copy(isGenericErrorDialogDisplayed = true) }
+                // Then
+                expectState { copy(isGenericErrorDialogDisplayed = true) }
+            }
         }
-    }
 
     @Test
-    fun `on ServerError login failure then verify isGenericErrorDialogDisplayed set true`() = runTest {
-        // Given
-        coEvery { authenticationRepository.authenticateUser(USERNAME, PASSWORD) } returns Err(NetworkError.ServerError)
+    fun `on ServerError login failure then verify isGenericErrorDialogDisplayed set true`() =
+        runTest {
+            // Given
+            coEvery { authenticationRepository.authenticateUser(USERNAME, PASSWORD) } returns Err(
+                NetworkError.ServerError
+            )
 
-        underTest.test(this) {
-            expectInitialState()
+            underTest.test(this) {
+                expectInitialState()
 
-            // When
-            underTest.loginToServer(USERNAME, PASSWORD)
+                // When
+                underTest.loginToServer(USERNAME, PASSWORD)
 
-            // Then
-            expectState { copy(isGenericErrorDialogDisplayed = true) }
+                // Then
+                expectState { copy(isGenericErrorDialogDisplayed = true) }
+            }
         }
-    }
 
     @Test
     fun `on Unknown login failure then verify isGenericErrorDialogDisplayed set true`() = runTest {
         // Given
-        coEvery { authenticationRepository.authenticateUser(USERNAME, PASSWORD) } returns Err(NetworkError.Unknown)
+        coEvery { authenticationRepository.authenticateUser(USERNAME, PASSWORD) } returns Err(
+            NetworkError.Unknown
+        )
 
         underTest.test(this) {
             expectInitialState()
@@ -159,7 +165,10 @@ class LoginViewModelTest {
     fun `on dismissGenericError then verify isGenericErrorDialogDisplayed set false`() = runTest {
         underTest.test(
             testScope = this,
-            initialState = LoginState(serverName = SERVER_NAME, isGenericErrorDialogDisplayed = true)
+            initialState = LoginState(
+                serverName = SERVER_NAME,
+                isGenericErrorDialogDisplayed = true
+            )
         ) {
             expectInitialState()
 

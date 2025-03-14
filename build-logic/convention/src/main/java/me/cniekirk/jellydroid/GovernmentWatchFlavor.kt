@@ -17,7 +17,7 @@ enum class JellydroidFlavor(val dimension: FlavorDimension, val applicationIdSuf
 }
 
 fun configureFlavors(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
     flavorConfigurationBlock: ProductFlavor.(flavor: JellydroidFlavor) -> Unit = {}
 ) {
     commonExtension.apply {

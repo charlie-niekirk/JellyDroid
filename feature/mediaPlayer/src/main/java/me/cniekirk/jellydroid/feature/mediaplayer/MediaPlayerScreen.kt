@@ -55,26 +55,3 @@ private fun MediaPlayerContent(
         }
     }
 }
-
-// TopAppBar(
-// navigationIcon = {
-//     Icon(
-//         modifier = Modifier
-//             .clickable { onBackClicked() }
-//             .padding(
-//                 start = 16.dp,
-//                 end = 16.dp
-//             ),
-//         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-//         contentDescription = stringResource(R.string.back_button)
-//     )
-// },
-// title = {
-//     Text(
-//         modifier = Modifier.padding(end = 16.dp),
-//         text = state.title,
-//         style = MaterialTheme.typography.titleLarge,
-//         overflow = TextOverflow.Ellipsis
-//     )
-// }
-// )
