@@ -19,6 +19,6 @@ fun NavGraphBuilder.mediaCollection() {
 
 @Serializable
 data class MediaCollection(
-    val collectionName: String,
-    val collectionId: String
+    val collectionId: String,
+    val collectionName: String
 )

@@ -8,6 +8,8 @@ import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepositoryImpl
 import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
 import me.cniekirk.jellydroid.core.data.repository.JellyfinRepositoryImpl
+import me.cniekirk.jellydroid.core.data.repository.MediaRepository
+import me.cniekirk.jellydroid.core.data.repository.MediaRepositoryImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,4 +24,9 @@ internal abstract class RepositoryModule {
     abstract fun bindAuthenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
+
+    @Binds
+    abstract fun bindMoviesRepository(
+        moviesRepositoryImpl: MediaRepositoryImpl
+    ): MediaRepository
 }

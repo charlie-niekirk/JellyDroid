@@ -27,6 +27,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
+import me.cniekirk.jellydroid.core.model.MediaType
 import me.cniekirk.jellydroid.core.model.UserView
 import me.cniekirk.jellydroid.feature.home.R
 
@@ -34,7 +35,7 @@ import me.cniekirk.jellydroid.feature.home.R
 internal fun UserViews(
     modifier: Modifier = Modifier,
     userViews: ImmutableList<UserView>,
-    onUserViewClicked: (String) -> Unit
+    onUserViewClicked: (String, String) -> Unit
 ) {
     Column(modifier = modifier) {
         Text(
@@ -51,7 +52,7 @@ internal fun UserViews(
                 MediaView(
                     modifier = Modifier.width(212.dp),
                     userView = userView,
-                    onUserViewClicked = { onUserViewClicked(it) }
+                    onUserViewClicked = { onUserViewClicked(userView.id, userView.name) }
                 )
             }
         }
@@ -62,12 +63,12 @@ internal fun UserViews(
 internal fun MediaView(
     modifier: Modifier = Modifier,
     userView: UserView,
-    onUserViewClicked: (String) -> Unit
+    onUserViewClicked: () -> Unit
 ) {
     val context = LocalContext.current
 
     Column(
-        modifier = modifier.clickable { onUserViewClicked(userView.id) },
+        modifier = modifier.clickable { onUserViewClicked() },
     ) {
         Image(
             modifier = Modifier
@@ -103,7 +104,7 @@ private fun MediaViewPreview() {
         parentId = "0",
         name = "The Big Lebowski",
         path = "",
-        type = "",
+        type = MediaType.MOVIES,
         imageUrl = "",
         aspectRatio = (3f / 2f).toDouble()
     )

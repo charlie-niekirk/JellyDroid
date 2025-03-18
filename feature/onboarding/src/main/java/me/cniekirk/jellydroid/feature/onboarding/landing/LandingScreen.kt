@@ -82,7 +82,7 @@ fun LandingScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             HorizontalDivider(modifier = Modifier.padding(bottom = 16.dp))
-            
+
             var analyticsChecked by remember { mutableStateOf(false) }
             var crashlyticsChecked by remember { mutableStateOf(false) }
 
@@ -125,7 +125,7 @@ private fun LandingScreenPreview() {
         Surface {
             LandingScreen(
                 state = LandingState(),
-                onContinueClicked = { _,_ -> }
+                onContinueClicked = { _, _ -> }
             )
         }
     }

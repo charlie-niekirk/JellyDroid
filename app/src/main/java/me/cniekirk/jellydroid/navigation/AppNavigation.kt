@@ -36,14 +36,18 @@ import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultExit
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopEnter
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopExit
+import me.cniekirk.jellydroid.core.model.MediaType
 import me.cniekirk.jellydroid.feature.home.mobile.Home
 import me.cniekirk.jellydroid.feature.home.mobile.home
+import me.cniekirk.jellydroid.feature.mediacollection.CollectionType
+import me.cniekirk.jellydroid.feature.mediacollection.MediaCollection
 import me.cniekirk.jellydroid.feature.mediadetails.MediaDetails
 import me.cniekirk.jellydroid.feature.mediadetails.mediaDetails
 import me.cniekirk.jellydroid.feature.mediaplayer.MediaPlayer
 import me.cniekirk.jellydroid.feature.mediaplayer.mediaPlayer
 import me.cniekirk.jellydroid.feature.onboarding.Onboarding
 import me.cniekirk.jellydroid.feature.onboarding.onboardingUserJourney
+import timber.log.Timber
 
 @Composable
 fun JellydroidNavHost(modifier: Modifier = Modifier, navHostController: NavHostController) {
@@ -166,7 +170,9 @@ fun MainBottomBarNavigation(
     ) {
         NavHost(navController = navHostController, startDestination = bottomNavRoutes.first().route) {
             home(
-                onUserViewClicked = {},
+                onUserViewClicked = { id, name ->
+                    navHostController.navigate(MediaCollection(id, name))
+                },
                 onResumeItemClicked = {},
                 onMediaItemClicked = { id, name ->
                     navHostController.navigate(MediaDetails(id, name))

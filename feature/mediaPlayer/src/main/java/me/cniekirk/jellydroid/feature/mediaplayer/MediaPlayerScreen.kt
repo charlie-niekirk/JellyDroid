@@ -48,8 +48,8 @@ private fun MediaPlayerContent(
                 MediaPlayer(
                     modifier = Modifier.fillMaxSize(),
                     mediaUrl = mediaUrl,
-                    currentPosition = state.mediaPosition,
-                    saveCurrentPosition = { saveCurrentPosition(it) }
+                    initialPosition = state.mediaPosition ?: 0L,
+                    onPositionChanged = { saveCurrentPosition(it) }
                 )
             }
         }

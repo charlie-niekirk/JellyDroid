@@ -23,6 +23,7 @@ import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.LatestItem
+import me.cniekirk.jellydroid.core.model.MediaType
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import me.cniekirk.jellydroid.feature.home.R
@@ -35,7 +36,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 internal fun HomeRoute(
     viewModel: HomeViewModel,
-    onUserViewClicked: (String) -> Unit,
+    onUserViewClicked: (String, String) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
 ) {
@@ -49,7 +50,7 @@ internal fun HomeRoute(
 
     HomeScreen(
         state = state.value,
-        onUserViewClicked = { onUserViewClicked(it) },
+        onUserViewClicked = { id, name -> onUserViewClicked(id, name) },
         onResumeItemClicked = { onResumeItemClicked(it) },
         onMediaItemClicked = { id, name ->
             onMediaItemClicked(id, name)
@@ -61,7 +62,7 @@ internal fun HomeRoute(
 @Composable
 internal fun HomeScreen(
     state: HomeState,
-    onUserViewClicked: (String) -> Unit,
+    onUserViewClicked: (String, String) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
 ) {
@@ -95,7 +96,7 @@ internal fun HomeScreen(
                     UserViews(
                         modifier = Modifier.fillMaxWidth(),
                         userViews = state.userViews,
-                        onUserViewClicked = { onUserViewClicked(it) }
+                        onUserViewClicked = { id, name -> onUserViewClicked(id, name) }
                     )
                 }
 
@@ -150,7 +151,7 @@ private fun HomeScreenPreview() {
                     "",
                     "Movies",
                     "",
-                    "",
+                    MediaType.MOVIES,
                     "",
                     PREVIEW_ASPECT_RATIO
                 ),
@@ -159,7 +160,7 @@ private fun HomeScreenPreview() {
                     "",
                     "Shows",
                     "",
-                    "",
+                    MediaType.TV_SHOWS,
                     "",
                     PREVIEW_ASPECT_RATIO
                 )
@@ -225,7 +226,7 @@ private fun HomeScreenPreview() {
 
         HomeScreen(
             state = state,
-            onUserViewClicked = {},
+            onUserViewClicked = { _, _ -> },
             onResumeItemClicked = {},
             onMediaItemClicked = { _, _ -> }
         )

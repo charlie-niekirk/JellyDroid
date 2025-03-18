@@ -8,7 +8,7 @@ import me.cniekirk.jellydroid.core.designsystem.theme.exitAnimation
 import me.cniekirk.jellydroid.core.designsystem.theme.popEnterAnimation
 
 fun NavGraphBuilder.home(
-    onUserViewClicked: (String) -> Unit,
+    onUserViewClicked: (String, String) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
 ) {
@@ -19,7 +19,7 @@ fun NavGraphBuilder.home(
         val viewModel = hiltViewModel<HomeViewModel>()
         HomeRoute(
             viewModel = viewModel,
-            onUserViewClicked = { onUserViewClicked(it) },
+            onUserViewClicked = { id, name -> onUserViewClicked(id, name) },
             onResumeItemClicked = { onResumeItemClicked(it) },
             onMediaItemClicked = { id, name ->
                 onMediaItemClicked(id, name)

@@ -9,7 +9,6 @@ fun BaseItemDto.toUserView(serverUrl: String): UserView =
         parentId = parentId.toString(),
         name = name ?: "",
         path = path ?: "",
-        type = type.serialName,
         imageUrl = "$serverUrl/Items/$id/Images/Primary",
         // TODO: Use primaryImageAspectRatio
         aspectRatio = 1.7

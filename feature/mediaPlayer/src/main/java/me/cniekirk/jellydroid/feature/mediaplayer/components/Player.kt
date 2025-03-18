@@ -1,6 +1,5 @@
 package me.cniekirk.jellydroid.feature.mediaplayer.components
 
-import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -8,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
@@ -18,7 +18,6 @@ import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.PlayerView
 import coil3.compose.LocalPlatformContext
 import timber.log.Timber
-import androidx.core.net.toUri
 
 @OptIn(UnstableApi::class)
 @Composable
