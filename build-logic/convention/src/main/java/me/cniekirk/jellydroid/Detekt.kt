@@ -7,7 +7,6 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.named
 
 internal fun Project.configureDetekt(extension: DetektExtension) = extension.apply {
-//    toolVersion = libs.findVersion("detekt").toString()
     config.setFrom("${this@configureDetekt.rootDir.path}/config/detekt/detekt.yml")
 
     tasks.named<Detekt>("detekt") {

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
+import me.cniekirk.jellydroid.core.model.CollectionKind
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.MediaType
 import me.cniekirk.jellydroid.core.model.ResumeItem
@@ -36,7 +37,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 internal fun HomeRoute(
     viewModel: HomeViewModel,
-    onUserViewClicked: (String, String) -> Unit,
+    onUserViewClicked: (String, String, CollectionKind) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
 ) {
@@ -50,7 +51,7 @@ internal fun HomeRoute(
 
     HomeScreen(
         state = state.value,
-        onUserViewClicked = { id, name -> onUserViewClicked(id, name) },
+        onUserViewClicked = { id, name, kind -> onUserViewClicked(id, name, kind) },
         onResumeItemClicked = { onResumeItemClicked(it) },
         onMediaItemClicked = { id, name ->
             onMediaItemClicked(id, name)
@@ -62,7 +63,7 @@ internal fun HomeRoute(
 @Composable
 internal fun HomeScreen(
     state: HomeState,
-    onUserViewClicked: (String, String) -> Unit,
+    onUserViewClicked: (String, String, CollectionKind) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
 ) {
@@ -96,7 +97,7 @@ internal fun HomeScreen(
                     UserViews(
                         modifier = Modifier.fillMaxWidth(),
                         userViews = state.userViews,
-                        onUserViewClicked = { id, name -> onUserViewClicked(id, name) }
+                        onUserViewClicked = { id, name, kind -> onUserViewClicked(id, name, kind) }
                     )
                 }
 
@@ -151,18 +152,18 @@ private fun HomeScreenPreview() {
                     "",
                     "Movies",
                     "",
-                    MediaType.MOVIES,
                     "",
-                    PREVIEW_ASPECT_RATIO
+                    PREVIEW_ASPECT_RATIO,
+                    CollectionKind.MOVIES
                 ),
                 UserView(
                     "",
                     "",
                     "Shows",
                     "",
-                    MediaType.TV_SHOWS,
                     "",
-                    PREVIEW_ASPECT_RATIO
+                    PREVIEW_ASPECT_RATIO,
+                    CollectionKind.SERIES
                 )
             ),
             resumeItems = persistentListOf(
@@ -226,7 +227,7 @@ private fun HomeScreenPreview() {
 
         HomeScreen(
             state = state,
-            onUserViewClicked = { _, _ -> },
+            onUserViewClicked = { _, _, _ -> },
             onResumeItemClicked = {},
             onMediaItemClicked = { _, _ -> }
         )

@@ -6,18 +6,18 @@ import androidx.navigation.toRoute
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaUseCase
+import me.cniekirk.core.jellydroid.domain.usecase.GetMediaCollectionUseCase
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.model.CollectionKind
 import me.cniekirk.jellydroid.feature.mediacollection.model.ErrorType
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MediaCollectionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getMediaUseCase: GetMediaUseCase
+    private val getMediaCollectionUseCase: GetMediaCollectionUseCase
 ) : ViewModel(), ContainerHost<MediaCollectionState, MediaCollectionEffect> {
 
     private val args = savedStateHandle.toRoute<MediaCollection>()
@@ -25,12 +25,15 @@ class MediaCollectionViewModel @Inject constructor(
     override val container = container<MediaCollectionState, MediaCollectionEffect>(
         MediaCollectionState(collectionId = args.collectionId, collectionName = args.collectionName)
     ) {
-        loadCollection(args.collectionId)
+        loadCollection(args.collectionId, args.collectionType)
     }
 
-    private fun loadCollection(collectionId: String) = intent {
-        Timber.d(collectionId)
-        getMediaUseCase("")
+    private fun loadCollection(collectionId: String, collectionType: CollectionType) = intent {
+        val kind = when (collectionType) {
+            CollectionType.MOVIES -> CollectionKind.MOVIES
+            CollectionType.SERIES -> CollectionKind.SERIES
+        }
+        getMediaCollectionUseCase(collectionId, kind)
             .onSuccess { items ->
                 reduce {
                     state.copy(

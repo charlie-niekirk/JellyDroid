@@ -57,7 +57,7 @@ internal class JellyfinRepositoryImpl @Inject constructor(
                 val data = response.content.items
 
                 if (serverUrl != null) {
-                    Ok(data?.map { it.toUserView(serverUrl) } ?: listOf())
+                    Ok(data?.mapNotNull { it.toUserView(serverUrl) } ?: listOf())
                 } else {
                     Err(NetworkError.Unknown)
                 }
@@ -133,16 +133,6 @@ internal class JellyfinRepositoryImpl @Inject constructor(
                 UUID.fromString(mediaId),
                 userId = appPreferencesRepository.getLoggedInUser().toUUID()
             ).content
-        }
-    }
-
-    override suspend fun getMediaCollection(collectionId: String): Result<List<BaseItemDto>, NetworkError> {
-        return safeApiCall {
-            apiClient.itemsApi.getItems(
-                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
-                limit = 12,
-                includeItemTypes = listOf(BaseItemKind.MOVIE)
-            ).content.items ?: listOf()
         }
     }
 

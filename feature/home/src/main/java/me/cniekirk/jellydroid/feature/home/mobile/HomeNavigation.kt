@@ -6,9 +6,10 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.core.designsystem.theme.exitAnimation
 import me.cniekirk.jellydroid.core.designsystem.theme.popEnterAnimation
+import me.cniekirk.jellydroid.core.model.CollectionKind
 
 fun NavGraphBuilder.home(
-    onUserViewClicked: (String, String) -> Unit,
+    onUserViewClicked: (String, String, CollectionKind) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
 ) {
@@ -19,7 +20,7 @@ fun NavGraphBuilder.home(
         val viewModel = hiltViewModel<HomeViewModel>()
         HomeRoute(
             viewModel = viewModel,
-            onUserViewClicked = { id, name -> onUserViewClicked(id, name) },
+            onUserViewClicked = { id, name, kind -> onUserViewClicked(id, name, kind) },
             onResumeItemClicked = { onResumeItemClicked(it) },
             onMediaItemClicked = { id, name ->
                 onMediaItemClicked(id, name)

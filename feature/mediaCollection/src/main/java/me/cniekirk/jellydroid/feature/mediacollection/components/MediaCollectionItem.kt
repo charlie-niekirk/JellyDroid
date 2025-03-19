@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.core.designsystem.theme.components
+package me.cniekirk.jellydroid.feature.mediacollection.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 
 @Composable
-fun MediaItem(
+fun MediaCollectionItem(
     name: String,
     imageUrl: String,
     modifier: Modifier = Modifier,
@@ -39,7 +39,7 @@ fun MediaItem(
     ) {
         AsyncImage(
             modifier = Modifier
-                .weight(1f)
+                .fillMaxWidth()
                 .aspectRatio(aspectRatio)
                 .clip(RoundedCornerShape(8.dp)),
             model = ImageRequest.Builder(context)

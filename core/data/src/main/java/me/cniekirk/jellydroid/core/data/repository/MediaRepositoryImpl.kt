@@ -4,6 +4,7 @@ import com.github.michaelbull.result.Result
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
+import me.cniekirk.jellydroid.core.model.CollectionKind
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.model.api.BaseItemDto
@@ -17,24 +18,21 @@ internal class MediaRepositoryImpl @Inject constructor(
     private val appPreferencesRepository: AppPreferencesRepository
 ) : MediaRepository {
 
-    override suspend fun getMovies(query: String?): Result<List<BaseItemDto>, NetworkError> {
-        return safeApiCall {
-            apiClient.itemsApi.getItems(
-                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
-                mediaTypes = listOf(MediaType.VIDEO),
-                includeItemTypes = listOf(BaseItemKind.MOVIE),
-                searchTerm = query
-            ).content.items ?: listOf()
-        }
-    }
+    override suspend fun getMedia(collectionId: String?, collectionKind: CollectionKind, query: String?): Result<List<BaseItemDto>, NetworkError> {
 
-    override suspend fun getTvShows(query: String?): Result<List<BaseItemDto>, NetworkError> {
+        val itemTypes = when (collectionKind) {
+            CollectionKind.MOVIES -> listOf(BaseItemKind.MOVIE)
+            CollectionKind.SERIES -> listOf(BaseItemKind.SERIES)
+        }
+
         return safeApiCall {
             apiClient.itemsApi.getItems(
                 userId = appPreferencesRepository.getLoggedInUser().toUUID(),
-                mediaTypes = listOf(MediaType.VIDEO),
-                includeItemTypes = listOf(BaseItemKind.SERIES),
-                searchTerm = query
+//                mediaTypes = listOf(MediaType.VIDEO),
+                includeItemTypes = itemTypes,
+                recursive = true,
+                searchTerm = query,
+                parentId = collectionId?.toUUID()
             ).content.items ?: listOf()
         }
     }

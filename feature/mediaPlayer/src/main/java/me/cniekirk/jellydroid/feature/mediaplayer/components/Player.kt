@@ -27,7 +27,6 @@ internal fun MediaPlayer(
     initialPosition: Long = 0L,
     onPositionChanged: (Long) -> Unit = {},
 ) {
-    Timber.d("Media URL: $mediaUrl")
     val context = LocalPlatformContext.current
 
     val httpDataSourceFactory: HttpDataSource.Factory = remember {

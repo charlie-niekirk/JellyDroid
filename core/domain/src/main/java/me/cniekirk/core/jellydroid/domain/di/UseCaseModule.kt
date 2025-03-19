@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCase
 import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCaseImpl
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaUseCase
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaUseCaseImpl
+import me.cniekirk.core.jellydroid.domain.usecase.GetMediaCollectionUseCase
+import me.cniekirk.core.jellydroid.domain.usecase.GetMediaCollectionUseCaseImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -20,6 +20,6 @@ internal abstract class UseCaseModule {
 
     @Binds
     abstract fun bindGetMoviesUseCase(
-        getMoviesUseCaseImpl: GetMediaUseCaseImpl
-    ): GetMediaUseCase
+        getMoviesUseCaseImpl: GetMediaCollectionUseCaseImpl
+    ): GetMediaCollectionUseCase
 }

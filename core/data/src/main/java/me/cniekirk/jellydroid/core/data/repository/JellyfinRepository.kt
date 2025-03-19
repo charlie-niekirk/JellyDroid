@@ -25,8 +25,6 @@ interface JellyfinRepository {
 
     suspend fun getMediaDetails(mediaId: String): Result<BaseItemDto, NetworkError>
 
-    suspend fun getMediaCollection(collectionId: String): Result<List<BaseItemDto>, NetworkError>
-
     suspend fun getPlaybackInfo(
         mediaSourceId: String,
         startTimeTicks: Int = 0,
