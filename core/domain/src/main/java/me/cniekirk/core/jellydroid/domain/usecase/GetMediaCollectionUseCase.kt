@@ -7,5 +7,9 @@ import me.cniekirk.jellydroid.core.model.CollectionKind
 
 interface GetMediaCollectionUseCase {
 
-    suspend operator fun invoke(collectionId: String, collectionKind: CollectionKind, query: String? = null): Result<List<MediaUiModel>, NetworkError>
+    suspend operator fun invoke(
+        collectionId: String,
+        collectionKind: CollectionKind,
+        query: String? = null
+    ): Result<List<MediaUiModel>, NetworkError>
 }

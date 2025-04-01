@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="playpause_button_play">Play</string>
+    <string name="playpause_button_pause">Pause</string>
+    <string name="next_button">Next</string>
+    <string name="previous_button">Previous</string>
+</resources>

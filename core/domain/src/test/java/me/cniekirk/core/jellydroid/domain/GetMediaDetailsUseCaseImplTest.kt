@@ -10,6 +10,8 @@ import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.cniekirk.core.jellydroid.domain.mapping.MediaDetailsMapper
 import me.cniekirk.core.jellydroid.domain.model.AgeRating
+import me.cniekirk.core.jellydroid.domain.model.CommunityRating
+import me.cniekirk.core.jellydroid.domain.model.MediaAttributes
 import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
 import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCaseImpl
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
@@ -37,15 +39,16 @@ class GetMediaDetailsUseCaseImplTest {
     @Test
     fun `when invoked and success returned then verify data mapped to ui model with success`() = runTest {
         // Given
+        coEvery { jellyfinRepository.getServerBaseUrl() } returns Ok(BASE_URL)
         coEvery { jellyfinRepository.getMediaDetails(any()) } returns Ok(baseItemDto)
-        every { mediaDetailsMapper.toUiModel(any()) } returns successMediaDetails
+        every { mediaDetailsMapper.toUiModel(any(), any()) } returns successMediaDetails
 
         // When
         sut.invoke(MEDIA_ID)
 
         // Then
         coVerify { jellyfinRepository.getMediaDetails(MEDIA_ID) }
-        verify { mediaDetailsMapper.toUiModel(baseItemDto) }
+        verify { mediaDetailsMapper.toUiModel(baseItemDto, BASE_URL) }
     }
 
     @Test
@@ -58,7 +61,7 @@ class GetMediaDetailsUseCaseImplTest {
 
         // Then
         coVerify { jellyfinRepository.getMediaDetails(MEDIA_ID) }
-        verify(exactly = 0) { mediaDetailsMapper.toUiModel(any()) }
+        verify(exactly = 0) { mediaDetailsMapper.toUiModel(any(), any()) }
         assertEquals(unknownError, result)
     }
 
@@ -66,6 +69,7 @@ class GetMediaDetailsUseCaseImplTest {
         const val MEDIA_ID = "0"
         private const val NAME = "Inception"
         private const val SYNOPSIS = "This is a synopsis"
+        private const val BASE_URL = "http://192.168.1.2:8096/"
 
         val baseItemDto = BaseItemDto(
             id = UUID.randomUUID(),
@@ -77,10 +81,15 @@ class GetMediaDetailsUseCaseImplTest {
         )
 
         val successMediaDetails = MediaDetailsUiModel(
-            name = NAME,
+            mediaId = NAME,
             synopsis = SYNOPSIS,
             primaryImageUrl = "",
-            ageRating = AgeRating("", "")
+            mediaAttributes = MediaAttributes(
+                communityRating = CommunityRating.NoRating,
+                ageRating = AgeRating("", ""),
+                runtime = null
+            ),
+            mediaPath = ""
         )
 
         val unknownError = Err(NetworkError.Unknown)

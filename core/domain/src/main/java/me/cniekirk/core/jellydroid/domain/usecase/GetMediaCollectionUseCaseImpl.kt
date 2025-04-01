@@ -17,7 +17,11 @@ internal class GetMediaCollectionUseCaseImpl @Inject constructor(
     private val mediaMapper: MediaMapper
 ) : GetMediaCollectionUseCase {
 
-    override suspend fun invoke(collectionId: String, collectionKind: CollectionKind, query: String?): Result<List<MediaUiModel>, NetworkError> {
+    override suspend fun invoke(
+        collectionId: String,
+        collectionKind: CollectionKind,
+        query: String?
+    ): Result<List<MediaUiModel>, NetworkError> {
         return jellyfinRepository.getServerBaseUrl()
             .andThen { baseUrl ->
                 mediaRepository.getMedia(collectionId, collectionKind, query)

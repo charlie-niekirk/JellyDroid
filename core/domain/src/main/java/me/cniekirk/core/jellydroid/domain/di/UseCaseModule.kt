@@ -4,10 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCase
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCaseImpl
 import me.cniekirk.core.jellydroid.domain.usecase.GetMediaCollectionUseCase
 import me.cniekirk.core.jellydroid.domain.usecase.GetMediaCollectionUseCaseImpl
+import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCase
+import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCaseImpl
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -47,6 +47,8 @@ import me.cniekirk.jellydroid.feature.mediaplayer.MediaPlayer
 import me.cniekirk.jellydroid.feature.mediaplayer.mediaPlayer
 import me.cniekirk.jellydroid.feature.onboarding.Onboarding
 import me.cniekirk.jellydroid.feature.onboarding.onboardingUserJourney
+import me.cniekirk.jellydroid.feature.settings.Settings
+import me.cniekirk.jellydroid.feature.settings.settings
 
 @Composable
 fun JellydroidNavHost(modifier: Modifier = Modifier, navHostController: NavHostController) {
@@ -68,11 +70,16 @@ fun JellydroidNavHost(modifier: Modifier = Modifier, navHostController: NavHostC
         ) {
             MainBottomBarNavigation(
                 navHostController = bottomBarNavController,
-                navigateToPlayer = { navHostController.navigate(MediaPlayer(it)) }
+                navigateToPlayer = { navHostController.navigate(MediaPlayer(it)) },
+                navigateToSettings = { navHostController.navigate(Settings) }
             )
         }
 
         mediaPlayer()
+
+        settings(
+            onBackPressed = { navHostController.popBackStack() }
+        )
     }
 }
 
@@ -97,7 +104,8 @@ data class BottomNavRoute<T : Any>(
 @Composable
 fun MainBottomBarNavigation(
     navHostController: NavHostController,
-    navigateToPlayer: (String) -> Unit
+    navigateToPlayer: (String) -> Unit,
+    navigateToSettings: () -> Unit
 ) {
     val bottomNavRoutes = listOf(
         BottomNavRoute(stringResource(R.string.bottom_nav_home), Home, Icons.Default.Home),
@@ -179,13 +187,16 @@ fun MainBottomBarNavigation(
                 onResumeItemClicked = {},
                 onMediaItemClicked = { id, name ->
                     navHostController.navigate(MediaDetails(id, name))
-                }
+                },
+                navigateToSettings = { navigateToSettings() }
             )
             mediaDetails(
                 onPlayClicked = { navigateToPlayer(it) },
                 onBackClicked = { navHostController.popBackStack() }
             )
-            mediaCollection()
+            mediaCollection(
+                onBackClicked = { navHostController.popBackStack() }
+            )
         }
     }
 }

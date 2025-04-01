@@ -28,7 +28,6 @@ import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.CollectionKind
-import me.cniekirk.jellydroid.core.model.MediaType
 import me.cniekirk.jellydroid.core.model.UserView
 import me.cniekirk.jellydroid.feature.home.R
 

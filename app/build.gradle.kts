@@ -52,7 +52,7 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/*"
         }
     }
     ksp {
@@ -68,6 +68,7 @@ dependencies {
     api(projects.feature.mediaCollection)
     api(projects.feature.mediaDetails)
     api(projects.feature.mediaPlayer)
+    api(projects.feature.settings)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -4,6 +4,12 @@ plugins {
 
 android {
     namespace = "me.cniekirk.jellydroid.core.test"
+
+    packaging {
+        resources {
+            excludes += "META-INF/*"
+        }
+    }
 }
 
 dependencies {

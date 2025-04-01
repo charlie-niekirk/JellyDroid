@@ -3,7 +3,6 @@ package me.cniekirk.jellydroid.core.designsystem.theme.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -21,12 +20,14 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
+private const val DEFAULT_ASPECT_RATIO = 3 / 2f
+
 @Composable
 fun MediaItem(
     name: String,
     imageUrl: String,
     modifier: Modifier = Modifier,
-    aspectRatio: Float = 2 / 3f,
+    aspectRatio: Float = DEFAULT_ASPECT_RATIO,
     onMediaItemClicked: () -> Unit,
 ) {
     val context = LocalContext.current

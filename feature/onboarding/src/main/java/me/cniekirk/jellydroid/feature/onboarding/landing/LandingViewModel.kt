@@ -36,6 +36,12 @@ class LandingViewModel @Inject constructor(
                         state.copy(isLoading = false)
                     }
                 }
+
+                LocalDataError.DatabaseReadError -> {
+                    reduce {
+                        state.copy(isLoading = false)
+                    }
+                }
             }
         }
     }

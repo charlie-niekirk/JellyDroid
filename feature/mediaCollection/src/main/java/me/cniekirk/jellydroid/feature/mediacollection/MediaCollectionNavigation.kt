@@ -7,15 +7,16 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.core.designsystem.theme.enterAnimation
 import me.cniekirk.jellydroid.core.designsystem.theme.popExitAnimation
-import me.cniekirk.jellydroid.core.model.CollectionKind
 
-fun NavGraphBuilder.mediaCollection() {
+fun NavGraphBuilder.mediaCollection(onBackClicked: () -> Unit) {
     composable<MediaCollection>(
         enterTransition = { enterAnimation() },
         popExitTransition = { popExitAnimation() }
     ) {
         val viewModel = hiltViewModel<MediaCollectionViewModel>()
-        MediaCollectionRoute(viewModel)
+        MediaCollectionRoute(viewModel) {
+            onBackClicked()
+        }
     }
 }
 

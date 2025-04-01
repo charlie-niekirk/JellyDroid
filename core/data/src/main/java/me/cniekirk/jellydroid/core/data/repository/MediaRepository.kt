@@ -7,5 +7,9 @@ import org.jellyfin.sdk.model.api.BaseItemDto
 
 interface MediaRepository {
 
-    suspend fun getMedia(collectionId: String? = null, collectionKind: CollectionKind, query: String? = null): Result<List<BaseItemDto>, NetworkError>
+    suspend fun getMedia(
+        collectionId: String? = null,
+        collectionKind: CollectionKind,
+        query: String? = null
+    ): Result<List<BaseItemDto>, NetworkError>
 }

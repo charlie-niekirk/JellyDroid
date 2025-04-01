@@ -18,7 +18,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-internal fun MediaCollectionRoute(viewModel: MediaCollectionViewModel) {
+internal fun MediaCollectionRoute(
+    viewModel: MediaCollectionViewModel,
+    onBackClicked: () -> Unit
+) {
     val state = viewModel.collectAsState().value
 
     viewModel.collectSideEffect { sideEffect ->
@@ -29,7 +32,7 @@ internal fun MediaCollectionRoute(viewModel: MediaCollectionViewModel) {
 
     MediaCollectionScreen(
         state = state,
-        onBackClicked = {}
+        onBackClicked = { onBackClicked() }
     )
 }
 

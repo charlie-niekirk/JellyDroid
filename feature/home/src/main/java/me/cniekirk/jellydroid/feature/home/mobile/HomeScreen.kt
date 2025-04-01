@@ -24,7 +24,6 @@ import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.model.CollectionKind
 import me.cniekirk.jellydroid.core.model.LatestItem
-import me.cniekirk.jellydroid.core.model.MediaType
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
 import me.cniekirk.jellydroid.feature.home.R
@@ -40,6 +39,7 @@ internal fun HomeRoute(
     onUserViewClicked: (String, String, CollectionKind) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
+    navigateToSettings: () -> Unit
 ) {
     val state = viewModel.collectAsState()
 
@@ -55,7 +55,8 @@ internal fun HomeRoute(
         onResumeItemClicked = { onResumeItemClicked(it) },
         onMediaItemClicked = { id, name ->
             onMediaItemClicked(id, name)
-        }
+        },
+        onSettingsClicked = { navigateToSettings() }
     )
 }
 
@@ -66,6 +67,7 @@ internal fun HomeScreen(
     onUserViewClicked: (String, String, CollectionKind) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
+    onSettingsClicked: () -> Unit
 ) {
     LoadableScreen(isLoading = state.isLoading) {
         Scaffold(
@@ -75,7 +77,7 @@ internal fun HomeScreen(
                     title = { Text(stringResource(R.string.home_title)) },
                     actions = {
                         IconButton(
-                            onClick = {}
+                            onClick = { onSettingsClicked() }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Settings,
@@ -229,7 +231,8 @@ private fun HomeScreenPreview() {
             state = state,
             onUserViewClicked = { _, _, _ -> },
             onResumeItemClicked = {},
-            onMediaItemClicked = { _, _ -> }
+            onMediaItemClicked = { _, _ -> },
+            onSettingsClicked = {}
         )
     }
 }

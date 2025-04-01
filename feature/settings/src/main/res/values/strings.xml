@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+
+    <string name="settings_general_label">General</string>
+
+    <string name="settings_item_servers">Servers</string>
+
+    <string name="settings_item_users">Users</string>
+
+    <string name="settings_item_appearance">Appearance</string>
+
+</resources>

@@ -43,9 +43,9 @@
             <option value="$PROJECT_DIR$/feature/mediaDetails" />
             <option value="$PROJECT_DIR$/feature/mediaPlayer" />
             <option value="$PROJECT_DIR$/feature/onboarding" />
+            <option value="$PROJECT_DIR$/feature/settings" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

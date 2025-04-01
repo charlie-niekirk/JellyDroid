@@ -4,7 +4,22 @@ option java_package = "me.cniekirk.jellydroid.core.datastore";
 option java_multiple_files = true;
 
 message AppPreferences {
+  enum SortType {
+    ASCENDING = 0;
+    DESCENDING = 1;
+    DEFAULT = 2;
+  }
+
+  message UserPreferences {
+    string user_id = 1;
+    SortType movie_sort_type = 2;
+    SortType tv_series_sort_type = 3;
+  }
+
   bool terms_screen_shown = 1;
   string current_server = 2;
   string current_user = 3;
+
+  // Preferences for each logged in user
+  repeated UserPreferences userPreferences = 4;
 }

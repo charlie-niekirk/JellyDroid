@@ -21,12 +21,14 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
+private const val DEFAULT_ASPECT_RATIO = 2 / 3f
+
 @Composable
 fun MediaCollectionItem(
     name: String,
     imageUrl: String,
     modifier: Modifier = Modifier,
-    aspectRatio: Float = 2 / 3f,
+    aspectRatio: Float = DEFAULT_ASPECT_RATIO,
     onMediaItemClicked: () -> Unit,
 ) {
     val context = LocalContext.current

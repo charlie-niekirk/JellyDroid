@@ -12,6 +12,7 @@ fun NavGraphBuilder.home(
     onUserViewClicked: (String, String, CollectionKind) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
+    navigateToSettings: () -> Unit
 ) {
     composable<Home>(
         exitTransition = { exitAnimation() },
@@ -24,7 +25,8 @@ fun NavGraphBuilder.home(
             onResumeItemClicked = { onResumeItemClicked(it) },
             onMediaItemClicked = { id, name ->
                 onMediaItemClicked(id, name)
-            }
+            },
+            navigateToSettings = { navigateToSettings() }
         )
     }
 }
