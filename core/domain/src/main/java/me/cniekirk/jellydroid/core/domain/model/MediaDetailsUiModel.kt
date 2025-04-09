@@ -1,4 +1,4 @@
-package me.cniekirk.core.jellydroid.domain.model
+package me.cniekirk.jellydroid.core.domain.model
 
 sealed interface CommunityRating {
 

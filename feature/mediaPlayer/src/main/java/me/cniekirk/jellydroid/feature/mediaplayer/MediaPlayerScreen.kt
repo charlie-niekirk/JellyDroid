@@ -3,9 +3,9 @@ package me.cniekirk.jellydroid.feature.mediaplayer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.feature.mediaplayer.components.MediaPlayer
 import org.orbitmvi.orbit.compose.collectAsState
@@ -43,7 +43,7 @@ private fun MediaPlayerContent(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.background)
+                    .background(color = Color.Black)
             ) {
                 MediaPlayer(
                     modifier = Modifier.fillMaxSize(),

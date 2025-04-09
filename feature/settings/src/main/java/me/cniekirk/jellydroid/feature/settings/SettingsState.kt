@@ -11,8 +11,4 @@ internal data class SettingsState(
 internal sealed interface SettingsEffect {
 
     data class Error(val errorType: SettingsError) : SettingsEffect
-
-    data object NavigateToPrivacyPolicy : SettingsEffect
-
-    data object NavigateToAbout : SettingsEffect
 }

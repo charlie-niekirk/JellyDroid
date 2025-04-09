@@ -4,6 +4,7 @@ import com.github.michaelbull.result.Result
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
+import me.cniekirk.jellydroid.core.domain.repository.MediaRepository
 import me.cniekirk.jellydroid.core.model.CollectionKind
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi

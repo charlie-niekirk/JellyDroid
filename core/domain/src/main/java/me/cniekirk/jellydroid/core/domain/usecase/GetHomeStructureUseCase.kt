@@ -1,10 +1,10 @@
-package me.cniekirk.core.jellydroid.domain.usecase
+package me.cniekirk.jellydroid.core.domain.usecase
 
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.coroutines.coroutineBinding
-import me.cniekirk.core.jellydroid.domain.model.HomeStructure
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.model.HomeStructure
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import me.cniekirk.jellydroid.core.model.LatestItems
 import javax.inject.Inject
 

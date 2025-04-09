@@ -1,6 +1,6 @@
-package me.cniekirk.core.jellydroid.domain.mapping
+package me.cniekirk.jellydroid.core.domain.mapping
 
-import me.cniekirk.core.jellydroid.domain.model.MediaUiModel
+import me.cniekirk.jellydroid.core.domain.model.MediaUiModel
 import org.jellyfin.sdk.model.api.BaseItemDto
 import javax.inject.Inject
 

@@ -5,6 +5,7 @@ import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.runCatching
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
+import me.cniekirk.jellydroid.core.domain.repository.SettingsRepository
 import javax.inject.Inject
 
 internal class SettingsRepositoryImpl @Inject constructor(

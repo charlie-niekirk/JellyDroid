@@ -6,7 +6,7 @@ import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.analytics.AnalyticsRepository
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject

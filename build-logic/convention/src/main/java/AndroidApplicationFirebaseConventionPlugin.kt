@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import me.cniekirk.jellydroid.implementation
 import me.cniekirk.jellydroid.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,9 +17,9 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
 
             dependencies {
                 val bom = libs.findLibrary("firebase-bom").get()
-                add("implementation", platform(bom))
-                "implementation"(libs.findLibrary("firebase.analytics").get())
-                "implementation"(libs.findLibrary("firebase.crashlytics").get())
+                implementation(platform(bom))
+                implementation(libs.findLibrary("firebase.analytics").get())
+                implementation(libs.findLibrary("firebase.crashlytics").get())
             }
 
             extensions.configure<ApplicationExtension> {

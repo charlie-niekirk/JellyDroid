@@ -1,4 +1,4 @@
-package me.cniekirk.core.jellydroid.domain
+package me.cniekirk.jellydroid.core.domain
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
@@ -8,14 +8,14 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import me.cniekirk.core.jellydroid.domain.mapping.MediaDetailsMapper
-import me.cniekirk.core.jellydroid.domain.model.AgeRating
-import me.cniekirk.core.jellydroid.domain.model.CommunityRating
-import me.cniekirk.core.jellydroid.domain.model.MediaAttributes
-import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCaseImpl
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.mapping.MediaDetailsMapper
+import me.cniekirk.jellydroid.core.domain.model.AgeRating
+import me.cniekirk.jellydroid.core.domain.model.CommunityRating
+import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
+import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCaseImpl
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.MediaType
@@ -37,19 +37,20 @@ class GetMediaDetailsUseCaseImplTest {
     }
 
     @Test
-    fun `when invoked and success returned then verify data mapped to ui model with success`() = runTest {
-        // Given
-        coEvery { jellyfinRepository.getServerBaseUrl() } returns Ok(BASE_URL)
-        coEvery { jellyfinRepository.getMediaDetails(any()) } returns Ok(baseItemDto)
-        every { mediaDetailsMapper.toUiModel(any(), any()) } returns successMediaDetails
+    fun `when invoked and success returned then verify data mapped to ui model with success`() =
+        runTest {
+            // Given
+            coEvery { jellyfinRepository.getServerBaseUrl() } returns Ok(BASE_URL)
+            coEvery { jellyfinRepository.getMediaDetails(any()) } returns Ok(baseItemDto)
+            every { mediaDetailsMapper.toUiModel(any(), any()) } returns successMediaDetails
 
-        // When
-        sut.invoke(MEDIA_ID)
+            // When
+            sut.invoke(MEDIA_ID)
 
-        // Then
-        coVerify { jellyfinRepository.getMediaDetails(MEDIA_ID) }
-        verify { mediaDetailsMapper.toUiModel(baseItemDto, BASE_URL) }
-    }
+            // Then
+            coVerify { jellyfinRepository.getMediaDetails(MEDIA_ID) }
+            verify { mediaDetailsMapper.toUiModel(baseItemDto, BASE_URL) }
+        }
 
     @Test
     fun `when invoked and error returned then verify data not mapped with error`() = runTest {

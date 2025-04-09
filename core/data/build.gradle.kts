@@ -9,12 +9,14 @@ android {
 }
 
 dependencies {
-    api(projects.core.common)
-    api(projects.core.model)
-    api(projects.core.database)
-    api(projects.core.datastore)
-    api(libs.kotlin.result)
-    api(libs.kotlin.result.coroutines)
+    implementation(projects.core.common)
+    implementation(projects.core.model)
+    implementation(projects.core.database)
+    implementation(projects.core.datastore)
+    implementation(projects.core.domain)
+
+    implementation(libs.kotlin.result)
+    implementation(libs.kotlin.result.coroutines)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.org.jellyfin.sdk.jellyfin.core)

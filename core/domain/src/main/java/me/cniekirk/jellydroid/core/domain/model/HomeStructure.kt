@@ -1,4 +1,4 @@
-package me.cniekirk.core.jellydroid.domain.model
+package me.cniekirk.jellydroid.core.domain.model
 
 import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.core.model.ResumeItem

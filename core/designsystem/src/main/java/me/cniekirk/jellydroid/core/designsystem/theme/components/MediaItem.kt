@@ -20,7 +20,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
-private const val DEFAULT_ASPECT_RATIO = 3 / 2f
+private const val DEFAULT_ASPECT_RATIO = 2 / 3f
 
 @Composable
 fun MediaItem(

@@ -1,3 +1,4 @@
+import me.cniekirk.jellydroid.implementation
 import me.cniekirk.jellydroid.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -10,8 +11,8 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
             pluginManager.apply("com.google.devtools.ksp")
 
             dependencies {
-                add("implementation", libs.findLibrary("room.runtime").get())
-                add("implementation", libs.findLibrary("room.ktx").get())
+                implementation(libs.findLibrary("room.runtime").get())
+                implementation(libs.findLibrary("room.ktx").get())
                 add("ksp", libs.findLibrary("room.compiler").get())
             }
         }

@@ -28,6 +28,7 @@ import androidx.media3.ui.compose.SURFACE_TYPE_SURFACE_VIEW
 import androidx.media3.ui.compose.modifiers.resizeWithContentScale
 import androidx.media3.ui.compose.state.rememberPresentationState
 import coil3.compose.LocalPlatformContext
+import me.cniekirk.jellydroid.feature.mediaplayer.BuildConfig
 
 @OptIn(UnstableApi::class)
 @Composable
@@ -49,7 +50,9 @@ internal fun MediaPlayer(
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
-            addAnalyticsListener(EventLogger())
+            if (BuildConfig.DEBUG) {
+                addAnalyticsListener(EventLogger())
+            }
         }
     }
 

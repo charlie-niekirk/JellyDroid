@@ -19,7 +19,7 @@ fun NavGraphBuilder.settings(
             viewModel = viewModel,
             navigateToPrivacyPolicy = {},
             navigateToAbout = {},
-            onBackPressed = { onBackPressed() }
+            navigateBack = onBackPressed
         )
     }
 }

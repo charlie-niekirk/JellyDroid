@@ -13,6 +13,7 @@ import me.cniekirk.jellydroid.core.data.mapping.toUserView
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
 import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView

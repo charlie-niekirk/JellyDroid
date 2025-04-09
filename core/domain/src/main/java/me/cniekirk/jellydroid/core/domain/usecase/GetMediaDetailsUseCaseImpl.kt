@@ -1,12 +1,12 @@
-package me.cniekirk.core.jellydroid.domain.usecase
+package me.cniekirk.jellydroid.core.domain.usecase
 
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.map
-import me.cniekirk.core.jellydroid.domain.mapping.MediaDetailsMapper
-import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.mapping.MediaDetailsMapper
+import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import javax.inject.Inject
 
 internal class GetMediaDetailsUseCaseImpl @Inject constructor(

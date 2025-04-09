@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.core.data.repository
+package me.cniekirk.jellydroid.core.domain.repository
 
 import com.github.michaelbull.result.Result
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError

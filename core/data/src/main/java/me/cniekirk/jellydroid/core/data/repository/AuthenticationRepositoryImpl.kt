@@ -13,6 +13,7 @@ import me.cniekirk.jellydroid.core.database.dao.ServerDao
 import me.cniekirk.jellydroid.core.database.dao.UserDao
 import me.cniekirk.jellydroid.core.database.entity.Server
 import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
+import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.InvalidContentException

@@ -11,7 +11,6 @@ android {
 dependencies {
     api(projects.core.common)
     api(projects.core.model)
-    api(projects.core.data)
 
     implementation(libs.kotlin.result)
     implementation(libs.kotlin.result.coroutines)

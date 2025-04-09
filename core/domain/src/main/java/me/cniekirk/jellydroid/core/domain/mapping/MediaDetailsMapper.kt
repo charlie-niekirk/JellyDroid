@@ -1,9 +1,9 @@
-package me.cniekirk.core.jellydroid.domain.mapping
+package me.cniekirk.jellydroid.core.domain.mapping
 
-import me.cniekirk.core.jellydroid.domain.model.AgeRating
-import me.cniekirk.core.jellydroid.domain.model.CommunityRating
-import me.cniekirk.core.jellydroid.domain.model.MediaAttributes
-import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
+import me.cniekirk.jellydroid.core.domain.model.AgeRating
+import me.cniekirk.jellydroid.core.domain.model.CommunityRating
+import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
+import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
 import org.jellyfin.sdk.model.api.BaseItemDto
 import javax.inject.Inject
 import kotlin.time.DurationUnit

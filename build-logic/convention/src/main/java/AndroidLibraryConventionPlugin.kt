@@ -1,7 +1,10 @@
 import com.android.build.gradle.LibraryExtension
+import me.cniekirk.jellydroid.androidTestImplementation
 import me.cniekirk.jellydroid.configureFlavors
 import me.cniekirk.jellydroid.configureKotlinAndroid
+import me.cniekirk.jellydroid.implementation
 import me.cniekirk.jellydroid.libs
+import me.cniekirk.jellydroid.testImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -23,10 +26,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 configureFlavors(this)
             }
             dependencies {
-                add("implementation", libs.findLibrary("timber").get())
-                add("testImplementation", kotlin("test"))
+                implementation(libs.findLibrary("timber").get())
+                testImplementation(kotlin("test"))
 //                add("testImplementation", project(":core:testing"))
-                add("androidTestImplementation", kotlin("test"))
+                androidTestImplementation(kotlin("test"))
 //                add("androidTestImplementation", project(":core:testing"))
             }
         }

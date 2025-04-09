@@ -4,14 +4,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepositoryImpl
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
 import me.cniekirk.jellydroid.core.data.repository.JellyfinRepositoryImpl
-import me.cniekirk.jellydroid.core.data.repository.MediaRepository
 import me.cniekirk.jellydroid.core.data.repository.MediaRepositoryImpl
-import me.cniekirk.jellydroid.core.data.repository.SettingsRepository
 import me.cniekirk.jellydroid.core.data.repository.SettingsRepositoryImpl
+import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.repository.MediaRepository
+import me.cniekirk.jellydroid.core.domain.repository.SettingsRepository
 
 @Module
 @InstallIn(SingletonComponent::class)

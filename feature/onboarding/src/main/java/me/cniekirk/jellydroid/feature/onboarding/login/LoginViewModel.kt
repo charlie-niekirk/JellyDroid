@@ -7,7 +7,7 @@ import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
-import me.cniekirk.jellydroid.core.data.repository.AuthenticationRepository
+import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.feature.onboarding.OnboardingRoute
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container

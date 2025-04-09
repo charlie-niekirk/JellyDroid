@@ -1,5 +1,8 @@
 import com.android.build.api.dsl.LibraryExtension
+import me.cniekirk.jellydroid.androidTestImplementation
+import me.cniekirk.jellydroid.implementation
 import me.cniekirk.jellydroid.libs
+import me.cniekirk.jellydroid.testImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -25,35 +28,39 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("implementation", project(":core:model"))
+                implementation(project(":core:model"))
 //                add("implementation", project(":core:ui"))
-                add("implementation", project(":core:designsystem"))
-                add("implementation", project(":core:data"))
-                add("implementation", project(":core:common"))
-                add("implementation", project(":core:domain"))
-                add("implementation", project(":core:analytics"))
+                implementation(project(":core:designsystem"))
+                implementation(project(":core:data"))
+                implementation(project(":core:common"))
+                implementation(project(":core:domain"))
+                implementation(project(":core:analytics"))
 
-                add("testImplementation", kotlin("test"))
-                add("testImplementation", project(":core:test"))
-                add("androidTestImplementation", kotlin("test"))
 //                add("androidTestImplementation", project(":core:testing"))
 
-                add("implementation", libs.findLibrary("hilt.navigation").get())
-                add("implementation", libs.findLibrary("androidx.navigation.compose").get())
+                implementation(libs.findLibrary("hilt.navigation").get())
+                implementation(libs.findLibrary("androidx.navigation.compose").get())
+                implementation(libs.findLibrary("androidx.animation").get())
 
-                add("implementation", libs.findLibrary("androidx.animation").get())
+                implementation(libs.findLibrary("org.jetbrains.kotlinx.serialization").get())
 
-                add("implementation", libs.findLibrary("org.jetbrains.kotlinx.serialization").get())
+                implementation(libs.findLibrary("orbit.core").get())
+                implementation(libs.findLibrary("orbit.compose").get())
+                implementation(libs.findLibrary("orbit.viewmodel").get())
 
-                add("implementation", libs.findLibrary("orbit.core").get())
-                add("implementation", libs.findLibrary("orbit.compose").get())
-                add("implementation", libs.findLibrary("orbit.viewmodel").get())
-                add("testImplementation", libs.findLibrary("orbit.test").get())
+                implementation(libs.findLibrary("kotlin.result").get())
+                implementation(libs.findLibrary("kotlin.result.coroutines").get())
 
-                add("testImplementation", libs.findLibrary("mockk").get())
-                add("testImplementation", libs.findLibrary("androidx.navigation.testing").get())
-                add("testImplementation", libs.findLibrary("androidx.junit.ext").get())
-                add("testImplementation", libs.findLibrary("robolectric").get())
+                testImplementation(kotlin("test"))
+                testImplementation(project(":core:test"))
+
+                testImplementation(libs.findLibrary("orbit.test").get())
+                testImplementation(libs.findLibrary("mockk").get())
+                testImplementation(libs.findLibrary("androidx.navigation.testing").get())
+                testImplementation(libs.findLibrary("androidx.junit.ext").get())
+                testImplementation(libs.findLibrary("robolectric").get())
+
+                androidTestImplementation(kotlin("test"))
             }
         }
     }

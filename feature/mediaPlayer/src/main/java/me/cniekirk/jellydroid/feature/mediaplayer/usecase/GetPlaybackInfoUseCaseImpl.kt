@@ -3,7 +3,7 @@ package me.cniekirk.jellydroid.feature.mediaplayer.usecase
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.coroutines.coroutineBinding
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
-import me.cniekirk.jellydroid.core.data.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import timber.log.Timber
 import javax.inject.Inject
 
