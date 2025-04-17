@@ -9,10 +9,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.analytics)
-    implementation(projects.core.designsystem)
-    implementation(projects.core.data)
-    implementation(projects.core.domain)
 
     implementation(libs.coil.compose)
 }

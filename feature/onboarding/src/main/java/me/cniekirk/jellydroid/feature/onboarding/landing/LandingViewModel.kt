@@ -5,15 +5,15 @@ import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.analytics.AnalyticsRepository
-import me.cniekirk.jellydroid.core.common.errors.LocalDataError
-import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
+import me.cniekirk.jellydroid.core.domain.model.error.CheckAuthStateError
+import me.cniekirk.jellydroid.core.domain.usecase.CheckAuthStateUseCase
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
 class LandingViewModel @Inject constructor(
-    private val jellyfinRepository: JellyfinRepository,
+    private val checkAuthStateUseCase: CheckAuthStateUseCase,
     private val analyticsRepository: AnalyticsRepository
 ) : ViewModel(), ContainerHost<LandingState, LandingEffect> {
 
@@ -23,21 +23,16 @@ class LandingViewModel @Inject constructor(
     }
 
     private fun checkUser() = intent {
-        jellyfinRepository.getCurrentServerAndUser().onSuccess {
+        checkAuthStateUseCase().onSuccess {
             postSideEffect(LandingEffect.NavigateToHome)
         }.onFailure { error ->
             when (error) {
-                LocalDataError.DatastoreLoadError -> {
-                    // Skip asking about analytics
-                    postSideEffect(LandingEffect.NavigateToServerSelection)
-                }
-                LocalDataError.ServerNotExists -> {
+                CheckAuthStateError.NoPreviousAuth -> {
                     reduce {
                         state.copy(isLoading = false)
                     }
                 }
-
-                LocalDataError.DatabaseReadError -> {
+                CheckAuthStateError.AuthTokenOutdated -> {
                     reduce {
                         state.copy(isLoading = false)
                     }

@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class User(
+data class UserDto(
     @PrimaryKey val userId: String,
     @ColumnInfo("belongs_to_server_id") val belongsToServerId: String,
     @ColumnInfo("name") val name: String,

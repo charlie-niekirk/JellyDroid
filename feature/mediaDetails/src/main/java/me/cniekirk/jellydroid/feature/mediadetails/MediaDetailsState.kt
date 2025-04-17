@@ -1,6 +1,6 @@
 package me.cniekirk.jellydroid.feature.mediadetails
 
-import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
+import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
 
 data class MediaDetailsState(
     val mediaTitle: String,

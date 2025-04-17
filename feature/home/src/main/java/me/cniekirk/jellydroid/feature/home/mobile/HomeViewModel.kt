@@ -5,7 +5,7 @@ import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
-import me.cniekirk.core.jellydroid.domain.usecase.GetHomeStructureUseCase
+import me.cniekirk.jellydroid.core.domain.usecase.GetHomeStructureUseCase
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber

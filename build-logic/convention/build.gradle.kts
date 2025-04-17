@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.co.hinge.gradle.project.accessors)
 }
 
 group = "me.cniekirk.jellydroid.buildlogic"

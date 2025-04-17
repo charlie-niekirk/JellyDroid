@@ -4,6 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import me.cniekirk.jellydroid.core.domain.usecase.CheckAuthStateUseCase
+import me.cniekirk.jellydroid.core.domain.usecase.CheckAuthStateUseCaseImpl
+import me.cniekirk.jellydroid.core.domain.usecase.GetHomeStructureUseCase
+import me.cniekirk.jellydroid.core.domain.usecase.GetHomeStructureUseCaseImpl
 import me.cniekirk.jellydroid.core.domain.usecase.GetMediaCollectionUseCase
 import me.cniekirk.jellydroid.core.domain.usecase.GetMediaCollectionUseCaseImpl
 import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCase
@@ -22,4 +26,14 @@ internal abstract class UseCaseModule {
     abstract fun bindGetMoviesUseCase(
         getMoviesUseCaseImpl: GetMediaCollectionUseCaseImpl
     ): GetMediaCollectionUseCase
+
+    @Binds
+    abstract fun bindGetHomeStructureUseCase(
+        getHomeStructureUseCaseImpl: GetHomeStructureUseCaseImpl
+    ): GetHomeStructureUseCase
+
+    @Binds
+    abstract fun bindCheckAuthStateUseCase(
+        checkAuthStateUseCaseImpl: CheckAuthStateUseCaseImpl
+    ): CheckAuthStateUseCase
 }

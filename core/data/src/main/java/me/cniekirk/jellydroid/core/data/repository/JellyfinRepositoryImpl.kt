@@ -7,12 +7,16 @@ import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.map
 import me.cniekirk.jellydroid.core.common.errors.LocalDataError
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.data.mapping.MediaDetailsMapper
 import me.cniekirk.jellydroid.core.data.mapping.toLatestItem
 import me.cniekirk.jellydroid.core.data.mapping.toResumeItem
+import me.cniekirk.jellydroid.core.data.mapping.toServerAndUsers
+import me.cniekirk.jellydroid.core.data.mapping.toUser
 import me.cniekirk.jellydroid.core.data.mapping.toUserView
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
-import me.cniekirk.jellydroid.core.datastore.repository.AppPreferencesRepository
+import me.cniekirk.jellydroid.core.domain.model.MediaDetails
+import me.cniekirk.jellydroid.core.domain.model.ServerAndUsers
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.ResumeItem
@@ -20,11 +24,11 @@ import me.cniekirk.jellydroid.core.model.UserView
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
+import org.jellyfin.sdk.api.client.extensions.userApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.client.extensions.userViewsApi
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.model.UUID
-import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.CodecType
@@ -48,8 +52,13 @@ import javax.inject.Inject
 internal class JellyfinRepositoryImpl @Inject constructor(
     private val apiClient: ApiClient,
     private val serverDao: ServerDao,
-    private val appPreferencesRepository: AppPreferencesRepository
+    private val mediaDetailsMapper: MediaDetailsMapper
 ) : JellyfinRepository {
+
+    override suspend fun getUserFromToken(): Result<String, NetworkError> {
+        return safeApiCall { apiClient.userApi.getCurrentUser() }
+            .map { it.content.id.toString() }
+    }
 
     override suspend fun getUserViews(): Result<List<UserView>, NetworkError> {
         return safeApiCall { apiClient.userViewsApi.getUserViews() }
@@ -65,20 +74,19 @@ internal class JellyfinRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getCurrentServerAndUser(): Result<String, LocalDataError> {
-        val currentServerId = appPreferencesRepository.getCurrentServer()
+    override suspend fun getServerWithUsersById(serverId: String): Result<ServerAndUsers, LocalDataError> {
         val server = serverDao.getAllServersWithUsers()
-        val serverWithUsers = server.firstOrNull { it.server.serverId.equals(currentServerId, true) }
+        val serverWithUsers = server.firstOrNull { it.server.serverId.equals(serverId, true) }
 
         return if (serverWithUsers != null) {
-            val defaultUser = serverWithUsers.users.first()
-
-            apiClient.update(accessToken = defaultUser.accessToken, baseUrl = serverWithUsers.server.baseUrl)
-
-            Ok(defaultUser.userId)
+            Ok(serverWithUsers.toServerAndUsers())
         } else {
             Err(LocalDataError.ServerNotExists)
         }
+    }
+
+    override suspend fun updateClient(baseUrl: String, accessToken: String) {
+        apiClient.update(accessToken = accessToken, baseUrl = baseUrl)
     }
 
     override suspend fun getServerBaseUrl(): Result<String, NetworkError> {
@@ -90,10 +98,10 @@ internal class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getContinuePlayingItems(): Result<List<ResumeItem>, NetworkError> {
+    override suspend fun getContinuePlayingItems(loggedInUserId: String): Result<List<ResumeItem>, NetworkError> {
         return safeApiCall {
             apiClient.itemsApi.getResumeItems(
-                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                userId = loggedInUserId.toUUID(),
                 limit = 12,
                 includeItemTypes = listOf(BaseItemKind.MOVIE, BaseItemKind.EPISODE)
             )
@@ -104,10 +112,10 @@ internal class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getLatestMovies(): Result<List<LatestItem>, NetworkError> {
+    override suspend fun getLatestMovies(loggedInUserId: String): Result<List<LatestItem>, NetworkError> {
         return safeApiCall {
             apiClient.userLibraryApi.getLatestMedia(
-                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                userId = loggedInUserId.toUUID(),
                 limit = 12,
                 includeItemTypes = listOf(BaseItemKind.MOVIE)
             )
@@ -116,10 +124,10 @@ internal class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getLatestShows(): Result<List<LatestItem>, NetworkError> {
+    override suspend fun getLatestShows(loggedInUserId: String): Result<List<LatestItem>, NetworkError> {
         return safeApiCall {
             apiClient.userLibraryApi.getLatestMedia(
-                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                userId = loggedInUserId.toUUID(),
                 limit = 12,
                 includeItemTypes = listOf(BaseItemKind.SERIES)
             )
@@ -128,12 +136,14 @@ internal class JellyfinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMediaDetails(mediaId: String): Result<BaseItemDto, NetworkError> {
+    override suspend fun getMediaDetails(mediaId: String, loggedInUserId: String): Result<MediaDetails, NetworkError> {
         return safeApiCall {
-            apiClient.userLibraryApi.getItem(
+            val content = apiClient.userLibraryApi.getItem(
                 UUID.fromString(mediaId),
-                userId = appPreferencesRepository.getLoggedInUser().toUUID()
+                userId = loggedInUserId.toUUID()
             ).content
+
+            mediaDetailsMapper.toMediaDetails(content, apiClient.baseUrl)
         }
     }
 
@@ -143,13 +153,14 @@ internal class JellyfinRepositoryImpl @Inject constructor(
         startTimeTicks: Int,
         audioStreamIndex: Int,
         subtitleStreamIndex: Int,
-        maxStreamingBitrate: Int
+        maxStreamingBitrate: Int,
+        loggedInUserId: String
     ): Result<String, NetworkError> {
         return safeApiCall {
             val response = apiClient.mediaInfoApi.getPostedPlaybackInfo(
                 itemId = mediaSourceId.toUUID(),
                 data = PlaybackInfoDto(
-                    userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                    userId = loggedInUserId.toUUID(),
                     startTimeTicks = startTimeTicks.toLong(),
                     maxStreamingBitrate = maxStreamingBitrate,
                     deviceProfile = DeviceProfile(

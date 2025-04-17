@@ -1,15 +1,14 @@
-package me.cniekirk.jellydroid.core.datastore.repository
+package me.cniekirk.jellydroid.core.datastore
 
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.first
-import me.cniekirk.jellydroid.core.datastore.AppPreferences
 import javax.inject.Inject
 
-class AppPreferencesRepositoryImpl @Inject constructor(
+class AppPreferencesDataSource @Inject constructor(
     private val datastore: DataStore<AppPreferences>
-) : AppPreferencesRepository {
+) {
 
-    override suspend fun setTermsScreenShown(shown: Boolean) {
+    suspend fun setTermsScreenShown(shown: Boolean) {
         datastore.updateData { currentData ->
             currentData.toBuilder()
                 .setTermsScreenShown(shown)
@@ -17,7 +16,7 @@ class AppPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun setCurrentServer(serverId: String) {
+    suspend fun setCurrentServer(serverId: String) {
         datastore.updateData { currentData ->
             currentData.toBuilder()
                 .setCurrentServer(serverId)
@@ -25,9 +24,9 @@ class AppPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCurrentServer(): String = datastore.data.first().currentServer
+    suspend fun getCurrentServer(): String = datastore.data.first().currentServer
 
-    override suspend fun setLoggedInUser(userId: String) {
+    suspend fun setLoggedInUser(userId: String) {
         datastore.updateData { currentData ->
             currentData.toBuilder()
                 .setCurrentUser(userId)
@@ -35,5 +34,5 @@ class AppPreferencesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getLoggedInUser(): String = datastore.data.first().currentUser
+    suspend fun getLoggedInUser(): String = datastore.data.first().currentUser
 }

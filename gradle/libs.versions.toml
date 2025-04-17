@@ -55,7 +55,7 @@ tv-compose = "1.0.0"
 haze = "1.0.0"
 libmpv = "0.4.1"
 media3 = "1.6.0"
-
+gradle-typesafe = "1.2.0"
 detekt = "1.23.8"
 
 [libraries]
@@ -173,6 +173,8 @@ org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt-plugin = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+co-hinge-gradle-project-accessors = { id = "co.hinge.gradle.project-accessors", version.ref = "gradle-typesafe" }
+
 
 jellydroid-android-application = { id = "jellydroid.android.application", version = "unspecified" }
 jellydroid-android-application-compose = { id = "jellydroid.android.application.compose", version = "unspecified" }

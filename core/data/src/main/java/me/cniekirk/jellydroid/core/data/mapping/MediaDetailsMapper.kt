@@ -1,9 +1,9 @@
-package me.cniekirk.jellydroid.core.domain.mapping
+package me.cniekirk.jellydroid.core.data.mapping
 
 import me.cniekirk.jellydroid.core.domain.model.AgeRating
 import me.cniekirk.jellydroid.core.domain.model.CommunityRating
 import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
-import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
+import me.cniekirk.jellydroid.core.domain.model.MediaDetails
 import org.jellyfin.sdk.model.api.BaseItemDto
 import javax.inject.Inject
 import kotlin.time.DurationUnit
@@ -11,12 +11,12 @@ import kotlin.time.toDuration
 
 class MediaDetailsMapper @Inject constructor() {
 
-    fun toUiModel(dataModel: BaseItemDto, baseUrl: String): MediaDetailsUiModel {
+    fun toMediaDetails(dataModel: BaseItemDto, baseUrl: String?): MediaDetails {
         val rating = dataModel.communityRating?.let {
             CommunityRating.StarRating(it)
         } ?: CommunityRating.NoRating
 
-        return MediaDetailsUiModel(
+        return MediaDetails(
             mediaId = dataModel.id.toString(),
             synopsis = dataModel.overview,
             primaryImageUrl = "$baseUrl/Items/${dataModel.id}/Images/Backdrop",

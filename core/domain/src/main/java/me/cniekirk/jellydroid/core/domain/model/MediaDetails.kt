@@ -13,7 +13,7 @@ data class MediaAttributes(
     val runtime: String?
 )
 
-data class MediaDetailsUiModel(
+data class MediaDetails(
     val mediaId: String,
     val synopsis: String?,
     val primaryImageUrl: String,

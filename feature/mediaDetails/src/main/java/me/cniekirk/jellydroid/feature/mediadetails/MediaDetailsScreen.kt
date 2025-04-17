@@ -28,13 +28,13 @@ import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import me.cniekirk.core.jellydroid.domain.model.AgeRating
-import me.cniekirk.core.jellydroid.domain.model.CommunityRating
-import me.cniekirk.core.jellydroid.domain.model.MediaAttributes
-import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.components.TopBarPage
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
+import me.cniekirk.jellydroid.core.domain.model.AgeRating
+import me.cniekirk.jellydroid.core.domain.model.CommunityRating
+import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
+import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
 import me.cniekirk.jellydroid.feature.mediadetails.components.Attributes
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

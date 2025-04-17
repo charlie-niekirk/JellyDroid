@@ -28,15 +28,11 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                implementation(project(":core:model"))
-//                add("implementation", project(":core:ui"))
-                implementation(project(":core:designsystem"))
-                implementation(project(":core:data"))
-                implementation(project(":core:common"))
-                implementation(project(":core:domain"))
-                implementation(project(":core:analytics"))
-
-//                add("androidTestImplementation", project(":core:testing"))
+                implementation(projects.core.model)
+                implementation(projects.core.designsystem)
+                implementation(projects.core.common)
+                implementation(projects.core.domain)
+                implementation(projects.core.analytics)
 
                 implementation(libs.findLibrary("hilt.navigation").get())
                 implementation(libs.findLibrary("androidx.navigation.compose").get())
@@ -52,7 +48,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 implementation(libs.findLibrary("kotlin.result.coroutines").get())
 
                 testImplementation(kotlin("test"))
-                testImplementation(project(":core:test"))
+                testImplementation(projects.core.test)
 
                 testImplementation(libs.findLibrary("orbit.test").get())
                 testImplementation(libs.findLibrary("mockk").get())

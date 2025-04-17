@@ -6,8 +6,8 @@ import androidx.navigation.toRoute
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaCollectionUseCase
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.domain.usecase.GetMediaCollectionUseCase
 import me.cniekirk.jellydroid.core.model.CollectionKind
 import me.cniekirk.jellydroid.feature.mediacollection.model.ErrorType
 import org.orbitmvi.orbit.ContainerHost

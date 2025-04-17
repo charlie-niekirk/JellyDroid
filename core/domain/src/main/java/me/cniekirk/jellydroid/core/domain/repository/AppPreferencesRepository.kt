@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.core.datastore.repository
+package me.cniekirk.jellydroid.core.domain.repository
 
 interface AppPreferencesRepository {
 
