@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCase
 import org.orbitmvi.orbit.ContainerHost
@@ -16,23 +17,32 @@ class MediaDetailsViewModel @Inject constructor(
     private val getMediaDetailsUseCase: GetMediaDetailsUseCase
 ) : ViewModel(), ContainerHost<MediaDetailsState, MediaDetailsEffect> {
 
-    private val args = savedStateHandle.toRoute<MediaDetails>()
+    private val args = savedStateHandle.toRoute<MediaDetailsRoute>()
 
     override val container = container<MediaDetailsState, MediaDetailsEffect>(MediaDetailsState(args.mediaTitle)) {
         loadMediaDetails(args.mediaId)
     }
 
     private fun loadMediaDetails(mediaId: String) = intent {
-        getMediaDetailsUseCase(mediaId).getMediaDetailsUseCase(mediaId).onFailure {
-            reduce {
-                state.copy(isLoading = false)
-                // TODO: Show error
+        getMediaDetailsUseCase(mediaId)
+            .onSuccess {
+                reduce {
+                    state.copy(
+                        isLoading = false,
+                        mediaDetails = it
+                    )
+                }
             }
-        }
+            .onFailure {
+                reduce {
+                    state.copy(isLoading = false)
+                    // TODO: Show error
+                }
+            }
     }
 
     fun onPlayClicked() = intent {
-        state.mediaDetailsUiModel?.also {
+        state.mediaDetails?.also {
             postSideEffect(
                 MediaDetailsEffect.NavigateToPlayer(it.mediaId)
             )

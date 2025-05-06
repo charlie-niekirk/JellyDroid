@@ -15,7 +15,7 @@ import me.cniekirk.jellydroid.core.domain.model.CommunityRating
 import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
 import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
-import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCaseImpl
+import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCase
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.MediaType
@@ -29,11 +29,11 @@ class GetMediaDetailsUseCaseImplTest {
     private val jellyfinRepository = mockk<JellyfinRepository>()
     private val mediaDetailsMapper = mockk<MediaDetailsMapper>()
 
-    private lateinit var sut: GetMediaDetailsUseCaseImpl
+    private lateinit var sut: GetMediaDetailsUseCase
 
     @Before
     fun setup() {
-        sut = GetMediaDetailsUseCaseImpl(jellyfinRepository, mediaDetailsMapper)
+        sut = GetMediaDetailsUseCase(jellyfinRepository, mediaDetailsMapper)
     }
 
     @Test

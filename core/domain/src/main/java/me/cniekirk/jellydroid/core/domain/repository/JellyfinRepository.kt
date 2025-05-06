@@ -1,13 +1,13 @@
 package me.cniekirk.jellydroid.core.domain.repository
 
 import com.github.michaelbull.result.Result
-import me.cniekirk.jellydroid.core.common.errors.LocalDataError
-import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.MediaDetails
 import me.cniekirk.jellydroid.core.domain.model.ServerAndUsers
 import me.cniekirk.jellydroid.core.model.LatestItem
 import me.cniekirk.jellydroid.core.model.ResumeItem
 import me.cniekirk.jellydroid.core.model.UserView
+import me.cniekirk.jellydroid.core.model.errors.LocalDataError
+import me.cniekirk.jellydroid.core.model.errors.NetworkError
 
 @Suppress("TooManyFunctions")
 interface JellyfinRepository {

@@ -1,15 +1,9 @@
 package me.cniekirk.jellydroid.core.domain.repository
 
 import com.github.michaelbull.result.Result
-import kotlinx.coroutines.flow.Flow
-import me.cniekirk.jellydroid.core.common.errors.NetworkError
-import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
+import me.cniekirk.jellydroid.core.model.errors.NetworkError
 
 interface AuthenticationRepository {
-
-    suspend fun discoverServers(): Flow<ServerDiscoveryInfo>
-
-    suspend fun connectToServer(serverDiscoveryInfo: ServerDiscoveryInfo)
 
     suspend fun connectToServer(address: String): Result<String, NetworkError>
 

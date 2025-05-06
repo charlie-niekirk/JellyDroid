@@ -34,7 +34,7 @@ import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.domain.model.AgeRating
 import me.cniekirk.jellydroid.core.domain.model.CommunityRating
 import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
-import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel
+import me.cniekirk.jellydroid.core.domain.model.MediaDetails
 import me.cniekirk.jellydroid.feature.mediadetails.components.Attributes
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -76,9 +76,9 @@ private fun MediaDetailsContent(
             modifier = Modifier.padding(innerPadding),
             isLoading = state.isLoading
         ) {
-            if (state.mediaDetailsUiModel != null) {
+            if (state.mediaDetails != null) {
                 Success(
-                    mediaDetailsUiModel = state.mediaDetailsUiModel,
+                    mediaDetails = state.mediaDetails,
                     onPlayClicked = { onPlayClicked() }
                 )
             } else {
@@ -92,7 +92,7 @@ const val THREE_BY_TWO_ASPECT_RATIO = 3f / 2f
 const val MIDDLE_GRADIENT = 0.8f
 
 @Composable
-private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () -> Unit) {
+private fun Success(mediaDetails: MediaDetails, onPlayClicked: () -> Unit) {
     val context = LocalPlatformContext.current
 
     Column(
@@ -111,7 +111,7 @@ private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () 
                     .aspectRatio(THREE_BY_TWO_ASPECT_RATIO),
                 painter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
-                        .data(mediaDetailsUiModel.primaryImageUrl)
+                        .data(mediaDetails.primaryImageUrl)
                         .crossfade(true)
                         .build(),
                     contentScale = ContentScale.Crop
@@ -147,10 +147,10 @@ private fun Success(mediaDetailsUiModel: MediaDetailsUiModel, onPlayClicked: () 
 
         Attributes(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-            mediaAttributes = mediaDetailsUiModel.mediaAttributes
+            mediaAttributes = mediaDetails.mediaAttributes
         )
 
-        mediaDetailsUiModel.synopsis?.let { synopsis ->
+        mediaDetails.synopsis?.let { synopsis ->
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = synopsis,
@@ -170,7 +170,7 @@ private fun MediaDetailsContentPreview() {
     val state = MediaDetailsState(
         isLoading = false,
         mediaTitle = title,
-        mediaDetailsUiModel = MediaDetailsUiModel(
+        mediaDetails = MediaDetails(
             mediaId = "1",
             synopsis = LoremIpsum(PREVIEW_LOREM_IPSUM_LENGTH).values.toList().first().toString(),
             primaryImageUrl = "",

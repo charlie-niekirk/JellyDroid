@@ -1,7 +1,7 @@
 package me.cniekirk.jellydroid.core.data.repository
 
 import com.github.michaelbull.result.Result
-import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.model.errors.NetworkError
 import me.cniekirk.jellydroid.core.data.mapping.MediaMapper
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.domain.model.MediaUiModel

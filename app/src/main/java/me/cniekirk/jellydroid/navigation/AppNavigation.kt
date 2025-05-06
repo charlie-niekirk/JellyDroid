@@ -41,7 +41,7 @@ import me.cniekirk.jellydroid.feature.home.mobile.home
 import me.cniekirk.jellydroid.feature.mediacollection.CollectionType
 import me.cniekirk.jellydroid.feature.mediacollection.MediaCollection
 import me.cniekirk.jellydroid.feature.mediacollection.mediaCollection
-import me.cniekirk.jellydroid.feature.mediadetails.MediaDetails
+import me.cniekirk.jellydroid.feature.mediadetails.MediaDetailsRoute
 import me.cniekirk.jellydroid.feature.mediadetails.mediaDetails
 import me.cniekirk.jellydroid.feature.mediaplayer.MediaPlayer
 import me.cniekirk.jellydroid.feature.mediaplayer.mediaPlayer
@@ -186,7 +186,7 @@ fun MainBottomBarNavigation(
                 },
                 onResumeItemClicked = {},
                 onMediaItemClicked = { id, name ->
-                    navHostController.navigate(MediaDetails(id, name))
+                    navHostController.navigate(MediaDetailsRoute(id, name))
                 },
                 navigateToSettings = { navigateToSettings() }
             )

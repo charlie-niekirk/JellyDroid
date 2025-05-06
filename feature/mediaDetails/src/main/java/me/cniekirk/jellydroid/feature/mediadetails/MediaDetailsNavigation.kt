@@ -11,7 +11,7 @@ fun NavGraphBuilder.mediaDetails(
     onPlayClicked: (String) -> Unit,
     onBackClicked: () -> Unit
 ) {
-    composable<MediaDetails>(
+    composable<MediaDetailsRoute>(
         enterTransition = { enterAnimation() },
         popExitTransition = { popExitAnimation() }
     ) {
@@ -25,7 +25,7 @@ fun NavGraphBuilder.mediaDetails(
 }
 
 @Serializable
-data class MediaDetails(
+data class MediaDetailsRoute(
     val mediaId: String,
     val mediaTitle: String
 )

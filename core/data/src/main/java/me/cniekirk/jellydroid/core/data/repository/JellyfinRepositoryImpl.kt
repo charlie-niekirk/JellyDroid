@@ -5,13 +5,12 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.map
-import me.cniekirk.jellydroid.core.common.errors.LocalDataError
-import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.model.errors.LocalDataError
+import me.cniekirk.jellydroid.core.model.errors.NetworkError
 import me.cniekirk.jellydroid.core.data.mapping.MediaDetailsMapper
 import me.cniekirk.jellydroid.core.data.mapping.toLatestItem
 import me.cniekirk.jellydroid.core.data.mapping.toResumeItem
 import me.cniekirk.jellydroid.core.data.mapping.toServerAndUsers
-import me.cniekirk.jellydroid.core.data.mapping.toUser
 import me.cniekirk.jellydroid.core.data.mapping.toUserView
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao

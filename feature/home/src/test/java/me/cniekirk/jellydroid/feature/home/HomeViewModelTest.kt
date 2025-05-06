@@ -9,7 +9,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.test.runTest
 import me.cniekirk.core.jellydroid.domain.model.HomeStructure
 import me.cniekirk.core.jellydroid.domain.usecase.GetHomeStructureUseCase
-import me.cniekirk.jellydroid.core.common.errors.NetworkError
+import me.cniekirk.jellydroid.core.model.errors.NetworkError
 import me.cniekirk.jellydroid.core.model.LatestItems
 import me.cniekirk.jellydroid.feature.home.mobile.HomeEffect
 import me.cniekirk.jellydroid.feature.home.mobile.HomeViewModel

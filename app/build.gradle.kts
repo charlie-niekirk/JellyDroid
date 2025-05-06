@@ -62,13 +62,14 @@ android {
 
 dependencies {
     implementation(projects.core.model)
-    api(projects.core.designsystem)
-    api(projects.feature.onboarding)
-    api(projects.feature.home)
-    api(projects.feature.mediaCollection)
-    api(projects.feature.mediaDetails)
-    api(projects.feature.mediaPlayer)
-    api(projects.feature.settings)
+    implementation(projects.core.data)
+    implementation(projects.core.designsystem)
+    implementation(projects.feature.onboarding)
+    implementation(projects.feature.home)
+    implementation(projects.feature.mediaCollection)
+    implementation(projects.feature.mediaDetails)
+    implementation(projects.feature.mediaPlayer)
+    implementation(projects.feature.settings)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

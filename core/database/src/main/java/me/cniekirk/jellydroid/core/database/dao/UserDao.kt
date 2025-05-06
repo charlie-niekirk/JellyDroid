@@ -4,14 +4,14 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import me.cniekirk.jellydroid.core.database.entity.User
+import me.cniekirk.jellydroid.core.database.entity.UserDto
 
 @Dao
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg user: User)
+    fun insertAll(vararg user: UserDto)
 
     @Delete
-    fun delete(user: User)
+    fun delete(user: UserDto)
 }

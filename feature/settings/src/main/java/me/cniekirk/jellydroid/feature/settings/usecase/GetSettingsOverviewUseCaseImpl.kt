@@ -3,7 +3,7 @@ package me.cniekirk.jellydroid.feature.settings.usecase
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.map
-import me.cniekirk.jellydroid.core.common.errors.LocalDataError
+import me.cniekirk.jellydroid.core.model.errors.LocalDataError
 import me.cniekirk.jellydroid.core.domain.repository.SettingsRepository
 import me.cniekirk.jellydroid.feature.settings.model.SettingsOverviewUiModel
 import javax.inject.Inject
