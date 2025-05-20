@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.core.domain.model
+package me.cniekirk.jellydroid.core.domain.model.mediaDetails
 
 data class AgeRating(
     val ratingName: String,

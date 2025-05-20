@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
-import me.cniekirk.jellydroid.core.model.CollectionKind
-import me.cniekirk.jellydroid.core.model.LatestItem
-import me.cniekirk.jellydroid.core.model.ResumeItem
-import me.cniekirk.jellydroid.core.model.UserView
+import me.cniekirk.jellydroid.core.domain.model.ResumeItem
+import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
+import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
+import me.cniekirk.jellydroid.core.domain.model.views.UserView
 import me.cniekirk.jellydroid.feature.home.R
 import me.cniekirk.jellydroid.feature.home.mobile.components.LatestMediaItems
 import me.cniekirk.jellydroid.feature.home.mobile.components.ResumeItems

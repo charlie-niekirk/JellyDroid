@@ -1,7 +1,7 @@
 package me.cniekirk.jellydroid.feature.home.mobile.components.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import me.cniekirk.jellydroid.core.model.ResumeItem
+import me.cniekirk.jellydroid.core.domain.model.ResumeItem
 
 class ResumeItemPreviewProvider : PreviewParameterProvider<ResumeItem> {
 

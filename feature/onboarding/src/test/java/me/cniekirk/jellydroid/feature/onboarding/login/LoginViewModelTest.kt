@@ -5,7 +5,7 @@ import com.github.michaelbull.result.Ok
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import me.cniekirk.jellydroid.core.model.errors.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.core.test.SavedStateHandleRule
 import me.cniekirk.jellydroid.feature.onboarding.OnboardingRoute

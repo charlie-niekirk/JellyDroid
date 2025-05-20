@@ -1,6 +1,6 @@
 package me.cniekirk.jellydroid.core.data.mapping
 
-import me.cniekirk.jellydroid.core.model.LatestItem
+import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
 import org.jellyfin.sdk.model.api.BaseItemDto
 
 fun BaseItemDto.toLatestItem(serverUrl: String?): LatestItem {

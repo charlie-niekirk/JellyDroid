@@ -1,7 +1,7 @@
 package me.cniekirk.jellydroid.core.data.mapping
 
-import me.cniekirk.jellydroid.core.model.CollectionKind
-import me.cniekirk.jellydroid.core.model.UserView
+import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
+import me.cniekirk.jellydroid.core.domain.model.views.UserView
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.CollectionType
 

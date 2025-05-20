@@ -3,8 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.model)
-
     implementation(libs.coroutines.core)
     implementation(libs.javax.inject)
     implementation(libs.kotlin.result)

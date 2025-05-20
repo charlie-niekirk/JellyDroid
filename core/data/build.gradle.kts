@@ -10,7 +10,6 @@ android {
 
 dependencies {
     implementation(projects.core.common)
-    implementation(projects.core.model)
     implementation(projects.core.database)
     implementation(projects.core.datastore)
     implementation(projects.core.domain)

@@ -1,7 +1,7 @@
 package me.cniekirk.jellydroid.core.data.mapping
 
 import me.cniekirk.jellydroid.core.database.entity.UserDto
-import me.cniekirk.jellydroid.core.domain.model.User
+import me.cniekirk.jellydroid.core.domain.model.servers.User
 import org.jellyfin.sdk.model.api.AuthenticationResult
 
 fun AuthenticationResult.toUserDto(): UserDto {

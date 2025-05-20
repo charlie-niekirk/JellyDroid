@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- This item defines the overall intrinsic size of the drawable (200dp x 300dp)
+         and provides a background color that adapts to the theme. -->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Use a color resource for the background.
+                 This color will be defined differently for light and dark themes. -->
+            <solid android:color="@color/custom_drawable_background" />
+
+            <size
+                android:width="200dp"
+                android:height="300dp" />
+
+            <!--
+            <stroke
+                android:width="1dp"
+                android:color="@color/custom_drawable_border" />
+            -->
+
+            <!--
+            <corners android:radius="8dp" />
+            -->
+        </shape>
+    </item>
+
+    <!-- This item places an icon on top of the background rectangle.
+         android:gravity="center" ensures it's centered.
+         android:tint is used to color the icon, adapting to the theme. -->
+    <item
+        android:drawable="@drawable/person" android:width="64dp"
+        android:height="64dp"
+        android:gravity="center"
+        android:tint="@color/custom_drawable_icon_tint" /> <!--
+    Note on the icon:
+    Using "@android:drawable/ic_menu_person" refers to a system-provided icon.
+    Its appearance can vary across Android versions and devices.
+    For a consistent look, it's generally recommended to include your own
+    vector drawable asset for the person icon (e.g., ic_person.xml)
+    and reference it here like: android:drawable="@drawable/ic_person".
+    If using your own vector drawable, ensure it's suitable for tinting (e.g., single color paths).
+    -->
+
+</layer-list>

@@ -1,9 +1,4 @@
-package me.cniekirk.jellydroid.core.model
-
-enum class CollectionKind {
-    MOVIES,
-    SERIES
-}
+package me.cniekirk.jellydroid.core.domain.model.views
 
 data class UserView(
     val id: String,

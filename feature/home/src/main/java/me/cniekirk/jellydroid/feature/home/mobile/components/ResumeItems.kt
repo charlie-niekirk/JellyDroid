@@ -34,7 +34,7 @@ import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
-import me.cniekirk.jellydroid.core.model.ResumeItem
+import me.cniekirk.jellydroid.core.domain.model.ResumeItem
 import me.cniekirk.jellydroid.feature.home.R
 
 @Composable

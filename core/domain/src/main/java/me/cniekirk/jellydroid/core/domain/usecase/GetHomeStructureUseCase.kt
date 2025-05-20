@@ -2,11 +2,11 @@ package me.cniekirk.jellydroid.core.domain.usecase
 
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.coroutines.coroutineBinding
-import me.cniekirk.jellydroid.core.domain.model.HomeStructure
+import me.cniekirk.jellydroid.core.domain.model.views.HomeStructure
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
-import me.cniekirk.jellydroid.core.model.LatestItems
-import me.cniekirk.jellydroid.core.model.errors.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.latest.LatestItems
 import javax.inject.Inject
 
 class GetHomeStructureUseCase @Inject constructor(

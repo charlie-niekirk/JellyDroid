@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.core.model
+package me.cniekirk.jellydroid.core.domain.model
 
 enum class MediaType {
     MOVIES,

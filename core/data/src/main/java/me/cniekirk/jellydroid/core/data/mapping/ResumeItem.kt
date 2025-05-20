@@ -1,6 +1,6 @@
 package me.cniekirk.jellydroid.core.data.mapping
 
-import me.cniekirk.jellydroid.core.model.ResumeItem
+import me.cniekirk.jellydroid.core.domain.model.ResumeItem
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
 

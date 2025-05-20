@@ -1,11 +1,11 @@
 package me.cniekirk.jellydroid.feature.mediacollection
 
-import me.cniekirk.jellydroid.core.domain.model.MediaUiModel
+import me.cniekirk.jellydroid.core.domain.model.Media
 import me.cniekirk.jellydroid.feature.mediacollection.model.ErrorType
 
 data class MediaCollectionState(
     val isLoading: Boolean = true,
-    val collectionItems: List<MediaUiModel> = listOf(),
+    val collectionItems: List<Media> = listOf(),
     val collectionId: String,
     val collectionName: String
 )

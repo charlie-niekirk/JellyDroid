@@ -2,7 +2,7 @@ package me.cniekirk.jellydroid.feature.mediaplayer.usecase
 
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.coroutines.coroutineBinding
-import me.cniekirk.jellydroid.core.model.errors.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import timber.log.Timber

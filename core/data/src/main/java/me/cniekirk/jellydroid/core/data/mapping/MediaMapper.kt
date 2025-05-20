@@ -1,14 +1,14 @@
 package me.cniekirk.jellydroid.core.data.mapping
 
-import me.cniekirk.jellydroid.core.domain.model.MediaUiModel
+import me.cniekirk.jellydroid.core.domain.model.Media
 import org.jellyfin.sdk.model.api.BaseItemDto
 import javax.inject.Inject
 
 class MediaMapper @Inject constructor() {
 
-    fun toUiModel(dataModel: BaseItemDto, baseUrl: String?): MediaUiModel? {
+    fun toUiModel(dataModel: BaseItemDto, baseUrl: String?): Media? {
         return dataModel.name?.let { name ->
-            MediaUiModel(
+            Media(
                 id = dataModel.id.toString(),
                 name = name,
                 thumbnailUrl = "$baseUrl/Items/${dataModel.id}/Images/Primary"

@@ -9,8 +9,8 @@ android {
 }
 
 dependencies {
-
     implementation(libs.immutable)
     implementation(libs.coil.compose)
+    implementation(libs.accompanist.drawable.painter)
     implementation(libs.haze)
 }

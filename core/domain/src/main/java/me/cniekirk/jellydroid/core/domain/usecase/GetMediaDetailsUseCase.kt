@@ -2,10 +2,10 @@ package me.cniekirk.jellydroid.core.domain.usecase
 
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
-import me.cniekirk.jellydroid.core.domain.model.MediaDetails
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
-import me.cniekirk.jellydroid.core.model.errors.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaDetails
 import javax.inject.Inject
 
 class GetMediaDetailsUseCase @Inject constructor(

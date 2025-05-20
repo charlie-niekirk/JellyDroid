@@ -9,8 +9,6 @@ android {
 }
 
 dependencies {
-//    api(projects.core.common)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.retrofit)
     implementation(libs.logging.interceptor)

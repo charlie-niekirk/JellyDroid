@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
-import me.cniekirk.jellydroid.core.domain.model.AgeRating
-import me.cniekirk.jellydroid.core.domain.model.CommunityRating
-import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.AgeRating
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.CommunityRating
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaAttributes
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.core.designsystem.theme.exitAnimation
 import me.cniekirk.jellydroid.core.designsystem.theme.popEnterAnimation
-import me.cniekirk.jellydroid.core.model.CollectionKind
+import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
 
 fun NavGraphBuilder.home(
     onUserViewClicked: (String, String, CollectionKind) -> Unit,

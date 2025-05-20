@@ -2,10 +2,10 @@ package me.cniekirk.jellydroid.feature.home.mobile
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import me.cniekirk.jellydroid.core.model.errors.NetworkError
-import me.cniekirk.jellydroid.core.model.LatestItem
-import me.cniekirk.jellydroid.core.model.ResumeItem
-import me.cniekirk.jellydroid.core.model.UserView
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.ResumeItem
+import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
+import me.cniekirk.jellydroid.core.domain.model.views.UserView
 
 data class HomeState(
     val isLoading: Boolean = true,

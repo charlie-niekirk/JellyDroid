@@ -1,13 +1,13 @@
 package me.cniekirk.jellydroid.core.data.repository
 
 import com.github.michaelbull.result.Result
-import me.cniekirk.jellydroid.core.model.errors.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.data.mapping.MediaMapper
 import me.cniekirk.jellydroid.core.data.safeApiCall
-import me.cniekirk.jellydroid.core.domain.model.MediaUiModel
+import me.cniekirk.jellydroid.core.domain.model.Media
+import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.MediaRepository
-import me.cniekirk.jellydroid.core.model.CollectionKind
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.model.api.BaseItemKind
@@ -26,7 +26,7 @@ internal class MediaRepositoryImpl @Inject constructor(
         collectionId: String?,
         collectionKind: CollectionKind,
         query: String?
-    ): Result<List<MediaUiModel>, NetworkError> {
+    ): Result<List<Media>, NetworkError> {
         val itemTypes = when (collectionKind) {
             CollectionKind.MOVIES -> listOf(BaseItemKind.MOVIE)
             CollectionKind.SERIES -> listOf(BaseItemKind.SERIES)

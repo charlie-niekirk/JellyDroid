@@ -1,6 +1,6 @@
 package me.cniekirk.jellydroid.core.domain.model
 
-data class MediaUiModel(
+data class Media(
     val id: String,
     val name: String,
     val thumbnailUrl: String,

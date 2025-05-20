@@ -3,38 +3,64 @@ package me.cniekirk.jellydroid.feature.mediadetails
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
+import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.components.TopBarPage
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
-import me.cniekirk.jellydroid.core.domain.model.AgeRating
-import me.cniekirk.jellydroid.core.domain.model.CommunityRating
-import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
-import me.cniekirk.jellydroid.core.domain.model.MediaDetails
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.AgeRating
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.CommunityRating
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaAttributes
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaDetails
 import me.cniekirk.jellydroid.feature.mediadetails.components.Attributes
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -91,6 +117,7 @@ private fun MediaDetailsContent(
 const val THREE_BY_TWO_ASPECT_RATIO = 3f / 2f
 const val MIDDLE_GRADIENT = 0.8f
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Success(mediaDetails: MediaDetails, onPlayClicked: () -> Unit) {
     val context = LocalPlatformContext.current
@@ -99,6 +126,7 @@ private fun Success(mediaDetails: MediaDetails, onPlayClicked: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState()),
     ) {
         Box(
             modifier = Modifier
@@ -157,6 +185,61 @@ private fun Success(mediaDetails: MediaDetails, onPlayClicked: () -> Unit) {
                 style = MaterialTheme.typography.bodyMedium
             )
         }
+
+        Text(
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp),
+            text = stringResource(R.string.media_details_people),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(mediaDetails.people) { person ->
+                Column {
+                    val drawable = remember(context, R.drawable.person_placeholder) {
+                        ContextCompat.getDrawable(context, R.drawable.person_placeholder)
+                    }
+
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(width = 120.dp, height = 180.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(person.imageUrl)
+                            .crossfade(true)
+                            .build(),
+                        error = rememberDrawablePainter(drawable),
+                        contentDescription = person.name,
+                        contentScale = ContentScale.Crop
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .width(120.dp)
+                            .padding(top = 4.dp),
+                        text = person.name,
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+
+                    Text(
+                        modifier = Modifier.width(120.dp),
+                        text = person.role,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -182,7 +265,8 @@ private fun MediaDetailsContentPreview() {
                 communityRating = CommunityRating.StarRating(PREVIEW_STAR_RATING),
                 runtime = "1h 32m",
             ),
-            mediaPath = ""
+            mediaPath = "",
+            people = listOf()
         )
     )
     CoilPreview {

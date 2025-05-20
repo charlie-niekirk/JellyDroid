@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.core.model
+package me.cniekirk.jellydroid.core.domain.model
 
 data class ResumeItem(
     val id: String,

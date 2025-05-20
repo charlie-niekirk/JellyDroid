@@ -35,7 +35,7 @@ import me.cniekirk.jellydroid.R
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultExit
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopEnter
-import me.cniekirk.jellydroid.core.model.CollectionKind
+import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
 import me.cniekirk.jellydroid.feature.home.mobile.Home
 import me.cniekirk.jellydroid.feature.home.mobile.home
 import me.cniekirk.jellydroid.feature.mediacollection.CollectionType

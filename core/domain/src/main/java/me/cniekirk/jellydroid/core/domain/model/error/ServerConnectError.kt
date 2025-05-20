@@ -1,4 +1,4 @@
-package me.cniekirk.jellydroid.core.model.errors
+package me.cniekirk.jellydroid.core.domain.model.error
 
 sealed interface ServerConnectError {
 

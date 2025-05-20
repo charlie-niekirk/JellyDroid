@@ -3,7 +3,7 @@ package me.cniekirk.jellydroid.core.data.repository
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.runCatching
-import me.cniekirk.jellydroid.core.model.errors.LocalDataError
+import me.cniekirk.jellydroid.core.domain.model.error.LocalDataError
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
 import me.cniekirk.jellydroid.core.domain.repository.SettingsRepository
 import javax.inject.Inject

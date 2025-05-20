@@ -10,7 +10,7 @@ import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.cniekirk.jellydroid.core.common.errors.NetworkError
 import me.cniekirk.jellydroid.core.domain.mapping.MediaDetailsMapper
-import me.cniekirk.jellydroid.core.domain.model.AgeRating
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.AgeRating
 import me.cniekirk.jellydroid.core.domain.model.CommunityRating
 import me.cniekirk.jellydroid.core.domain.model.MediaAttributes
 import me.cniekirk.jellydroid.core.domain.model.MediaDetailsUiModel

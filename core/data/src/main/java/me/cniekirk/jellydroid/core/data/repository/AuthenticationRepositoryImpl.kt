@@ -4,7 +4,7 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
-import me.cniekirk.jellydroid.core.model.errors.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.data.mapping.toUserDto
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
@@ -50,17 +50,6 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
             }
     }
 
-    private suspend fun getSingleServer(address: String): Result<RecommendedServerInfo, NetworkError> {
-        return safeApiCall {
-            val servers = jellyfin.discovery.getRecommendedServers(address, RecommendedServerInfoScore.GOOD)
-            if (servers.isNotEmpty()) {
-                servers.first()
-            } else {
-                throw InvalidContentException()
-            }
-        }
-    }
-
     override suspend fun authenticateUser(username: String, password: String): Result<Unit, NetworkError> {
         return safeApiCall {
             val authResult by apiClient.userApi.authenticateUserByName(
@@ -75,6 +64,17 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
             userDao.insertAll(user)
             appPreferencesRepository.setLoggedInUser(user.userId)
             apiClient.update(accessToken = authResult.accessToken)
+        }
+    }
+
+    private suspend fun getSingleServer(address: String): Result<RecommendedServerInfo, NetworkError> {
+        return safeApiCall {
+            val servers = jellyfin.discovery.getRecommendedServers(address, RecommendedServerInfoScore.GOOD)
+            if (servers.isNotEmpty()) {
+                servers.first()
+            } else {
+                throw InvalidContentException()
+            }
         }
     }
 }
