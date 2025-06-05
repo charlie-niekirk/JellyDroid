@@ -2,8 +2,8 @@ package me.cniekirk.jellydroid.feature.home.mobile
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.ResumeItem
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
 import me.cniekirk.jellydroid.core.domain.model.views.UserView
 

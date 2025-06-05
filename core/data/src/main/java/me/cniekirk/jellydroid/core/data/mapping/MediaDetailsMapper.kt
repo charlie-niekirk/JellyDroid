@@ -60,6 +60,7 @@ class MediaDetailsMapper @Inject constructor() {
         }
     }
 
+    @Suppress("ReturnCount")
     private fun BaseItemPerson.toPerson(baseUrl: String): Person? {
         val name = name ?: return null
         val role = role ?: return null
@@ -76,6 +77,7 @@ class MediaDetailsMapper @Inject constructor() {
         )
     }
 
+    @Suppress("CyclomaticComplexMethod")
     private fun mapPersonKindToCreativeDomain(personKind: PersonKind): CreativeDomain {
         return when (personKind) {
             PersonKind.UNKNOWN -> CreativeDomain.Unspecified
@@ -86,7 +88,6 @@ class MediaDetailsMapper @Inject constructor() {
             PersonKind.PRODUCER -> CreativeDomain.FilmAndTelevision(FilmTvSubRole.PRODUCER)
             PersonKind.CREATOR -> CreativeDomain.FilmAndTelevision(FilmTvSubRole.CREATOR)
             PersonKind.WRITER -> CreativeDomain.FilmAndTelevision(FilmTvSubRole.WRITER)
-
 
             PersonKind.COMPOSER -> CreativeDomain.Music(MusicSubRole.COMPOSER)
             PersonKind.CONDUCTOR -> CreativeDomain.Music(MusicSubRole.CONDUCTOR)

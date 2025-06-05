@@ -28,7 +28,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-internal fun ServerSelectionRoute(
+fun ServerSelectionRoute(
     viewModel: ServerSelectionViewModel,
     navigateToLogin: (String) -> Unit
 ) {

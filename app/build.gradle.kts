@@ -64,6 +64,7 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
+    implementation(projects.core.navigation)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.home)
     implementation(projects.feature.mediaCollection)
@@ -81,6 +82,12 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.org.jetbrains.kotlinx.serialization)
+    implementation(libs.org.jetbrains.kotlinx.serialization.json)
+
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.material3.navigation3)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
     implementation(libs.ktor.android)
     implementation(libs.coil.network.ktor2)

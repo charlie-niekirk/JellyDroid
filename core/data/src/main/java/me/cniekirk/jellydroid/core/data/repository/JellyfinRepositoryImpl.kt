@@ -5,8 +5,6 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.map
-import me.cniekirk.jellydroid.core.domain.model.error.LocalDataError
-import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.data.mapping.MediaDetailsMapper
 import me.cniekirk.jellydroid.core.data.mapping.toLatestItem
 import me.cniekirk.jellydroid.core.data.mapping.toResumeItem
@@ -14,12 +12,14 @@ import me.cniekirk.jellydroid.core.data.mapping.toServerAndUsers
 import me.cniekirk.jellydroid.core.data.mapping.toUserView
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
-import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import me.cniekirk.jellydroid.core.domain.model.ResumeItem
+import me.cniekirk.jellydroid.core.domain.model.error.LocalDataError
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaDetails
 import me.cniekirk.jellydroid.core.domain.model.servers.ServerAndUsers
 import me.cniekirk.jellydroid.core.domain.model.views.UserView
+import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
