@@ -5,23 +5,15 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import me.cniekirk.core.jellydroid.domain.model.AgeRating
-import me.cniekirk.core.jellydroid.domain.model.CommunityRating
-import me.cniekirk.core.jellydroid.domain.model.MediaAttributes
-import me.cniekirk.core.jellydroid.domain.model.MediaDetailsUiModel
-import me.cniekirk.core.jellydroid.domain.usecase.GetMediaDetailsUseCase
-import me.cniekirk.jellydroid.core.test.SavedStateHandleRule
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.AgeRating
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.CommunityRating
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaAttributes
+import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCase
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.orbitmvi.orbit.test.test
 
 class MediaDetailsViewModelTest {
-
-    private val route = MediaDetails(MEDIA_ID, MEDIA_TITLE)
-
-    @get:Rule
-    val savedStateHandleRule = SavedStateHandleRule(route)
 
     private val getMediaDetailsUseCase = mockk<GetMediaDetailsUseCase>()
 
@@ -30,14 +22,14 @@ class MediaDetailsViewModelTest {
     @Before
     fun setup() {
         underTest = MediaDetailsViewModel(
-            savedStateHandleRule.savedStateHandleMock,
-            getMediaDetailsUseCase
+            args = MediaDetails(MEDIA_ID, MEDIA_TITLE),
+            getMediaDetailsUseCase = getMediaDetailsUseCase
         )
     }
 
     @Test
     fun `test loadMediaDetails called with correct mediaId`() = runTest {
-        val expected = MediaDetailsUiModel(
+        val expected = me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaDetails(
             mediaId = MEDIA_ID,
             synopsis = "synopsis",
             primaryImageUrl = "https://image.com/img.png",
@@ -49,7 +41,8 @@ class MediaDetailsViewModelTest {
                 ),
                 runtime = null
             ),
-            mediaPath = "path/to/media"
+            mediaPath = "path/to/media",
+            people = listOf()
         )
         coEvery { getMediaDetailsUseCase(MEDIA_ID) } returns Ok(expected)
 
@@ -60,7 +53,7 @@ class MediaDetailsViewModelTest {
             expectState {
                 copy(
                     isLoading = false,
-                    mediaDetailsUiModel = expected
+                    mediaDetails = expected
                 )
             }
         }

@@ -5,16 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
-import me.cniekirk.jellydroid.navigation.JellydroidNavHost
+import me.cniekirk.jellydroid.navigation.JellydroidRootNavigation
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -24,10 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             JellyDroidTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    val navHostController = rememberNavController()
-                    JellydroidNavHost(
-                        modifier = Modifier.statusBarsPadding(),
-                        navHostController = navHostController
+                    JellydroidRootNavigation(
+                        modifier = Modifier.statusBarsPadding()
                     )
                 }
             }

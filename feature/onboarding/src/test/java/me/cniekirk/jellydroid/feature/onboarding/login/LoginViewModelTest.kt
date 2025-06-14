@@ -7,19 +7,12 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
-import me.cniekirk.jellydroid.core.test.SavedStateHandleRule
-import me.cniekirk.jellydroid.feature.onboarding.OnboardingRoute
+import me.cniekirk.jellydroid.feature.onboarding.OnboardingNavigation
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.orbitmvi.orbit.test.test
 
 class LoginViewModelTest {
-
-    private val route = OnboardingRoute.Login(SERVER_NAME)
-
-    @get:Rule
-    val savedStateHandleRule = SavedStateHandleRule(route)
 
     private val authenticationRepository = mockk<AuthenticationRepository>()
 
@@ -28,7 +21,7 @@ class LoginViewModelTest {
     @Before
     fun setup() {
         underTest = LoginViewModel(
-            savedStateHandle = savedStateHandleRule.savedStateHandleMock,
+            args = OnboardingNavigation.Login(SERVER_NAME),
             authenticationRepository = authenticationRepository
         )
     }

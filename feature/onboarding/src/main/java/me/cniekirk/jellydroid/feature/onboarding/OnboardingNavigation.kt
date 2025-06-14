@@ -1,40 +1,81 @@
 package me.cniekirk.jellydroid.feature.onboarding
 
+import androidx.compose.animation.togetherWith
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
+import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
+import me.cniekirk.jellydroid.core.designsystem.theme.enterAnimation
+import me.cniekirk.jellydroid.core.designsystem.theme.exitAnimation
+import me.cniekirk.jellydroid.core.designsystem.theme.popEnterAnimation
+import me.cniekirk.jellydroid.core.designsystem.theme.popExitAnimation
 import me.cniekirk.jellydroid.feature.onboarding.landing.LandingRoute
 import me.cniekirk.jellydroid.feature.onboarding.landing.LandingViewModel
 import me.cniekirk.jellydroid.feature.onboarding.login.LoginRoute
 import me.cniekirk.jellydroid.feature.onboarding.login.LoginViewModel
+import me.cniekirk.jellydroid.feature.onboarding.serverselection.ServerSelectionRoute
+import me.cniekirk.jellydroid.feature.onboarding.serverselection.ServerSelectionViewModel
 
-@Serializable
-data object Landing
+object OnboardingNavigation {
 
-@Serializable
-data class Login(val serverName: String) : NavKey
+    interface OnboardingNavKey : NavKey
 
-fun EntryProviderBuilder<*>.landing(
-    navigateToServerSelection: () -> Unit,
+    @Serializable
+    data object Landing : OnboardingNavKey
+
+    @Serializable
+    data object ServerSelection : OnboardingNavKey
+
+    @Serializable
+    data class Login(val serverName: String) : OnboardingNavKey
+}
+
+fun EntryProviderBuilder<NavKey>.onboardingModuleEntries(
+    navBackStack: NavBackStack,
     navigateToHome: () -> Unit
 ) {
-    entry<Landing> {
+    entry<OnboardingNavigation.Landing>(
+        metadata = NavDisplay.transitionSpec {
+            enterAnimation() togetherWith exitAnimation()
+        } + NavDisplay.popTransitionSpec {
+            popEnterAnimation() togetherWith popExitAnimation()
+        }
+    ) {
         val viewModel = hiltViewModel<LandingViewModel>()
         LandingRoute(
             viewModel = viewModel,
-            navigateToServerSelection = { navigateToServerSelection() },
+            navigateToServerSelection = { navBackStack.add(OnboardingNavigation.ServerSelection) },
             navigateToHome = { navigateToHome() }
         )
     }
-}
 
-fun EntryProviderBuilder<*>.login(
-    navigateToHome: () -> Unit
-) {
-    entry<Login> { key ->
-        val viewModel = hiltViewModel<LoginViewModel>()
+    entry<OnboardingNavigation.ServerSelection>(
+        metadata = NavDisplay.transitionSpec {
+            enterAnimation() togetherWith exitAnimation()
+        } + NavDisplay.popTransitionSpec {
+            popEnterAnimation() togetherWith popExitAnimation()
+        }
+    ) {
+        val viewModel = hiltViewModel<ServerSelectionViewModel>()
+        ServerSelectionRoute(
+            viewModel = viewModel,
+            navigateToLogin = { navBackStack.add(OnboardingNavigation.Login(it)) }
+        )
+    }
+
+    entry<OnboardingNavigation.Login>(
+        metadata = NavDisplay.transitionSpec {
+            enterAnimation() togetherWith exitAnimation()
+        } + NavDisplay.popTransitionSpec {
+            popEnterAnimation() togetherWith popExitAnimation()
+        }
+    ) { key ->
+        val viewModel = hiltViewModel<LoginViewModel, LoginViewModel.Factory>(
+            creationCallback = { factory -> factory.create(key) }
+        )
         LoginRoute(viewModel) {
             navigateToHome()
         }

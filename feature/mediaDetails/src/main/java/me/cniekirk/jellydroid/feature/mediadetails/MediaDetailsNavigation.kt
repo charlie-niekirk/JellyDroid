@@ -1,31 +1,34 @@
 package me.cniekirk.jellydroid.feature.mediadetails
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entry
 import kotlinx.serialization.Serializable
-import me.cniekirk.jellydroid.core.designsystem.theme.enterAnimation
-import me.cniekirk.jellydroid.core.designsystem.theme.popExitAnimation
 
-fun NavGraphBuilder.mediaDetails(
+fun EntryProviderBuilder<*>.mediaDetails(
     onPlayClicked: (String) -> Unit,
     onBackClicked: () -> Unit
 ) {
-    composable<MediaDetailsRoute>(
-        enterTransition = { enterAnimation() },
-        popExitTransition = { popExitAnimation() }
-    ) {
-        val viewModel = hiltViewModel<MediaDetailsViewModel>()
+    entry<MediaDetails> { key ->
+        val playClicked by rememberUpdatedState(onPlayClicked)
+        val backClicked by rememberUpdatedState(onBackClicked)
+
+        val viewModel = hiltViewModel<MediaDetailsViewModel, MediaDetailsViewModel.Factory>(
+            creationCallback = { factory -> factory.create(key) }
+        )
         MediaDetailsScreen(
             viewModel = viewModel,
-            onPlayClicked = { onPlayClicked(it) },
-            onBackClicked = { onBackClicked() }
+            onPlayClicked = { playClicked(it) },
+            onBackClicked = { backClicked() }
         )
     }
 }
 
 @Serializable
-data class MediaDetailsRoute(
+data class MediaDetails(
     val mediaId: String,
     val mediaTitle: String
-)
+) : NavKey

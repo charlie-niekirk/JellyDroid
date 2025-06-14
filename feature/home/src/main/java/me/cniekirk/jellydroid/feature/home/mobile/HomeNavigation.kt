@@ -6,16 +6,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
-import me.cniekirk.jellydroid.core.navigation.routes.TopLevelRoute
 import me.cniekirk.jellydroid.feature.home.R
 
 @Serializable
-data object Home : TopLevelRoute {
-    override val icon = Icons.Default.Home
-    override val name = R.string.home_title
+data object Home : NavKey {
+    val icon = Icons.Default.Home
+    val name = R.string.home_title
 }
 
 fun EntryProviderBuilder<*>.home(
