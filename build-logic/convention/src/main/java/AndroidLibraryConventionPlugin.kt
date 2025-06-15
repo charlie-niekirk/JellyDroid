@@ -1,6 +1,5 @@
 import com.android.build.gradle.LibraryExtension
 import me.cniekirk.jellydroid.androidTestImplementation
-import me.cniekirk.jellydroid.configureFlavors
 import me.cniekirk.jellydroid.configureKotlinAndroid
 import me.cniekirk.jellydroid.implementation
 import me.cniekirk.jellydroid.libs
@@ -23,7 +22,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 36
-                configureFlavors(this)
             }
             dependencies {
                 implementation(libs.findLibrary("timber").get())

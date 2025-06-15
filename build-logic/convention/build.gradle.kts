@@ -41,10 +41,6 @@ gradlePlugin {
             id = "jellydroid.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
-        register("androidApplicationFlavors") {
-            id = "jellydroid.android.application.flavors"
-            implementationClass = "AndroidApplicationFlavorsConventionPlugin"
-        }
         register("androidFeature") {
             id = "jellydroid.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
