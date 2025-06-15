@@ -1,0 +1,91 @@
+# .github/workflows/android-release.yml
+#
+# This GitHub Actions workflow builds, signs, and creates a draft GitHub release
+# with an APK and an AAB file when a new tag is pushed.
+
+name: Create Android Release
+
+# This workflow is triggered when a new tag is pushed to the repository that
+# follows the pattern v*.*.* (e.g., v1.0.0, v1.2.3).
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    # Use the latest version of Ubuntu to run the job
+    runs-on: ubuntu-latest
+
+    # Grant permissions to write to contents to create the release.
+    permissions:
+      contents: write
+
+    steps:
+      # Step 1: Check out the repository's code
+      # This action checks out your repository so your job can access it.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up JDK 17
+      # This is required to build and run an Android application.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Step 3: Set up Gradle cache
+      # This step caches Gradle dependencies and build outputs to improve workflow execution time.
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Step 4: Make gradlew executable
+      # The gradlew script needs execute permissions to run.
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
+      # Step 5: Decode and write the release keystore
+      # This step decodes the base64 keystore from secrets and writes it to a file.
+      # This is a secure way to handle your signing keys.
+      - name: Decode Keystore
+        env:
+          RELEASE_STORE_FILE_B64: ${{ secrets.RELEASE_STORE_FILE }}
+        run: |
+          echo $RELEASE_STORE_FILE_B64 | base64 --decode > ${{ github.workspace }}/release.jks
+
+      # Step 6: Build the release APK and AAB
+      # This step runs the gradle commands to build the signed artifacts.
+      # The signing information is passed as environment variables from secrets.
+      - name: Build Release APK and AAB
+        env:
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+        run: |
+          ./gradlew assembleRelease
+          ./gradlew bundleRelease
+
+      # Step 7: Create a Draft GitHub Release
+      # This uses an action to create a new release, using the tag name for the version.
+      # It attaches both the APK and AAB files to this release.
+      - name: Create Draft Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # Mark the release as a draft so you can review it before publishing.
+          draft: true
+          # Use the tag name for the release name (e.g., v1.0.0).
+          name: Release ${{ github.ref_name }}
+          # The body can be customized. Here it links to the tag.
+          body: "Release for tag ${{ github.ref_name }}"
+          # Attach the generated APK and AAB files to the release.
+          files: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/bundle/release/app-release.aab
