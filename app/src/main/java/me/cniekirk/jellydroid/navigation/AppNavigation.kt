@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
@@ -60,8 +61,11 @@ fun JellydroidRootNavigation(modifier: Modifier = Modifier) {
         entryDecorators = listOf(
             rememberSceneSetupNavEntryDecorator(),
             rememberSavedStateNavEntryDecorator(),
-//            rememberViewModelStoreNavEntryDecorator()
+            // TODO: Add rememberViewModelStoreNavEntryDecorator() when the library is stable
         ),
+        predictivePopTransitionSpec = {
+            activityDefaultPopEnter() togetherWith activityDefaultPopExit()
+        },
         transitionSpec = {
             activityDefaultEnter() togetherWith activityDefaultExit()
         },
@@ -155,6 +159,7 @@ fun JellydroidTabsNavHost(
             entryDecorators = listOf(
                 rememberSceneSetupNavEntryDecorator(),
                 rememberSavedStateNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator()
             ),
             entryProvider = entryProvider {
                 home(
@@ -163,6 +168,7 @@ fun JellydroidTabsNavHost(
                             CollectionKind.MOVIES -> CollectionType.MOVIES
                             CollectionKind.SERIES -> CollectionType.SERIES
                         }
+
                         appBackstack.add(MediaCollection(id, name, type))
                     },
                     onResumeItemClicked = {},
