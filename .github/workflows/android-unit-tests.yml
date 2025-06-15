@@ -98,7 +98,8 @@ jobs:
       # It dynamically finds all modules under the ':feature' path and runs their tests.
       - name: Run all feature unit tests
         if: contains(github.event.pull_request.labels.*.name, 'all features')
-        run: ./gradlew projects | grep :feature: | cut -d\' -f2 | sed 's/$/:testDebugUnitTest/' | xargs ./gradlew
+        run: |
+          ./gradlew projects | grep :feature: | cut -d\' -f2 | sed 's/$/:testDebugUnitTest/' | xargs ./gradlew
 
       # Step 12: Run all unit tests in the entire project
       # This step will run if the PR has the 'all-tests' label.
