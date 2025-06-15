@@ -26,6 +26,7 @@ internal class HomeViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         isLoading = false,
+                        userProfileImage = homeStructure.profileImageUrl,
                         userViews = homeStructure.userViews.toImmutableList(),
                         resumeItems = homeStructure.resumeItems.toImmutableList(),
                         latestMovies = homeStructure.latestItems.movies.toImmutableList(),

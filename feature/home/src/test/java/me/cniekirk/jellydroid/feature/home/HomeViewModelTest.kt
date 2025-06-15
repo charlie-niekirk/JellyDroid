@@ -42,6 +42,7 @@ class HomeViewModelTest {
             expectState {
                 copy(
                     isLoading = false,
+                    userProfileImage = expectedHomeStructure.profileImageUrl,
                     userViews = expectedHomeStructure.userViews.toImmutableList(),
                     resumeItems = expectedHomeStructure.resumeItems.toImmutableList(),
                     latestMovies = expectedHomeStructure.latestItems.movies.toImmutableList(),
@@ -72,6 +73,7 @@ class HomeViewModelTest {
 
     companion object {
         val expectedHomeStructure = HomeStructure(
+            profileImageUrl = "",
             userViews = listOf(),
             resumeItems = listOf(),
             latestItems = LatestItems(

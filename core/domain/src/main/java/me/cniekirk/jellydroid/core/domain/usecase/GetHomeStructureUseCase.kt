@@ -15,13 +15,15 @@ class GetHomeStructureUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Result<HomeStructure, NetworkError> = coroutineBinding {
+        val currentServer = appPreferencesRepository.getCurrentServer()
         val userId = appPreferencesRepository.getLoggedInUser()
 
+        val user = jellyfinRepository.getUserById(currentServer, userId).bind()
         val userViews = jellyfinRepository.getUserViews().bind()
         val resumeItems = jellyfinRepository.getContinuePlayingItems(userId).bind()
         val latestMovies = jellyfinRepository.getLatestMovies(userId).bind()
         val latestShows = jellyfinRepository.getLatestShows(userId).bind()
 
-        HomeStructure(userViews, resumeItems, LatestItems(latestMovies, latestShows))
+        HomeStructure(user.profileImageUrl, userViews, resumeItems, LatestItems(latestMovies, latestShows))
     }
 }

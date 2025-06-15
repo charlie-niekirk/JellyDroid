@@ -5,4 +5,5 @@ data class User(
     val belongsToServerId: String,
     val name: String,
     val accessToken: String,
+    val profileImageUrl: String
 )

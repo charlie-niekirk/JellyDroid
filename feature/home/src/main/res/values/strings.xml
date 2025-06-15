@@ -7,4 +7,6 @@
     <string name="settings_content_description">Settings</string>
     <string name="latest_movies_title">Latest Movies</string>
     <string name="latest_shows_title">Latest TV Shows</string>
+
+    <string name="profile_image">Profile</string>
 </resources>

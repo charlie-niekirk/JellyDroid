@@ -1,24 +1,29 @@
 package me.cniekirk.jellydroid.feature.home.mobile
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
@@ -60,7 +65,7 @@ internal fun HomeRoute(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 internal fun HomeScreen(
     state: HomeState,
@@ -76,14 +81,15 @@ internal fun HomeScreen(
                 TopAppBar(
                     title = { Text(stringResource(R.string.home_title)) },
                     actions = {
-                        IconButton(
-                            onClick = { onSettingsClicked() }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = stringResource(R.string.settings_content_description)
-                            )
-                        }
+                        Image(
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(42.dp)
+                                .clip(MaterialShapes.Cookie9Sided.toShape())
+                                .clickable { onSettingsClicked() },
+                            painter = rememberAsyncImagePainter(state.userProfileImage),
+                            contentDescription = stringResource(R.string.profile_image)
+                        )
                     }
                 )
             }

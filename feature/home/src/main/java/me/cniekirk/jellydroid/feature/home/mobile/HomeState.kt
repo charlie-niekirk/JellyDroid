@@ -9,6 +9,7 @@ import me.cniekirk.jellydroid.core.domain.model.views.UserView
 
 data class HomeState(
     val isLoading: Boolean = true,
+    val userProfileImage: String = "",
     val userViews: ImmutableList<UserView> = persistentListOf(),
     val resumeItems: ImmutableList<ResumeItem> = persistentListOf(),
     val latestMovies: ImmutableList<LatestItem> = persistentListOf(),
