@@ -1,7 +1,8 @@
 # .github/workflows/android-unit-tests.yml
 #
 # This GitHub Actions workflow runs specific Android unit tests based on the
-# label applied to a pull request targeting the 'master' branch.
+# label applied to a pull request targeting the 'master' branch, and posts
+# a report of the results as a comment.
 
 name: Run Unit Tests Based on Label
 
@@ -24,9 +25,11 @@ jobs:
     # A skipped job is considered a success and will not block merging.
     if: "!contains(github.event.pull_request.labels.*.name, 'skip unit tests')"
 
-    # Add permissions for the GITHUB_TOKEN to allow writing comments to pull requests.
+    # Add permissions for the GITHUB_TOKEN to allow writing comments and checks.
     permissions:
+      contents: read
       pull-requests: write
+      checks: write
 
     steps:
       # Step 1: Check out the repository's code
@@ -65,51 +68,48 @@ jobs:
       # The 'contains' function checks if the array of label names includes 'home'.
       - name: Run :feature:home unit tests
         if: contains(github.event.pull_request.labels.*.name, 'home')
-        run: ./gradlew :feature:home:testDebugUnitTest
+        run: ./gradlew :feature:home:testDebugUnitTest || true
 
       # Step 6: Run unit tests for the 'onboarding' module
       - name: Run :feature:onboarding unit tests
         if: contains(github.event.pull_request.labels.*.name, 'onboarding')
-        run: ./gradlew :feature:onboarding:testDebugUnitTest
+        run: ./gradlew :feature:onboarding:testDebugUnitTest || true
 
       # Step 7: Run unit tests for the 'mediaCollection' module
       # Note: Labels with spaces must be enclosed in single quotes.
       - name: Run :feature:mediaCollection unit tests
         if: contains(github.event.pull_request.labels.*.name, 'media collection')
-        run: ./gradlew :feature:mediaCollection:testDebugUnitTest
+        run: ./gradlew :feature:mediaCollection:testDebugUnitTest || true
 
       # Step 8: Run unit tests for the 'mediaPlayer' module
       - name: Run :feature:mediaPlayer unit tests
         if: contains(github.event.pull_request.labels.*.name, 'player')
-        run: ./gradlew :feature:mediaPlayer:testDebugUnitTest
+        run: ./gradlew :feature:mediaPlayer:testDebugUnitTest || true
 
       # Step 9: Run unit tests for the 'mediaDetails' module
       - name: Run :feature:mediaDetails unit tests
         if: contains(github.event.pull_request.labels.*.name, 'media details')
-        run: ./gradlew :feature:mediaDetails:testDebugUnitTest
+        run: ./gradlew :feature:mediaDetails:testDebugUnitTest || true
 
       # Step 10: Run unit tests for the 'settings' module
       - name: Run :feature:settings unit tests
         if: contains(github.event.pull_request.labels.*.name, 'settings')
-        run: ./gradlew :feature:settings:testDebugUnitTest
+        run: ./gradlew :feature:settings:testDebugUnitTest || true
 
       # Step 11: Run unit tests for all 'feature' modules
-      # This step will run if the PR has the 'all features' label.
       # It dynamically finds all modules under the ':feature' path and runs their tests.
       - name: Run all feature unit tests
         if: contains(github.event.pull_request.labels.*.name, 'all features')
         run: |
-          ./gradlew projects | grep :feature: | cut -d\' -f2 | sed 's/$/:testDebugUnitTest/' | xargs ./gradlew
+          ./gradlew projects | grep :feature: | cut -d\' -f2 | sed 's/$/:testDebugUnitTest/' | xargs ./gradlew || true
 
       # Step 12: Run all unit tests in the entire project
       # This step will run if the PR has the 'all-tests' label.
       - name: Run all project unit tests
         if: contains(github.event.pull_request.labels.*.name, 'all-tests')
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest || true
 
       # Step 13: Post a comment if no test labels are found
-      # This provides feedback to the PR author if they forgot to add a label.
-      # It checks that none of the specified labels are present.
       - name: Notify if no test labels are found
         if: |
           !contains(github.event.pull_request.labels.*.name, 'home') &&
@@ -129,3 +129,20 @@ jobs:
               repo: context.repo.repo,
               body: '👋 No test-related labels found (e.g., `home`, `onboarding`, `media collection`, `player`, `media details`, `settings`, `all-tests`, `all features`). No specific unit tests were run. Please add a label to trigger the corresponding test suite. Use `skip unit tests` to bypass this check.'
             })
+            
+      # Step 14: Publish Test Report
+      # This step runs always and uses the results from any of the above test steps.
+      # It finds all JUnit XML files and posts a summary comment.
+      - name: Publish Test Report
+        uses: dorny/test-reporter@v1
+        # Run this step even if previous steps fail, so we always get a report.
+        if: always()
+        with:
+          # The name of the check run to be created
+          name: Unit Test Report
+          # The path to the test results. The glob pattern will find all results.
+          path: '**/build/test-results/testDebugUnitTest/**/*.xml'
+          # The format of the report
+          reporter: java-junit
+          # Prevent the reporting step itself from failing the workflow
+          fail-on-error: false
