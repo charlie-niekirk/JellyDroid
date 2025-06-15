@@ -20,6 +20,10 @@ jobs:
     # Use the latest version of Ubuntu to run the job
     runs-on: ubuntu-latest
 
+    # Add permissions for the GITHUB_TOKEN to allow writing comments to pull requests.
+    permissions:
+      pull-requests: write
+
     steps:
       # Step 1: Check out the repository's code
       # This action checks out your repository under $GITHUB_WORKSPACE, so your job can access it.
