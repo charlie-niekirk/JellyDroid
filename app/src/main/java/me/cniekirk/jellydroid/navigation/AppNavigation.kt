@@ -46,7 +46,6 @@ import me.cniekirk.jellydroid.feature.onboarding.OnboardingNavigation
 import me.cniekirk.jellydroid.feature.onboarding.onboardingModuleEntries
 import me.cniekirk.jellydroid.feature.settings.Settings
 import me.cniekirk.jellydroid.feature.settings.settings
-import timber.log.Timber
 
 @Serializable
 data object RootHome : NavKey
@@ -62,7 +61,7 @@ fun JellydroidRootNavigation(modifier: Modifier = Modifier) {
         entryDecorators = listOf(
             rememberSceneSetupNavEntryDecorator(),
             rememberSavedStateNavEntryDecorator(),
-//            rememberViewModelStoreNavEntryDecorator()
+            // TODO: Add rememberViewModelStoreNavEntryDecorator() when the library is stable
         ),
         predictivePopTransitionSpec = {
             activityDefaultPopEnter() togetherWith activityDefaultPopExit()
