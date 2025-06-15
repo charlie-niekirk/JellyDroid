@@ -1,10 +1,11 @@
 package me.cniekirk.jellydroid.feature.mediacollection
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
@@ -12,15 +13,12 @@ import me.cniekirk.jellydroid.core.domain.usecase.GetMediaCollectionUseCase
 import me.cniekirk.jellydroid.feature.mediacollection.model.ErrorType
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
-@HiltViewModel
-class MediaCollectionViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = MediaCollectionViewModel.Factory::class)
+class MediaCollectionViewModel @AssistedInject constructor(
+    @Assisted private val args: MediaCollection,
     private val getMediaCollectionUseCase: GetMediaCollectionUseCase
 ) : ViewModel(), ContainerHost<MediaCollectionState, MediaCollectionEffect> {
-
-    private val args = savedStateHandle.toRoute<MediaCollection>()
 
     override val container = container<MediaCollectionState, MediaCollectionEffect>(
         MediaCollectionState(collectionId = args.collectionId, collectionName = args.collectionName)
@@ -61,5 +59,10 @@ class MediaCollectionViewModel @Inject constructor(
                     }
                 }
             }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(args: MediaCollection): MediaCollectionViewModel
     }
 }

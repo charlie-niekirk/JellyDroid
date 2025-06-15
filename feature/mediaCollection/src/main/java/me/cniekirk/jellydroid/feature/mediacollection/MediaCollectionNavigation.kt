@@ -2,23 +2,10 @@ package me.cniekirk.jellydroid.feature.mediacollection
 
 import androidx.annotation.Keep
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entry
 import kotlinx.serialization.Serializable
-import me.cniekirk.jellydroid.core.designsystem.theme.enterAnimation
-import me.cniekirk.jellydroid.core.designsystem.theme.popExitAnimation
-
-fun NavGraphBuilder.mediaCollection(onBackClicked: () -> Unit) {
-    composable<MediaCollection>(
-        enterTransition = { enterAnimation() },
-        popExitTransition = { popExitAnimation() }
-    ) {
-        val viewModel = hiltViewModel<MediaCollectionViewModel>()
-        MediaCollectionRoute(viewModel) {
-            onBackClicked()
-        }
-    }
-}
 
 @Keep
 @Serializable
@@ -32,4 +19,19 @@ data class MediaCollection(
     val collectionId: String,
     val collectionName: String,
     val collectionType: CollectionType
-)
+) : NavKey
+
+fun EntryProviderBuilder<*>.mediaCollection(
+    onBackClicked: () -> Unit
+) {
+    entry<MediaCollection> { key ->
+        val viewModel = hiltViewModel<MediaCollectionViewModel, MediaCollectionViewModel.Factory>(
+            creationCallback = { factory -> factory.create(key) }
+        )
+
+        MediaCollectionRoute(
+            viewModel = viewModel,
+            onBackClicked = { onBackClicked() }
+        )
+    }
+}

@@ -1,10 +1,10 @@
 package me.cniekirk.jellydroid.core.data.repository
 
 import com.github.michaelbull.result.Result
-import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.data.mapping.MediaMapper
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.domain.model.Media
+import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.MediaRepository

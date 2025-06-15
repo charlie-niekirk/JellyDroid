@@ -1,23 +1,30 @@
+@file:Suppress("MatchingDeclarationName")
+
 package me.cniekirk.jellydroid.feature.home.mobile
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entry
 import kotlinx.serialization.Serializable
-import me.cniekirk.jellydroid.core.designsystem.theme.exitAnimation
-import me.cniekirk.jellydroid.core.designsystem.theme.popEnterAnimation
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
+import me.cniekirk.jellydroid.feature.home.R
 
-fun NavGraphBuilder.home(
+@Serializable
+data object Home : NavKey {
+    val icon = Icons.Default.Home
+    val name = R.string.home_title
+}
+
+fun EntryProviderBuilder<*>.home(
     onUserViewClicked: (String, String, CollectionKind) -> Unit,
     onResumeItemClicked: (String) -> Unit,
     onMediaItemClicked: (String, String) -> Unit,
     navigateToSettings: () -> Unit
 ) {
-    composable<Home>(
-        exitTransition = { exitAnimation() },
-        popEnterTransition = { popEnterAnimation() }
-    ) {
+    entry<Home> {
         val viewModel = hiltViewModel<HomeViewModel>()
         HomeRoute(
             viewModel = viewModel,
@@ -30,6 +37,3 @@ fun NavGraphBuilder.home(
         )
     }
 }
-
-@Serializable
-data object Home

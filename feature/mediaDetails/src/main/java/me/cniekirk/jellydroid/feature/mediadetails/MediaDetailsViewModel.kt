@@ -1,23 +1,21 @@
 package me.cniekirk.jellydroid.feature.mediadetails
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCase
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
-@HiltViewModel
-class MediaDetailsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = MediaDetailsViewModel.Factory::class)
+class MediaDetailsViewModel @AssistedInject constructor(
+    @Assisted private val args: MediaDetails,
     private val getMediaDetailsUseCase: GetMediaDetailsUseCase
 ) : ViewModel(), ContainerHost<MediaDetailsState, MediaDetailsEffect> {
-
-    private val args = savedStateHandle.toRoute<MediaDetailsRoute>()
 
     override val container = container<MediaDetailsState, MediaDetailsEffect>(MediaDetailsState(args.mediaTitle)) {
         loadMediaDetails(args.mediaId)
@@ -47,5 +45,10 @@ class MediaDetailsViewModel @Inject constructor(
                 MediaDetailsEffect.NavigateToPlayer(it.mediaId)
             )
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(args: MediaDetails): MediaDetailsViewModel
     }
 }

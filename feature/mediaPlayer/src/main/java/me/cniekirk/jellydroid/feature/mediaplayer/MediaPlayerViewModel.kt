@@ -1,24 +1,22 @@
 package me.cniekirk.jellydroid.feature.mediaplayer
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.feature.mediaplayer.usecase.GetPlaybackInfoUseCase
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltViewModel
-class MediaPlayerViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = MediaPlayerViewModel.Factory::class)
+class MediaPlayerViewModel @AssistedInject constructor(
+    @Assisted private val args: MediaPlayer,
     private val getPlaybackInfoUseCase: GetPlaybackInfoUseCase
 ) : ViewModel(), ContainerHost<MediaPlayerState, MediaPlayerEffect> {
-
-    private val args = savedStateHandle.toRoute<MediaPlayer>()
 
     override val container = container<MediaPlayerState, MediaPlayerEffect>(MediaPlayerState()) {
         loadMedia(args.mediaId)
@@ -54,5 +52,10 @@ class MediaPlayerViewModel @Inject constructor(
                 mediaPosition = currentPosition
             )
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(args: MediaPlayer): MediaPlayerViewModel
     }
 }

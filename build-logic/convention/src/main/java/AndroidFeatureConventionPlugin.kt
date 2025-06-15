@@ -32,12 +32,19 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 implementation(projects.core.common)
                 implementation(projects.core.domain)
                 implementation(projects.core.analytics)
+                implementation(projects.core.navigation)
+
+                implementation(libs.findLibrary("androidx-navigation3-runtime").get())
+                implementation(libs.findLibrary("androidx-navigation3-ui").get())
+                implementation(libs.findLibrary("androidx-material3-navigation3").get())
+                implementation(libs.findLibrary("androidx-lifecycle-viewmodel-navigation3").get())
 
                 implementation(libs.findLibrary("hilt.navigation").get())
                 implementation(libs.findLibrary("androidx.navigation.compose").get())
                 implementation(libs.findLibrary("androidx.animation").get())
 
                 implementation(libs.findLibrary("org.jetbrains.kotlinx.serialization").get())
+                implementation(libs.findLibrary("org.jetbrains.kotlinx.serialization.json").get())
 
                 implementation(libs.findLibrary("orbit.core").get())
                 implementation(libs.findLibrary("orbit.compose").get())

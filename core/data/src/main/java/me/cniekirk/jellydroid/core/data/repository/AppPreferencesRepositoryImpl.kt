@@ -25,5 +25,4 @@ internal class AppPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun getLoggedInUser(): String =
         appPreferencesDataSource.getLoggedInUser()
-
 }
