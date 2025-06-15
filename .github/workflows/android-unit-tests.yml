@@ -134,7 +134,7 @@ jobs:
       # This step runs always and uses the results from any of the above test steps.
       # It finds all JUnit XML files and posts a summary comment.
       - name: Publish Test Report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         # Run this step even if previous steps fail, so we always get a report.
         if: always()
         with:
