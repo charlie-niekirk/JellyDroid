@@ -198,7 +198,6 @@ co-hinge-gradle-project-accessors = { id = "co.hinge.gradle.project-accessors", 
 
 jellydroid-android-application = { id = "jellydroid.android.application", version = "unspecified" }
 jellydroid-android-application-compose = { id = "jellydroid.android.application.compose", version = "unspecified" }
-jellydroid-android-application-flavors = { id = "jellydroid.android.application.flavors", version = "unspecified" }
 jellydroid-android-firebase = { id = "jellydroid.android.firebase", version = "unspecified" }
 jellydroid-android-feature = { id = "jellydroid.android.feature", version = "unspecified" }
 jellydroid-android-library = { id = "jellydroid.android.library", version = "unspecified" }

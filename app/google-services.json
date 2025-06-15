@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "133096619115",
-    "project_id": "jellydroid-1ec2e",
-    "storage_bucket": "jellydroid-1ec2e.appspot.com"
+    "project_number": "194395415592",
+    "project_id": "jellydroid-c6e15",
+    "storage_bucket": "jellydroid-c6e15.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:133096619115:android:d0cadef63efc4fc746852e",
+        "mobilesdk_app_id": "1:194395415592:android:2033e27a1e5d8af814c11d",
         "android_client_info": {
-          "package_name": "me.cniekirk.jellydroid.prod"
+          "package_name": "me.cniekirk.jellydroid"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC7RHWBP9HWooTVqXplrVbHIjLiAKorRG8"
+          "current_key": "AIzaSyDW7JRryqQMHX3xrcy0k09BfrR1ctP627A"
         }
       ],
       "services": {
