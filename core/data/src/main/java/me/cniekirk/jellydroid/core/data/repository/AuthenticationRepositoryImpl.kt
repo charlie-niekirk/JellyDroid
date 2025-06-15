@@ -4,12 +4,14 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
+import me.cniekirk.jellydroid.core.data.mapping.toUser
 import me.cniekirk.jellydroid.core.data.mapping.toUserDto
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
 import me.cniekirk.jellydroid.core.database.dao.UserDao
 import me.cniekirk.jellydroid.core.database.entity.Server
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.servers.User
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import org.jellyfin.sdk.Jellyfin
@@ -50,20 +52,30 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun authenticateUser(username: String, password: String): Result<Unit, NetworkError> {
+    override suspend fun authenticateUser(username: String, password: String): Result<User, NetworkError> {
         return safeApiCall {
-            val authResult by apiClient.userApi.authenticateUserByName(
+            apiClient.userApi.authenticateUserByName(
                 data = AuthenticateUserByName(
                     username = username,
                     pw = password
                 )
             )
+        }.andThen { authResult ->
+            val baseUrl = apiClient.baseUrl
 
-            val user = authResult.toUserDto()
-
-            userDao.insertAll(user)
-            appPreferencesRepository.setLoggedInUser(user.userId)
-            apiClient.update(accessToken = authResult.accessToken)
+            if (baseUrl != null) {
+                val user = authResult.content.toUserDto(baseUrl)
+                if (user != null) {
+                    userDao.insertAll(user)
+                    appPreferencesRepository.setLoggedInUser(user.userId)
+                    apiClient.update(accessToken = authResult.content.accessToken)
+                    Ok(user.toUser(baseUrl))
+                } else {
+                    Err(NetworkError.Unknown)
+                }
+            } else {
+                Err(NetworkError.Unknown)
+            }
         }
     }
 

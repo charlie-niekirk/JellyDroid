@@ -7,12 +7,15 @@ import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaDetails
 import me.cniekirk.jellydroid.core.domain.model.servers.ServerAndUsers
+import me.cniekirk.jellydroid.core.domain.model.servers.User
 import me.cniekirk.jellydroid.core.domain.model.views.UserView
 
 @Suppress("TooManyFunctions")
 interface JellyfinRepository {
 
     suspend fun getUserFromToken(): Result<String, NetworkError>
+
+    suspend fun getUserById(currentServerId: String, userId: String): Result<User, NetworkError>
 
     suspend fun getUserViews(): Result<List<UserView>, NetworkError>
 

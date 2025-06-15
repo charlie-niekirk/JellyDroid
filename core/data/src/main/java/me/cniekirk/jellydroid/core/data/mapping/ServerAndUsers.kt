@@ -17,7 +17,8 @@ internal fun ServerWithUsers.toServerAndUsers(): ServerAndUsers =
                 userId = user.userId,
                 belongsToServerId = user.belongsToServerId,
                 name = user.name,
-                accessToken = user.accessToken
+                accessToken = user.accessToken,
+                profileImageUrl = "${server.baseUrl}/Users/${user.userId}/Images/Primary"
             )
         }
     )

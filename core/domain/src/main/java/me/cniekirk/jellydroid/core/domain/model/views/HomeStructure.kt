@@ -4,6 +4,7 @@ import me.cniekirk.jellydroid.core.domain.model.ResumeItem
 import me.cniekirk.jellydroid.core.domain.model.latest.LatestItems
 
 data class HomeStructure(
+    val profileImageUrl: String,
     val userViews: List<UserView>,
     val resumeItems: List<ResumeItem>,
     val latestItems: LatestItems

@@ -5,6 +5,7 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.fold
 import me.cniekirk.jellydroid.core.domain.model.error.CheckAuthStateError
+import me.cniekirk.jellydroid.core.domain.model.servers.User
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import javax.inject.Inject
@@ -14,7 +15,7 @@ class CheckAuthStateUseCase @Inject constructor(
     private val jellyfinRepository: JellyfinRepository
 ) {
 
-    suspend operator fun invoke(): Result<String, CheckAuthStateError> {
+    suspend operator fun invoke(): Result<User, CheckAuthStateError> {
         val currentServerId = appPreferencesRepository.getCurrentServer()
         if (currentServerId.isEmpty()) return Err(CheckAuthStateError.NoPreviousAuth)
 
@@ -32,8 +33,8 @@ class CheckAuthStateUseCase @Inject constructor(
 
                     // Get user based on auth token
                     jellyfinRepository.getUserFromToken().fold(
-                        success = { userId ->
-                            Ok(userId)
+                        success = {
+                            Ok(defaultUser)
                         },
                         failure = {
                             Err(CheckAuthStateError.AuthTokenOutdated)

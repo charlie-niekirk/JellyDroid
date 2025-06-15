@@ -4,19 +4,22 @@ import me.cniekirk.jellydroid.core.database.entity.UserDto
 import me.cniekirk.jellydroid.core.domain.model.servers.User
 import org.jellyfin.sdk.model.api.AuthenticationResult
 
-fun AuthenticationResult.toUserDto(): UserDto {
+@Suppress("ReturnCount")
+fun AuthenticationResult.toUserDto(baseUrl: String): UserDto? {
     return UserDto(
         userId = this.user?.id.toString(),
-        belongsToServerId = this.serverId ?: "",
-        name = this.user?.name ?: "",
-        accessToken = this.accessToken ?: ""
+        belongsToServerId = this.serverId ?: return null,
+        name = this.user?.name ?: return null,
+        accessToken = this.accessToken ?: return null,
+        profileImageUrl = "$baseUrl/Users/${this.user?.id}/Images/Primary"
     )
 }
 
-fun UserDto.toUser(): User =
+fun UserDto.toUser(baseUrl: String): User =
     User(
         userId = userId,
         belongsToServerId = belongsToServerId,
         name = name,
-        accessToken = accessToken
+        accessToken = accessToken,
+        profileImageUrl = "$baseUrl/Users/$userId/Images/Primary"
     )

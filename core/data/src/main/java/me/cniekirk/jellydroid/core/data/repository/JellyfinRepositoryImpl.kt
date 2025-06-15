@@ -9,6 +9,7 @@ import me.cniekirk.jellydroid.core.data.mapping.MediaDetailsMapper
 import me.cniekirk.jellydroid.core.data.mapping.toLatestItem
 import me.cniekirk.jellydroid.core.data.mapping.toResumeItem
 import me.cniekirk.jellydroid.core.data.mapping.toServerAndUsers
+import me.cniekirk.jellydroid.core.data.mapping.toUser
 import me.cniekirk.jellydroid.core.data.mapping.toUserView
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
@@ -18,6 +19,7 @@ import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaDetails
 import me.cniekirk.jellydroid.core.domain.model.servers.ServerAndUsers
+import me.cniekirk.jellydroid.core.domain.model.servers.User
 import me.cniekirk.jellydroid.core.domain.model.views.UserView
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import org.jellyfin.sdk.api.client.ApiClient
@@ -57,6 +59,20 @@ internal class JellyfinRepositoryImpl @Inject constructor(
     override suspend fun getUserFromToken(): Result<String, NetworkError> {
         return safeApiCall { apiClient.userApi.getCurrentUser() }
             .map { it.content.id.toString() }
+    }
+
+    override suspend fun getUserById(currentServerId: String, userId: String): Result<User, NetworkError> {
+        val server = serverDao.getAllServersWithUsers()
+            .first { it.server.serverId == currentServerId }
+
+        val user = server.users
+            .firstOrNull { it.userId == userId }
+
+        return if (user != null) {
+            Ok(user.toUser(server.server.baseUrl))
+        } else {
+            Err(NetworkError.Unknown)
+        }
     }
 
     override suspend fun getUserViews(): Result<List<UserView>, NetworkError> {
