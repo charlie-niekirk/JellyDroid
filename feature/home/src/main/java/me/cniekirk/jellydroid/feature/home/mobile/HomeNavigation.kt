@@ -10,12 +10,13 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import kotlinx.serialization.Serializable
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
+import me.cniekirk.jellydroid.core.navigation.BottomTab
 import me.cniekirk.jellydroid.feature.home.R
 
 @Serializable
-data object Home : NavKey {
-    val icon = Icons.Default.Home
-    val name = R.string.home_title
+data object Home : NavKey, BottomTab {
+    override val icon = Icons.Default.Home
+    override val name = R.string.home_title
 }
 
 fun EntryProviderBuilder<*>.home(
