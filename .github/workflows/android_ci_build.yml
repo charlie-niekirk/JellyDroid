@@ -3,7 +3,7 @@ name: Android CI - Build & Sign
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
