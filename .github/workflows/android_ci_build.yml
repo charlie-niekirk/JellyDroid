@@ -50,6 +50,7 @@ jobs:
 
     # Step 6: Upload the signed APK file as a build artifact
     - name: Upload Signed APK artifact
+      id: apk-upload-step
       uses: actions/upload-artifact@v4
       with:
         name: release-apk-signed
@@ -57,6 +58,7 @@ jobs:
 
     # Step 7: Upload the signed AAB file as a build artifact
     - name: Upload Signed AAB artifact
+      id: aab-upload-step
       uses: actions/upload-artifact@v4
       with:
         name: release-aab-signed
@@ -74,8 +76,8 @@ jobs:
           ✅ Build successful and signed!
 
           You can download the signed build artifacts here:
-          - [APK](https://github.com/${owner}/${repo}/actions/runs/${context.runId}/artifacts/release-apk-signed)
-          - [AAB](https://github.com/${owner}/${repo}/actions/runs/${context.runId}/artifacts/release-aab-signed)
+          - [APK](https://github.com/${owner}/${repo}/actions/runs/${context.runId}/artifacts/${steps.apk-upload-step.outputs.artifact-id})
+          - [AAB](https://github.com/${owner}/${repo}/actions/runs/${context.runId}/artifacts/${steps.aab-upload-step.outputs.artifact-id})
 
           *Note: You need to be logged into GitHub to download the artifacts. These are release-signed builds.*
           `;
