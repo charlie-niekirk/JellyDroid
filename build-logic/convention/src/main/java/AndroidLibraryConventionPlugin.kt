@@ -26,9 +26,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             dependencies {
                 implementation(libs.findLibrary("timber").get())
                 testImplementation(kotlin("test"))
-//                add("testImplementation", project(":core:testing"))
                 androidTestImplementation(kotlin("test"))
-//                add("androidTestImplementation", project(":core:testing"))
             }
         }
     }

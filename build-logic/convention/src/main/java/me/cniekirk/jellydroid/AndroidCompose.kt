@@ -15,6 +15,10 @@ internal fun Project.configureAndroidCompose(
             compose = true
         }
 
+        composeOptions {
+            kotlinCompilerExtensionVersion = "1.5.1"
+        }
+
         dependencies {
             val bom = libs.findLibrary("androidx-compose-bom").get()
             add("implementation", platform(bom))
