@@ -1,9 +1,15 @@
 package me.cniekirk.jellydroid.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
@@ -16,6 +22,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -27,11 +34,13 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import kotlinx.serialization.Serializable
+import me.cniekirk.jellydroid.R
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultEnter
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultExit
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopEnter
 import me.cniekirk.jellydroid.core.designsystem.theme.activityDefaultPopExit
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
+import me.cniekirk.jellydroid.core.navigation.BottomTab
 import me.cniekirk.jellydroid.core.navigation.TopLevelBackStack
 import me.cniekirk.jellydroid.feature.home.mobile.Home
 import me.cniekirk.jellydroid.feature.home.mobile.home
@@ -96,6 +105,24 @@ fun JellydroidRootNavigation(modifier: Modifier = Modifier) {
     )
 }
 
+@Serializable
+data object Library : NavKey, BottomTab {
+    override val icon = Icons.Default.VideoLibrary
+    override val name = R.string.bottom_nav_library
+}
+
+@Serializable
+data object Downloads : NavKey, BottomTab {
+    override val icon = Icons.Default.Download
+    override val name = R.string.bottom_nav_downloads
+}
+
+@Serializable
+data object Favorites : NavKey, BottomTab {
+    override val icon = Icons.Default.Favorite
+    override val name = R.string.bottom_nav_favorites
+}
+
 @Composable
 fun JellydroidTabsNavHost(
     modifier: Modifier,
@@ -110,8 +137,11 @@ fun JellydroidTabsNavHost(
         TopLevelBackStack<Any>(startKey = Home)
     }
 
-    val routes = listOf(
-        Home
+    val routes = listOf<BottomTab>(
+        Home,
+        Library,
+        Downloads,
+        Favorites
     )
 
     NavigationSuiteScaffoldLayout(
