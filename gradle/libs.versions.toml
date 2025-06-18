@@ -178,6 +178,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+kotlin-compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -195,7 +196,6 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt-plugin = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 co-hinge-gradle-project-accessors = { id = "co.hinge.gradle.project-accessors", version.ref = "gradle-typesafe" }
-
 
 jellydroid-android-application = { id = "jellydroid.android.application", version = "unspecified" }
 jellydroid-android-application-compose = { id = "jellydroid.android.application.compose", version = "unspecified" }
