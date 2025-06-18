@@ -13,14 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
 import me.cniekirk.jellydroid.core.designsystem.theme.components.MediaItem
 import me.cniekirk.jellydroid.core.domain.model.latest.LatestItem
 
 @Composable
 internal fun LatestMediaItems(
     sectionTitle: String,
-    latestMedia: ImmutableList<LatestItem>,
+    latestMedia: List<LatestItem>,
     onMediaItemClicked: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
