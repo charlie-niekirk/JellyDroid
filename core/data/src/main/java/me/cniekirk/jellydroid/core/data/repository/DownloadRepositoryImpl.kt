@@ -21,7 +21,7 @@ internal class DownloadRepositoryImpl @Inject constructor(
     override suspend fun downloadMediaFile(url: String): Result<Long, DownloadError> {
         val fileName = url.substringAfterLast('/')
 
-        val request = DownloadManager.Request(fileName.toUri())
+        val request = DownloadManager.Request(url.toUri())
             .setTitle(fileName)
             .setDescription(context.getString(R.string.downloads_description))
             // TODO: Inject preferences to determine these
@@ -30,7 +30,7 @@ internal class DownloadRepositoryImpl @Inject constructor(
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setDestinationInExternalPublicDir(
                 Environment.DIRECTORY_DOWNLOADS,
-                context.getString(R.string.jellydroid_folder_name)
+                "${context.getString(R.string.jellydroid_folder_name)}/$fileName"
             )
 
         return Ok(downloadManager.enqueue(request))
