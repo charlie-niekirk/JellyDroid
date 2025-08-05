@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class GetHomeStructureUseCase @Inject constructor(
     private val appPreferencesRepository: AppPreferencesRepository,
-    private val jellyfinRepository: JellyfinRepository
+    private val jellyfinRepository: JellyfinRepository,
 ) {
 
     suspend operator fun invoke(): Result<HomeStructure, NetworkError> = coroutineBinding {

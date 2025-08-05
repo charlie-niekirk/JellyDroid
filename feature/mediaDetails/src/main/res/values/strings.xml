@@ -2,6 +2,9 @@
 <resources>
     <string name="back_button">Back</string>
     <string name="play_button">Play</string>
+    <string name="trailer_button">Trailer</string>
+    <string name="download_button">Download</string>
 
     <string name="media_details_people">People</string>
+    <string name="trailer_bottom_sheet_title">Trailers</string>
 </resources>

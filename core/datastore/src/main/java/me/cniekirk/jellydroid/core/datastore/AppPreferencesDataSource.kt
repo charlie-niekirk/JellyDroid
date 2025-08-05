@@ -35,4 +35,22 @@ class AppPreferencesDataSource @Inject constructor(
     }
 
     suspend fun getLoggedInUser(): String = datastore.data.first().currentUser
+
+    suspend fun addDownload(downloadId: String, mediaId: String, mediaName: String, mediaThumbnailUrl: String) {
+        datastore.updateData { currentData ->
+            val download = AppPreferences.Download
+                .newBuilder()
+                .setDownloadId(downloadId)
+                .setMediaId(mediaId)
+                .setMediaName(mediaName)
+                .setMediaThumbnail(mediaThumbnailUrl)
+                .build()
+
+            currentData.toBuilder()
+                .addDownloadedMedia(download)
+                .build()
+        }
+    }
+
+    suspend fun getAllDownloads(): List<AppPreferences.Download> = datastore.data.first().downloadedMediaList
 }

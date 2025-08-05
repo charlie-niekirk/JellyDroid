@@ -8,22 +8,25 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
+import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.feature.onboarding.OnboardingNavigation
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel(assistedFactory = LoginViewModel.Factory::class)
-class LoginViewModel @AssistedInject constructor(
+internal class LoginViewModel @AssistedInject constructor(
     @Assisted private val args: OnboardingNavigation.Login,
-    private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
+    private val appPreferencesRepository: AppPreferencesRepository
 ) : ViewModel(), ContainerHost<LoginState, LoginEffect> {
 
     override val container = container<LoginState, LoginEffect>(LoginState(serverName = args.serverName))
 
     fun loginToServer(username: String, password: String) = intent {
         authenticationRepository.authenticateUser(username, password)
-            .onSuccess {
+            .onSuccess { user ->
+                appPreferencesRepository.setLoggedInUser(user.userId)
                 postSideEffect(LoginEffect.NavigateToHome)
             }
             .onFailure { error ->

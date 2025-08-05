@@ -7,14 +7,19 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import me.cniekirk.jellydroid.core.domain.model.FavoriteStatus
 import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCase
+import me.cniekirk.jellydroid.core.domain.usecase.SetItemFavoriteStatusUseCase
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel(assistedFactory = MediaDetailsViewModel.Factory::class)
-class MediaDetailsViewModel @AssistedInject constructor(
+internal class MediaDetailsViewModel @AssistedInject constructor(
     @Assisted private val args: MediaDetails,
-    private val getMediaDetailsUseCase: GetMediaDetailsUseCase
+    private val getMediaDetailsUseCase: GetMediaDetailsUseCase,
+    private val setItemFavoriteStatusUseCase: SetItemFavoriteStatusUseCase,
+//    private val downloadMediaUseCase: DownloadMediaUseCase
 ) : ViewModel(), ContainerHost<MediaDetailsState, MediaDetailsEffect> {
 
     override val container = container<MediaDetailsState, MediaDetailsEffect>(MediaDetailsState(args.mediaTitle)) {
@@ -31,10 +36,12 @@ class MediaDetailsViewModel @AssistedInject constructor(
                     )
                 }
             }
-            .onFailure {
+            .onFailure { error ->
                 reduce {
-                    state.copy(isLoading = false)
-                    // TODO: Show error
+                    state.copy(
+                        isLoading = false,
+                        error = error
+                    )
                 }
             }
     }
@@ -45,6 +52,48 @@ class MediaDetailsViewModel @AssistedInject constructor(
                 MediaDetailsEffect.NavigateToPlayer(it.mediaId)
             )
         }
+    }
+
+    fun favoriteToggled() = intent {
+        val details = state.mediaDetails
+        if (details != null) {
+            if (details.isFavorite) {
+                setItemFavoriteStatusUseCase(
+                    details.mediaId,
+                    FavoriteStatus.NOT_SET
+                ).onSuccess {
+                    reduce {
+                        state.copy(mediaDetails = state.mediaDetails?.copy(isFavorite = false))
+                    }
+                }.onFailure {
+                    Timber.e(message = it.toString())
+                }
+            } else {
+                setItemFavoriteStatusUseCase(
+                    details.mediaId,
+                    FavoriteStatus.FAVORITE
+                ).onSuccess {
+                    reduce {
+                        state.copy(mediaDetails = state.mediaDetails?.copy(isFavorite = true))
+                    }
+                }.onFailure {
+                    Timber.e(message = it.toString())
+                }
+            }
+        }
+    }
+
+    fun downloadClicked() = intent {
+//        val mediaDetails = state.mediaDetails
+//        if (mediaDetails != null) {
+//            downloadMediaUseCase(mediaDetails.mediaId)
+//                .onSuccess {
+//
+//                }
+//                .onFailure {
+//
+//                }
+//        }
     }
 
     @AssistedFactory

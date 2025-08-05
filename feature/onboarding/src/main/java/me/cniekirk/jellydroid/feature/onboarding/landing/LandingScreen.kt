@@ -27,7 +27,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun LandingRoute(
+internal fun LandingRoute(
     viewModel: LandingViewModel,
     navigateToServerSelection: () -> Unit,
     navigateToHome: () -> Unit

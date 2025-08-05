@@ -8,8 +8,9 @@ import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
 interface MediaRepository {
 
     suspend fun getMedia(
-        collectionId: String? = null,
+        userId: String,
         collectionKind: CollectionKind,
+        collectionId: String? = null,
         query: String? = null
     ): Result<List<Media>, NetworkError>
 }

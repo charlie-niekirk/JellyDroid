@@ -34,6 +34,9 @@ internal fun Project.configureAndroidCompose(
             add("implementation", libs.findLibrary("androidx-material3").get())
             add("implementation", libs.findLibrary("material-icons").get())
 
+            implementation(libs.findLibrary("coil.compose").get())
+            implementation(libs.findLibrary("coil.network.ktor3").get())
+
             add("androidTestImplementation", platform(bom))
             add("debugImplementation", libs.findLibrary("androidx-ui-test-manifest").get())
         }

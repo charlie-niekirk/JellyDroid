@@ -9,6 +9,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.domain)
+
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling)
@@ -17,6 +19,7 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
 
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.ktor3)
     implementation(libs.coil.test)
 
     androidTestImplementation(libs.androidx.ui.test.junit4)

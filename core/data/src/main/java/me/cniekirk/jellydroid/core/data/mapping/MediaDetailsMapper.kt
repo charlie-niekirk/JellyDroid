@@ -4,6 +4,7 @@ import me.cniekirk.jellydroid.core.domain.model.mediaDetails.AgeRating
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.CommunityRating
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaAttributes
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaDetails
+import me.cniekirk.jellydroid.core.domain.model.mediaDetails.Trailer
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.people.CreativeDomain
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.people.FilmTvSubRole
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.people.MusicSubRole
@@ -11,7 +12,9 @@ import me.cniekirk.jellydroid.core.domain.model.mediaDetails.people.Person
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.people.PublishingSubRole
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemPerson
+import org.jellyfin.sdk.model.api.MediaUrl
 import org.jellyfin.sdk.model.api.PersonKind
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -19,12 +22,21 @@ import kotlin.time.toDuration
 class MediaDetailsMapper @Inject constructor() {
 
     fun toMediaDetails(dataModel: BaseItemDto, baseUrl: String?): MediaDetails {
+        Timber.d("DATA MODEL: $dataModel")
+
         val rating = dataModel.communityRating?.let {
             CommunityRating.StarRating(it)
         } ?: CommunityRating.NoRating
 
+        val name = if (dataModel.isMovie == true) {
+            dataModel.name
+        } else {
+            "${dataModel.seriesName}: ${dataModel.name}"
+        } ?: "Unknown"
+
         return MediaDetails(
             mediaId = dataModel.id.toString(),
+            mediaName = name,
             synopsis = dataModel.overview,
             primaryImageUrl = "$baseUrl/Items/${dataModel.id}/Images/Backdrop",
             mediaAttributes = MediaAttributes(
@@ -38,7 +50,9 @@ class MediaDetailsMapper @Inject constructor() {
                 runtime = dataModel.runTimeTicks?.toRuntime()
             ),
             mediaPath = baseUrl + dataModel.path,
-            people = dataModel.people?.mapNotNull { it.toPerson(baseUrl.toString()) } ?: emptyList()
+            people = dataModel.people?.mapNotNull { it.toPerson(baseUrl.toString()) } ?: emptyList(),
+            isFavorite = dataModel.userData?.isFavorite == true,
+            trailers = dataModel.remoteTrailers?.mapNotNull { it.toTrailer() } ?: emptyList()
         )
     }
 
@@ -74,6 +88,13 @@ class MediaDetailsMapper @Inject constructor() {
             role = role,
             imageUrl = imageUrl,
             creativeDomain = creativeDomain
+        )
+    }
+
+    private fun MediaUrl.toTrailer(): Trailer? {
+        return Trailer(
+            name = name ?: return null,
+            url = url ?: return null
         )
     }
 

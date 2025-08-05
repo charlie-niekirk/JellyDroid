@@ -17,8 +17,6 @@ class GetMediaDetailsUseCase @Inject constructor(
         val userId = appPreferencesRepository.getLoggedInUser()
 
         return jellyfinRepository.getServerBaseUrl()
-            .andThen { baseUrl ->
-                jellyfinRepository.getMediaDetails(mediaId, userId)
-            }
+            .andThen { jellyfinRepository.getMediaDetails(mediaId, userId) }
     }
 }

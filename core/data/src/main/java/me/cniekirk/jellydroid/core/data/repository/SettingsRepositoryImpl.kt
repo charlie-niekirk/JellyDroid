@@ -10,7 +10,6 @@ import javax.inject.Inject
 
 internal class SettingsRepositoryImpl @Inject constructor(
     private val serverDao: ServerDao,
-//    private val appPreferencesRepository: AppPreferencesRepository
 ) : SettingsRepository {
 
     override suspend fun getNumServers(): Result<Int, LocalDataError> {

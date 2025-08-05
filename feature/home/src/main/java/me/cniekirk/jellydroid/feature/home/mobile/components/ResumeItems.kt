@@ -31,8 +31,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.domain.model.ResumeItem
 import me.cniekirk.jellydroid.feature.home.R
@@ -40,7 +38,7 @@ import me.cniekirk.jellydroid.feature.home.R
 @Composable
 internal fun ResumeItems(
     modifier: Modifier = Modifier,
-    resumeItems: ImmutableList<ResumeItem>,
+    resumeItems: List<ResumeItem>,
     onResumeItemClicked: (String) -> Unit
 ) {
     Column(modifier = modifier) {
@@ -147,7 +145,7 @@ private fun ResumeItemPreview() {
 @Composable
 private fun ResumeItemsPreview() {
     CoilPreview {
-        val items = persistentListOf(
+        val items = listOf(
             ResumeItem(
                 id = "0",
                 name = "Inception",

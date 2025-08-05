@@ -9,7 +9,4 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.immutable)
-    implementation(libs.coil.compose)
 }

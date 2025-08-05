@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
+import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -11,8 +12,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ServerSelectionViewModel @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository
+internal class ServerSelectionViewModel @Inject constructor(
+    private val authenticationRepository: AuthenticationRepository,
+    private val appPreferencesRepository: AppPreferencesRepository
 ) : ViewModel(), ContainerHost<ServerSelectionState, ServerSelectionEffect> {
 
     override val container = container<ServerSelectionState, ServerSelectionEffect>(ServerSelectionState())
@@ -22,9 +24,10 @@ class ServerSelectionViewModel @Inject constructor(
             state.copy(isLoading = true)
         }
         authenticationRepository.connectToServer(serverAddress)
-            .onSuccess { serverName ->
+            .onSuccess { serverConnection ->
+                appPreferencesRepository.setCurrentServer(serverConnection.serverId)
                 // Navigate to login
-                postSideEffect(ServerSelectionEffect.NavigateToLogin(serverName))
+                postSideEffect(ServerSelectionEffect.NavigateToLogin(serverConnection.serverName))
             }
             .onFailure { error ->
                 // Couldn't connect

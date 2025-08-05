@@ -11,8 +11,8 @@ import me.cniekirk.jellydroid.core.database.dao.ServerDao
 import me.cniekirk.jellydroid.core.database.dao.UserDao
 import me.cniekirk.jellydroid.core.database.entity.Server
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.servers.ServerConnection
 import me.cniekirk.jellydroid.core.domain.model.servers.User
-import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
@@ -28,10 +28,9 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
     private val apiClient: ApiClient,
     private val serverDao: ServerDao,
     private val userDao: UserDao,
-    private val appPreferencesRepository: AppPreferencesRepository
 ) : AuthenticationRepository {
 
-    override suspend fun connectToServer(address: String): Result<String, NetworkError> {
+    override suspend fun connectToServer(address: String): Result<ServerConnection, NetworkError> {
         return getSingleServer(address)
             .andThen { recommendedServerInfo ->
                 val publicSystemInfo = recommendedServerInfo.systemInfo.getOrNull()
@@ -41,11 +40,9 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
 
                 if (id != null && name != null) {
                     serverDao.insertAll(Server(id, address, name))
-                    appPreferencesRepository.setCurrentServer(id)
-
                     apiClient.update(baseUrl = address)
 
-                    Ok(name)
+                    Ok(ServerConnection(id, name))
                 } else {
                     Err(NetworkError.ServerError)
                 }
@@ -67,7 +64,6 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
                 val user = authResult.content.toUserDto(baseUrl)
                 if (user != null) {
                     userDao.insertAll(user)
-                    appPreferencesRepository.setLoggedInUser(user.userId)
                     apiClient.update(accessToken = authResult.content.accessToken)
                     Ok(user.toUser(baseUrl))
                 } else {

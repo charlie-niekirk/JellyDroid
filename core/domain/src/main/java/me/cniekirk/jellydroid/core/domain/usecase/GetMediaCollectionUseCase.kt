@@ -7,11 +7,13 @@ import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
 import me.cniekirk.jellydroid.core.domain.repository.MediaRepository
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
+import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import javax.inject.Inject
 
 class GetMediaCollectionUseCase @Inject constructor(
     private val jellyfinRepository: JellyfinRepository,
     private val mediaRepository: MediaRepository,
+    private val appPreferencesRepository: AppPreferencesRepository
 ) {
 
     suspend operator fun invoke(
@@ -21,7 +23,8 @@ class GetMediaCollectionUseCase @Inject constructor(
     ): Result<List<Media>, NetworkError> {
         return jellyfinRepository.getServerBaseUrl()
             .andThen { baseUrl ->
-                mediaRepository.getMedia(collectionId, collectionKind, query)
+                val userId = appPreferencesRepository.getLoggedInUser()
+                mediaRepository.getMedia(userId, collectionKind, collectionId, query)
             }
     }
 }
