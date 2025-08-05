@@ -13,6 +13,7 @@ import me.cniekirk.jellydroid.core.data.mapping.toUser
 import me.cniekirk.jellydroid.core.data.mapping.toUserView
 import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.database.dao.ServerDao
+import me.cniekirk.jellydroid.core.domain.model.FavoriteStatus
 import me.cniekirk.jellydroid.core.domain.model.ResumeItem
 import me.cniekirk.jellydroid.core.domain.model.error.LocalDataError
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
@@ -82,7 +83,7 @@ internal class JellyfinRepositoryImpl @Inject constructor(
                 val data = response.content.items
 
                 if (serverUrl != null) {
-                    Ok(data?.mapNotNull { it.toUserView(serverUrl) } ?: listOf())
+                    Ok(data.mapNotNull { it.toUserView(serverUrl) })
                 } else {
                     Err(NetworkError.Unknown)
                 }
@@ -104,6 +105,32 @@ internal class JellyfinRepositoryImpl @Inject constructor(
         apiClient.update(accessToken = accessToken, baseUrl = baseUrl)
     }
 
+    override suspend fun setFavoriteStatus(itemId: String, favoriteStatus: FavoriteStatus): Result<Unit, NetworkError> {
+        return safeApiCall {
+            when (favoriteStatus) {
+                FavoriteStatus.FAVORITE -> {
+                    apiClient.userLibraryApi.markFavoriteItem(
+                        itemId = itemId.toUUID()
+                    )
+                }
+                FavoriteStatus.NOT_SET -> {
+                    apiClient.userLibraryApi.unmarkFavoriteItem(
+                        itemId = itemId.toUUID()
+                    )
+                }
+            }
+        }
+    }
+
+    override suspend fun getCurrentApiKey(): Result<String, NetworkError> {
+        val apiKey = apiClient.accessToken
+        return if (apiKey.isNullOrBlank()) {
+            Err(NetworkError.AuthenticationError)
+        } else {
+            Ok(apiKey)
+        }
+    }
+
     override suspend fun getServerBaseUrl(): Result<String, NetworkError> {
         val baseUrl = apiClient.baseUrl
         return if (baseUrl != null) {
@@ -121,9 +148,9 @@ internal class JellyfinRepositoryImpl @Inject constructor(
                 includeItemTypes = listOf(BaseItemKind.MOVIE, BaseItemKind.EPISODE)
             )
         }.map { response ->
-            response.content.items?.map {
+            response.content.items.map {
                 it.toResumeItem(apiClient.baseUrl)
-            } ?: listOf()
+            }
         }
     }
 

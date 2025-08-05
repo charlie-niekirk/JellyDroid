@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ba09edd9a101b665ab1f05b859f4db20",
+    "identityHash": "01d9a6c7e66f568c6b3e06a2494f195b",
     "entities": [
       {
         "tableName": "Server",
@@ -36,7 +36,7 @@
       },
       {
         "tableName": "UserDto",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `belongs_to_server_id` TEXT NOT NULL, `name` TEXT NOT NULL, `access_token` TEXT NOT NULL, PRIMARY KEY(`userId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `belongs_to_server_id` TEXT NOT NULL, `name` TEXT NOT NULL, `access_token` TEXT NOT NULL, `profile_image_url` TEXT NOT NULL, PRIMARY KEY(`userId`))",
         "fields": [
           {
             "fieldPath": "userId",
@@ -61,6 +61,12 @@
             "columnName": "access_token",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "profileImageUrl",
+            "columnName": "profile_image_url",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -73,7 +79,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ba09edd9a101b665ab1f05b859f4db20')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '01d9a6c7e66f568c6b3e06a2494f195b')"
     ]
   }
 }

@@ -16,10 +16,18 @@ message AppPreferences {
     SortType tv_series_sort_type = 3;
   }
 
+  message Download {
+    string download_id = 1;
+    string media_id = 2;
+    string media_name = 3;
+    string media_thumbnail = 4;
+  }
+
   bool terms_screen_shown = 1;
   string current_server = 2;
   string current_user = 3;
 
   // Preferences for each logged in user
   repeated UserPreferences userPreferences = 4;
+  repeated Download downloadedMedia = 5;
 }

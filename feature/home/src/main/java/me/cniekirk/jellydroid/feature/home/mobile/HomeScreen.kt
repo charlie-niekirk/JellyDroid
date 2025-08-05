@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import kotlinx.collections.immutable.persistentListOf
 import me.cniekirk.jellydroid.core.designsystem.theme.components.LoadableScreen
 import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
 import me.cniekirk.jellydroid.core.domain.model.ResumeItem
@@ -154,7 +153,7 @@ private fun HomeScreenPreview() {
     CoilPreview {
         val state = HomeState(
             isLoading = false,
-            userViews = persistentListOf(
+            userViews = listOf(
                 UserView(
                     "",
                     "",
@@ -174,7 +173,7 @@ private fun HomeScreenPreview() {
                     CollectionKind.SERIES
                 )
             ),
-            resumeItems = persistentListOf(
+            resumeItems = listOf(
                 ResumeItem(
                     "",
                     "Lord of the Rings: Return of the King",
@@ -197,7 +196,7 @@ private fun HomeScreenPreview() {
                     PREVIEW_PLAYED_PERCENTAGE
                 )
             ),
-            latestMovies = persistentListOf(
+            latestMovies = listOf(
                 LatestItem(
                     id = "",
                     name = "Inception",
@@ -214,7 +213,7 @@ private fun HomeScreenPreview() {
                     imageUrl = ""
                 )
             ),
-            latestShows = persistentListOf(
+            latestShows = listOf(
                 LatestItem(
                     id = "",
                     name = "Game of Thrones",

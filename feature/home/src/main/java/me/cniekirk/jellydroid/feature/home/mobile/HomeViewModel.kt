@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import me.cniekirk.jellydroid.core.domain.usecase.GetHomeStructureUseCase
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -27,10 +26,10 @@ internal class HomeViewModel @Inject constructor(
                     state.copy(
                         isLoading = false,
                         userProfileImage = homeStructure.profileImageUrl,
-                        userViews = homeStructure.userViews.toImmutableList(),
-                        resumeItems = homeStructure.resumeItems.toImmutableList(),
-                        latestMovies = homeStructure.latestItems.movies.toImmutableList(),
-                        latestShows = homeStructure.latestItems.shows.toImmutableList()
+                        userViews = homeStructure.userViews,
+                        resumeItems = homeStructure.resumeItems,
+                        latestMovies = homeStructure.latestItems.movies,
+                        latestShows = homeStructure.latestItems.shows
                     )
                 }
             }

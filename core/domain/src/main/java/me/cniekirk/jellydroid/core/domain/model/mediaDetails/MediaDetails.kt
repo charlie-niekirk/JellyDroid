@@ -4,9 +4,12 @@ import me.cniekirk.jellydroid.core.domain.model.mediaDetails.people.Person
 
 data class MediaDetails(
     val mediaId: String,
+    val mediaName: String,
     val synopsis: String?,
     val primaryImageUrl: String,
     val mediaAttributes: MediaAttributes,
     val mediaPath: String,
-    val people: List<Person>
+    val people: List<Person>,
+    val isFavorite: Boolean,
+    val trailers: List<Trailer>
 )

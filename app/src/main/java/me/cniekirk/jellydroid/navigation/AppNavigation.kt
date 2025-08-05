@@ -1,6 +1,5 @@
 package me.cniekirk.jellydroid.navigation
 
-import androidx.annotation.StringRes
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,8 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
@@ -22,7 +19,6 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -44,6 +40,8 @@ import me.cniekirk.jellydroid.core.navigation.BottomTab
 import me.cniekirk.jellydroid.core.navigation.TopLevelBackStack
 import me.cniekirk.jellydroid.feature.home.mobile.Home
 import me.cniekirk.jellydroid.feature.home.mobile.home
+import me.cniekirk.jellydroid.feature.library.Library
+import me.cniekirk.jellydroid.feature.library.library
 import me.cniekirk.jellydroid.feature.mediacollection.CollectionType
 import me.cniekirk.jellydroid.feature.mediacollection.MediaCollection
 import me.cniekirk.jellydroid.feature.mediacollection.mediaCollection
@@ -103,12 +101,6 @@ fun JellydroidRootNavigation(modifier: Modifier = Modifier) {
             mediaPlayer()
         }
     )
-}
-
-@Serializable
-data object Library : NavKey, BottomTab {
-    override val icon = Icons.Default.VideoLibrary
-    override val name = R.string.bottom_nav_library
 }
 
 @Serializable
@@ -184,6 +176,7 @@ fun JellydroidTabsNavHost(
         }
     ) {
         NavDisplay(
+            modifier = modifier,
             backStack = appBackstack.backStack,
             onBack = { appBackstack.removeLast() },
             entryDecorators = listOf(
@@ -193,8 +186,8 @@ fun JellydroidTabsNavHost(
             ),
             entryProvider = entryProvider {
                 home(
-                    onUserViewClicked = { id, name, kind ->
-                        val type = when (kind) {
+                    onUserViewClicked = { id, name, collectionKind ->
+                        val type = when (collectionKind) {
                             CollectionKind.MOVIES -> CollectionType.MOVIES
                             CollectionKind.SERIES -> CollectionType.SERIES
                         }
@@ -206,6 +199,17 @@ fun JellydroidTabsNavHost(
                         appBackstack.add(MediaDetails(id, name))
                     },
                     navigateToSettings = { navigateToSettings() }
+                )
+
+                library(
+                    navigateToUserLibrary = { id, name, collectionKind ->
+                        val type = when (collectionKind) {
+                            CollectionKind.MOVIES -> CollectionType.MOVIES
+                            CollectionKind.SERIES -> CollectionType.SERIES
+                        }
+
+                        appBackstack.add(MediaCollection(id, name, type))
+                    }
                 )
 
                 mediaCollection(

@@ -12,7 +12,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class LandingViewModel @Inject constructor(
+internal class LandingViewModel @Inject constructor(
     private val checkAuthStateUseCase: CheckAuthStateUseCase,
     private val analyticsRepository: AnalyticsRepository
 ) : ViewModel(), ContainerHost<LandingState, LandingEffect> {

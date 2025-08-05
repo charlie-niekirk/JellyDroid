@@ -42,6 +42,7 @@ dependencies {
     implementation(projects.core.navigation)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.home)
+    implementation(projects.feature.library)
     implementation(projects.feature.mediaCollection)
     implementation(projects.feature.mediaDetails)
     implementation(projects.feature.mediaPlayer)
@@ -58,8 +59,8 @@ dependencies {
     implementation(libs.androidx.material3.navigation3)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
-    implementation(libs.ktor.android)
-    implementation(libs.coil.network.ktor2)
+    implementation(libs.coil.network.ktor3)
+    implementation(libs.ktor.client.okhttp)
 
     implementation(libs.material.icons)
     implementation(libs.androidx.material3.adaptive)

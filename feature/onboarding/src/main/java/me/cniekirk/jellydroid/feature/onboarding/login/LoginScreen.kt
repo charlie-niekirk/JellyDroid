@@ -27,7 +27,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun LoginRoute(
+internal fun LoginRoute(
     viewModel: LoginViewModel,
     navigateToHome: () -> Unit
 ) {

@@ -3,9 +3,13 @@ package me.cniekirk.jellydroid.feature.onboarding.login
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
+import me.cniekirk.jellydroid.core.domain.model.servers.User
+import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.AuthenticationRepository
 import me.cniekirk.jellydroid.feature.onboarding.OnboardingNavigation
 import org.junit.Before
@@ -15,6 +19,7 @@ import org.orbitmvi.orbit.test.test
 class LoginViewModelTest {
 
     private val authenticationRepository = mockk<AuthenticationRepository>()
+    private val appPreferencesRepository = mockk<AppPreferencesRepository>()
 
     private lateinit var underTest: LoginViewModel
 
@@ -22,7 +27,8 @@ class LoginViewModelTest {
     fun setup() {
         underTest = LoginViewModel(
             args = OnboardingNavigation.Login(SERVER_NAME),
-            authenticationRepository = authenticationRepository
+            authenticationRepository = authenticationRepository,
+            appPreferencesRepository = appPreferencesRepository
         )
     }
 
@@ -31,17 +37,18 @@ class LoginViewModelTest {
         // Given
         coEvery {
             authenticationRepository.authenticateUser(USERNAME, PASSWORD)
-        } returns Ok(Unit)
+        } returns Ok(successUser)
+        coJustRun { appPreferencesRepository.setLoggedInUser(any()) }
 
         underTest.test(this) {
-            expectInitialState()
-
             // When
             underTest.loginToServer(USERNAME, PASSWORD)
 
             // Then
             expectSideEffect(LoginEffect.NavigateToHome)
         }
+
+        coVerify(exactly = 1) { appPreferencesRepository.setLoggedInUser(USER_ID) }
     }
 
     @Test
@@ -53,8 +60,6 @@ class LoginViewModelTest {
             } returns Err(NetworkError.AuthenticationError)
 
             underTest.test(this) {
-                expectInitialState()
-
                 // When
                 underTest.loginToServer(USERNAME, PASSWORD)
 
@@ -72,8 +77,6 @@ class LoginViewModelTest {
             } returns Err(NetworkError.ClientConfigurationError)
 
             underTest.test(this) {
-                expectInitialState()
-
                 // When
                 underTest.loginToServer(USERNAME, PASSWORD)
 
@@ -91,8 +94,6 @@ class LoginViewModelTest {
             } returns Err(NetworkError.ConnectionError)
 
             underTest.test(this) {
-                expectInitialState()
-
                 // When
                 underTest.loginToServer(USERNAME, PASSWORD)
 
@@ -110,8 +111,6 @@ class LoginViewModelTest {
             )
 
             underTest.test(this) {
-                expectInitialState()
-
                 // When
                 underTest.loginToServer(USERNAME, PASSWORD)
 
@@ -128,8 +127,6 @@ class LoginViewModelTest {
         )
 
         underTest.test(this) {
-            expectInitialState()
-
             // When
             underTest.loginToServer(USERNAME, PASSWORD)
 
@@ -144,8 +141,6 @@ class LoginViewModelTest {
             testScope = this,
             initialState = LoginState(serverName = SERVER_NAME, isLoginErrorDialogDisplayed = true)
         ) {
-            expectInitialState()
-
             // When
             underTest.dismissLoginError()
 
@@ -163,8 +158,6 @@ class LoginViewModelTest {
                 isGenericErrorDialogDisplayed = true
             )
         ) {
-            expectInitialState()
-
             // When
             underTest.dismissGenericError()
 
@@ -174,8 +167,18 @@ class LoginViewModelTest {
     }
 
     companion object {
-        const val SERVER_NAME = "jellyfin_server"
-        const val USERNAME = "username"
-        const val PASSWORD = "password"
+        private const val SERVER_NAME = "jellyfin_server"
+        private const val USERNAME = "username"
+        private const val PASSWORD = "password"
+
+        private const val USER_ID = "abc123"
+
+        private val successUser = User(
+            userId = USER_ID,
+            belongsToServerId = "abcd",
+            name = "My Jellyfin Server",
+            accessToken = "",
+            profileImageUrl = ""
+        )
     }
 }

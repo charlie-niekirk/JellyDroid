@@ -1,6 +1,7 @@
 package me.cniekirk.jellydroid.core.data.repository
 
 import me.cniekirk.jellydroid.core.datastore.AppPreferencesDataSource
+import me.cniekirk.jellydroid.core.domain.model.download.DownloadItem
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import javax.inject.Inject
 
@@ -25,4 +26,25 @@ internal class AppPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun getLoggedInUser(): String =
         appPreferencesDataSource.getLoggedInUser()
+
+    override suspend fun addDownload(
+        downloadId: String,
+        mediaId: String,
+        mediaName: String,
+        mediaThumbnailUrl: String
+    ) {
+        appPreferencesDataSource.addDownload(downloadId, mediaId, mediaName, mediaThumbnailUrl)
+    }
+
+    override suspend fun getAllDownloads(): List<DownloadItem> {
+        return appPreferencesDataSource.getAllDownloads()
+            .map { download ->
+                DownloadItem(
+                    mediaId = download.mediaId,
+                    downloadId = download.downloadId,
+                    itemName = download.mediaName,
+                    mediaThumbnailUrl = download.mediaThumbnail
+                )
+            }
+    }
 }

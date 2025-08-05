@@ -6,7 +6,6 @@ import me.cniekirk.jellydroid.core.data.safeApiCall
 import me.cniekirk.jellydroid.core.domain.model.Media
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
-import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.MediaRepository
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
@@ -18,13 +17,13 @@ import javax.inject.Inject
 
 internal class MediaRepositoryImpl @Inject constructor(
     private val apiClient: ApiClient,
-    private val appPreferencesRepository: AppPreferencesRepository,
     private val mediaMapper: MediaMapper
 ) : MediaRepository {
 
     override suspend fun getMedia(
-        collectionId: String?,
+        userId: String,
         collectionKind: CollectionKind,
+        collectionId: String?,
         query: String?
     ): Result<List<Media>, NetworkError> {
         val itemTypes = when (collectionKind) {
@@ -34,16 +33,16 @@ internal class MediaRepositoryImpl @Inject constructor(
 
         return safeApiCall {
             apiClient.itemsApi.getItems(
-                userId = appPreferencesRepository.getLoggedInUser().toUUID(),
+                userId = userId.toUUID(),
                 sortBy = listOf(ItemSortBy.NAME),
                 sortOrder = listOf(SortOrder.ASCENDING),
                 includeItemTypes = itemTypes,
                 recursive = true,
                 searchTerm = query,
                 parentId = collectionId?.toUUID()
-            ).content.items?.mapNotNull {
+            ).content.items.mapNotNull {
                 mediaMapper.toUiModel(it, apiClient.baseUrl)
-            } ?: emptyList()
+            }
         }
     }
 }

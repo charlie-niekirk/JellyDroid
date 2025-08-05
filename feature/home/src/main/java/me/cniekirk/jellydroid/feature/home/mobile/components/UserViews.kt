@@ -1,32 +1,21 @@
 package me.cniekirk.jellydroid.feature.home.mobile.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import kotlinx.collections.immutable.ImmutableList
-import me.cniekirk.jellydroid.core.designsystem.theme.preview.CoilPreview
+import me.cniekirk.jellydroid.core.designsystem.theme.JellyDroidTheme
+import me.cniekirk.jellydroid.core.designsystem.theme.components.MediaView
 import me.cniekirk.jellydroid.core.domain.model.views.CollectionKind
 import me.cniekirk.jellydroid.core.domain.model.views.UserView
 import me.cniekirk.jellydroid.feature.home.R
@@ -34,7 +23,7 @@ import me.cniekirk.jellydroid.feature.home.R
 @Composable
 internal fun UserViews(
     modifier: Modifier = Modifier,
-    userViews: ImmutableList<UserView>,
+    userViews: List<UserView>,
     onUserViewClicked: (String, String, CollectionKind) -> Unit
 ) {
     Column(modifier = modifier) {
@@ -51,7 +40,9 @@ internal fun UserViews(
             items(userViews) { userView ->
                 MediaView(
                     modifier = Modifier.width(212.dp),
-                    userView = userView,
+                    name = userView.name,
+                    imageUrl = userView.imageUrl,
+                    aspectRatio = userView.aspectRatio,
                     onUserViewClicked = { onUserViewClicked(userView.id, userView.name, userView.collectionKind) }
                 )
             }
@@ -59,61 +50,37 @@ internal fun UserViews(
     }
 }
 
+@Preview
 @Composable
-internal fun MediaView(
-    modifier: Modifier = Modifier,
-    userView: UserView,
-    onUserViewClicked: () -> Unit
-) {
-    val context = LocalContext.current
-
-    Column(
-        modifier = modifier.clickable { onUserViewClicked() },
-    ) {
-        Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(userView.aspectRatio.toFloat())
-                .clip(RoundedCornerShape(8.dp)),
-            painter = rememberAsyncImagePainter(
-                model = ImageRequest.Builder(context)
-                    .data(userView.imageUrl)
-                    .crossfade(true)
-                    .build(),
-                contentScale = ContentScale.Crop
-            ),
-            contentScale = ContentScale.Crop,
-            contentDescription = userView.name
+internal fun UserViewsPreview() {
+    val userViews = listOf(
+        UserView(
+            id = "1",
+            parentId = "parent1",
+            name = "Movie 1",
+            path = "/path/to/movie1",
+            imageUrl = "https://example.com/image1.jpg",
+            aspectRatio = 1.77,
+            collectionKind = CollectionKind.MOVIES
+        ),
+        UserView(
+            id = "2",
+            parentId = "parent2",
+            name = "Series 1",
+            path = "/path/to/series1",
+            imageUrl = "https://example.com/image2.jpg",
+            aspectRatio = 1.77,
+            collectionKind = CollectionKind.SERIES
         )
-
-        Text(
-            modifier = Modifier.padding(top = 8.dp, start = 4.dp),
-            text = userView.name,
-            style = MaterialTheme.typography.bodySmall,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun MediaViewPreview() {
-    val userView = UserView(
-        id = "0",
-        parentId = "0",
-        name = "The Big Lebowski",
-        path = "",
-        imageUrl = "",
-        aspectRatio = (3f / 2f).toDouble(),
-        collectionKind = CollectionKind.MOVIES
     )
 
-    CoilPreview {
-        MediaView(
-            modifier = Modifier.padding(16.dp),
-            userView = userView,
-            onUserViewClicked = {}
-        )
+    JellyDroidTheme {
+        Surface {
+            UserViews(
+                modifier = Modifier.padding(16.dp),
+                userViews = userViews,
+                onUserViewClicked = { _, _, _ -> }
+            )
+        }
     }
 }

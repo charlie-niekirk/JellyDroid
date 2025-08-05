@@ -1,6 +1,7 @@
 package me.cniekirk.jellydroid.core.domain.repository
 
 import com.github.michaelbull.result.Result
+import me.cniekirk.jellydroid.core.domain.model.FavoriteStatus
 import me.cniekirk.jellydroid.core.domain.model.ResumeItem
 import me.cniekirk.jellydroid.core.domain.model.error.LocalDataError
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
@@ -43,4 +44,8 @@ interface JellyfinRepository {
     suspend fun getStreamUrl(mediaSourceId: String): Result<String, NetworkError>
 
     suspend fun updateClient(baseUrl: String, accessToken: String)
+
+    suspend fun setFavoriteStatus(itemId: String, favoriteStatus: FavoriteStatus): Result<Unit, NetworkError>
+
+    suspend fun getCurrentApiKey(): Result<String, NetworkError>
 }

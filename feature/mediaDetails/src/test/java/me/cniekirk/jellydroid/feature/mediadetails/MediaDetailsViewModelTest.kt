@@ -9,6 +9,7 @@ import me.cniekirk.jellydroid.core.domain.model.mediaDetails.AgeRating
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.CommunityRating
 import me.cniekirk.jellydroid.core.domain.model.mediaDetails.MediaAttributes
 import me.cniekirk.jellydroid.core.domain.usecase.GetMediaDetailsUseCase
+import me.cniekirk.jellydroid.core.domain.usecase.SetItemFavoriteStatusUseCase
 import org.junit.Before
 import org.junit.Test
 import org.orbitmvi.orbit.test.test
@@ -16,6 +17,7 @@ import org.orbitmvi.orbit.test.test
 class MediaDetailsViewModelTest {
 
     private val getMediaDetailsUseCase = mockk<GetMediaDetailsUseCase>()
+    private val setItemFavoriteStatusUseCase = mockk<SetItemFavoriteStatusUseCase>()
 
     private lateinit var underTest: MediaDetailsViewModel
 
@@ -23,7 +25,8 @@ class MediaDetailsViewModelTest {
     fun setup() {
         underTest = MediaDetailsViewModel(
             args = MediaDetails(MEDIA_ID, MEDIA_TITLE),
-            getMediaDetailsUseCase = getMediaDetailsUseCase
+            getMediaDetailsUseCase = getMediaDetailsUseCase,
+            setItemFavoriteStatusUseCase = setItemFavoriteStatusUseCase
         )
     }
 
@@ -42,12 +45,14 @@ class MediaDetailsViewModelTest {
                 runtime = null
             ),
             mediaPath = "path/to/media",
-            people = listOf()
+            people = listOf(),
+            mediaName = "",
+            isFavorite = false,
+            trailers = emptyList()
         )
         coEvery { getMediaDetailsUseCase(MEDIA_ID) } returns Ok(expected)
 
         underTest.test(this) {
-            expectInitialState()
             runOnCreate()
 
             expectState {

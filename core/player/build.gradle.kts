@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
 
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.ktor3)
     implementation(libs.coil.test)
 
     implementation(libs.libmpv)

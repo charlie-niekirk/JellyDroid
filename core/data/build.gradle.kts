@@ -14,6 +14,12 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.domain)
 
+    // So we can download media items
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.workmanager)
+
+    implementation(libs.protobuf)
+
     implementation(libs.kotlin.result)
     implementation(libs.kotlin.result.coroutines)
 

@@ -13,7 +13,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel(assistedFactory = MediaPlayerViewModel.Factory::class)
-class MediaPlayerViewModel @AssistedInject constructor(
+internal class MediaPlayerViewModel @AssistedInject constructor(
     @Assisted private val args: MediaPlayer,
     private val getPlaybackInfoUseCase: GetPlaybackInfoUseCase
 ) : ViewModel(), ContainerHost<MediaPlayerState, MediaPlayerEffect> {
