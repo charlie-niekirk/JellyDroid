@@ -105,16 +105,21 @@ jobs:
               issue_number,
             });
             
+            console.log(`Total comments fetched: ${comments.length}`);
+            
             // Find the existing build comment (assuming only one; edit the latest if multiple)
             let existingComment = null;
             for (const comment of comments.reverse()) {  // Reverse to get the latest first
+              console.log(`Checking comment ID: ${comment.id}, User: ${comment.user.login}, Body starts with: ${comment.body.substring(0, 30)}...`);
               if (comment.user.login === 'github-actions[bot]' && comment.body.startsWith('✅ Build successful and signed!')) {
                 existingComment = comment;
+                console.log(`Found matching comment: ID ${comment.id}`);
                 break;
               }
             }
             
             if (existingComment) {
+              console.log(`Updating existing comment ID: ${existingComment.id}`);
               // Update the existing comment
               await github.rest.issues.updateComment({
                 owner,
@@ -123,6 +128,7 @@ jobs:
                 body: commentBody,
               });
             } else {
+              console.log('No existing comment found, creating a new one.');
               // Create a new comment
               await github.rest.issues.createComment({
                 owner,
