@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.org.slf4j.simple)
 
     testImplementation(libs.androidx.junit)
+    testImplementation(libs.com.lemonappdev.konsist)
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

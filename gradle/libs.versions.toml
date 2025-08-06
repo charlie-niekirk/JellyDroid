@@ -60,6 +60,7 @@ material3 = "1.5.0-alpha01"
 nav3Core = "1.0.0-alpha06"
 nav3Material = "1.0.0-SNAPSHOT"
 nav3Lifecycle = "1.0.0-alpha01"
+konsist = "0.17.3"
 
 [libraries]
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -87,7 +88,6 @@ androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", vers
 # Optional add-on libraries
 androidx-material3-navigation3 = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "nav3Material" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "nav3Material" }
-
 
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -162,6 +162,8 @@ org-slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "
 accompanist-drawable-painter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "drawable-painter" }
 
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "inject" }
+
+com-lemonappdev-konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist" }
 
 # Dependencies for build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
