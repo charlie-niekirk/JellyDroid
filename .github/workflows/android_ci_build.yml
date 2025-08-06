@@ -111,7 +111,7 @@ jobs:
             let existingComment = null;
             for (const comment of comments.reverse()) {  // Reverse to get the latest first
               console.log(`Checking comment ID: ${comment.id}, User: ${comment.user.login}, Body starts with: ${comment.body.substring(0, 30)}...`);
-              if (comment.user.login === 'github-actions[bot]' && comment.body.startsWith('✅ Build successful and signed!')) {
+              if (comment.user.login === 'github-actions[bot]' && comment.body.trim().startsWith('✅ Build successful and signed!')) {
                 existingComment = comment;
                 console.log(`Found matching comment: ID ${comment.id}`);
                 break;
