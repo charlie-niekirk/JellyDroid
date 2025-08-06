@@ -24,7 +24,7 @@ class UseCaseArchitecturalTest {
             }
     }
 
-    companion object Companion {
+    companion object {
         private const val DOMAIN_USECASE_PACKAGE = "..domain.usecase"
         private const val INVOKE_FUNCTION = "invoke"
         private const val USECASE_CLASS_NAME = "UseCase"

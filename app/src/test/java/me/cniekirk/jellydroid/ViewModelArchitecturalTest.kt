@@ -20,7 +20,7 @@ class ViewModelArchitecturalTest {
     }
 
     @Test
-    fun `Every 'ViewModel' extends ContainerHost`() {
+    fun `Every 'ViewModel' implements ContainerHost`() {
         Konsist.scopeFromProject()
             .classes()
             .withParentOf(ViewModel::class)
