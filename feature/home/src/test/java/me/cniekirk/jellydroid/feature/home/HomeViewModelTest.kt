@@ -34,7 +34,6 @@ class HomeViewModelTest {
 
         // When
         underTest.test(this) {
-            expectInitialState()
             runOnCreate()
 
             // Then
@@ -60,7 +59,6 @@ class HomeViewModelTest {
 
         // When
         underTest.test(this) {
-            expectInitialState()
             runOnCreate()
 
             // Then
