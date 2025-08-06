@@ -5,7 +5,6 @@ import com.github.michaelbull.result.Ok
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.test.runTest
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.model.latest.LatestItems
@@ -35,7 +34,6 @@ class HomeViewModelTest {
 
         // When
         underTest.test(this) {
-            expectInitialState()
             runOnCreate()
 
             // Then
@@ -43,10 +41,10 @@ class HomeViewModelTest {
                 copy(
                     isLoading = false,
                     userProfileImage = expectedHomeStructure.profileImageUrl,
-                    userViews = expectedHomeStructure.userViews.toImmutableList(),
-                    resumeItems = expectedHomeStructure.resumeItems.toImmutableList(),
-                    latestMovies = expectedHomeStructure.latestItems.movies.toImmutableList(),
-                    latestShows = expectedHomeStructure.latestItems.shows.toImmutableList()
+                    userViews = expectedHomeStructure.userViews,
+                    resumeItems = expectedHomeStructure.resumeItems,
+                    latestMovies = expectedHomeStructure.latestItems.movies,
+                    latestShows = expectedHomeStructure.latestItems.shows
                 )
             }
         }
@@ -61,7 +59,6 @@ class HomeViewModelTest {
 
         // When
         underTest.test(this) {
-            expectInitialState()
             runOnCreate()
 
             // Then

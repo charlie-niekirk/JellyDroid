@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class LibraryViewModel @Inject constructor(
+internal class LibraryViewModel @Inject constructor(
     private val jellyfinRepository: JellyfinRepository
 ) : ViewModel(), ContainerHost<LibraryState, LibraryEffect> {
 
