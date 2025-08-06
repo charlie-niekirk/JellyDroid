@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: [ master ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -73,7 +77,10 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
-            const run_id = context.runId
+            const run_id = context.runId;
+            const commit_sha = context.sha;
+            const short_sha = commit_sha.substring(0, 7);
+            const commit_url = `https://github.com/${owner}/${repo}/commit/${commit_sha}`;
             
             // Construct the correct URLs using the artifact IDs passed as environment variables.
             const apk_url = `https://github.com/${owner}/${repo}/actions/runs/${run_id}/artifacts/${process.env.APK_ARTIFACT_ID}`;
@@ -82,6 +89,8 @@ jobs:
             const commentBody = `
             ✅ Build successful and signed!
             
+            Built from commit: [${short_sha}](${commit_url})
+            
             You can download the signed build artifacts here:
             - [APK](${apk_url})
             - [AAB](${aab_url})
@@ -89,12 +98,39 @@ jobs:
             *Note: You need to be logged into GitHub to download the artifacts. These are release-signed builds.*
             `;
             
-            await github.rest.issues.createComment({
+            // Fetch existing comments
+            const { data: comments } = await github.rest.issues.listComments({
               owner,
               repo,
               issue_number,
-              body: commentBody
             });
+            
+            // Find the existing build comment (assuming only one; edit the latest if multiple)
+            let existingComment = null;
+            for (const comment of comments.reverse()) {  // Reverse to get the latest first
+              if (comment.user.login === 'github-actions[bot]' && comment.body.startsWith('✅ Build successful and signed!')) {
+                existingComment = comment;
+                break;
+              }
+            }
+            
+            if (existingComment) {
+              // Update the existing comment
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existingComment.id,
+                body: commentBody,
+              });
+            } else {
+              // Create a new comment
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: commentBody,
+              });
+            }
         env:
           # Pass the artifact IDs from the upload steps as environment variables to the script.
           APK_ARTIFACT_ID: ${{ steps.apk_artifact.outputs.artifact-id }}
