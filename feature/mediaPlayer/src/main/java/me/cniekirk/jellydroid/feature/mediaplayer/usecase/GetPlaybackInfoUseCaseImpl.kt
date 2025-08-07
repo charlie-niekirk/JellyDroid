@@ -2,6 +2,7 @@ package me.cniekirk.jellydroid.feature.mediaplayer.usecase
 
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.coroutines.coroutineBinding
+import kotlinx.coroutines.flow.first
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
@@ -14,7 +15,7 @@ class GetPlaybackInfoUseCaseImpl @Inject constructor(
 ) : GetPlaybackInfoUseCase {
 
     override suspend fun invoke(mediaId: String): Result<PlaybackInfo, NetworkError> = coroutineBinding {
-        val userId = appPreferencesRepository.getLoggedInUser()
+        val userId = appPreferencesRepository.getLoggedInUser().first()
 //        val mediaDetails = getMediaDetailsUseCase(mediaId).bind()
         val playbackInfo = jellyfinRepository.getPlaybackInfo(mediaSourceId = mediaId, loggedInUserId = userId).bind()
 //        val transcodingUrl = jellyfinRepository.getStreamUrl(mediaId).bind()

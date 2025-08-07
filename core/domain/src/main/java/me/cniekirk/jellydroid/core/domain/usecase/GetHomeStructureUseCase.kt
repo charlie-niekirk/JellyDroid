@@ -2,6 +2,7 @@ package me.cniekirk.jellydroid.core.domain.usecase
 
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.coroutines.coroutineBinding
+import kotlinx.coroutines.flow.first
 import me.cniekirk.jellydroid.core.domain.model.views.HomeStructure
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
 import me.cniekirk.jellydroid.core.domain.repository.JellyfinRepository
@@ -15,8 +16,8 @@ class GetHomeStructureUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Result<HomeStructure, NetworkError> = coroutineBinding {
-        val currentServer = appPreferencesRepository.getCurrentServer()
-        val userId = appPreferencesRepository.getLoggedInUser()
+        val currentServer = appPreferencesRepository.getCurrentServer().first()
+        val userId = appPreferencesRepository.getLoggedInUser().first()
 
         val user = jellyfinRepository.getUserById(currentServer, userId).bind()
         val userViews = jellyfinRepository.getUserViews().bind()

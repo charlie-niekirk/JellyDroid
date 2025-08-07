@@ -1,7 +1,8 @@
 package me.cniekirk.jellydroid.core.datastore
 
 import androidx.datastore.core.DataStore
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AppPreferencesDataSource @Inject constructor(
@@ -24,7 +25,7 @@ class AppPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun getCurrentServer(): String = datastore.data.first().currentServer
+    fun getCurrentServer(): Flow<String> = datastore.data.map { it.currentServer }
 
     suspend fun setLoggedInUser(userId: String) {
         datastore.updateData { currentData ->
@@ -34,7 +35,7 @@ class AppPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun getLoggedInUser(): String = datastore.data.first().currentUser
+    fun getLoggedInUser(): Flow<String> = datastore.data.map { it.currentUser }
 
     suspend fun addDownload(downloadId: String, mediaId: String, mediaName: String, mediaThumbnailUrl: String) {
         datastore.updateData { currentData ->
@@ -52,5 +53,5 @@ class AppPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun getAllDownloads(): List<AppPreferences.Download> = datastore.data.first().downloadedMediaList
+    fun getAllDownloads(): Flow<List<AppPreferences.Download>> = datastore.data.map { it.downloadedMediaList }
 }

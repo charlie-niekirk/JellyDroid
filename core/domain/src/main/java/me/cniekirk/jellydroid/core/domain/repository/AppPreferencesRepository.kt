@@ -1,5 +1,6 @@
 package me.cniekirk.jellydroid.core.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import me.cniekirk.jellydroid.core.domain.model.download.DownloadItem
 
 interface AppPreferencesRepository {
@@ -8,11 +9,11 @@ interface AppPreferencesRepository {
 
     suspend fun setCurrentServer(serverId: String)
 
-    suspend fun getCurrentServer(): String
+    fun getCurrentServer(): Flow<String>
 
     suspend fun setLoggedInUser(userId: String)
 
-    suspend fun getLoggedInUser(): String
+    fun getLoggedInUser(): Flow<String>
 
     suspend fun addDownload(
         downloadId: String,
@@ -21,5 +22,5 @@ interface AppPreferencesRepository {
         mediaThumbnailUrl: String
     )
 
-    suspend fun getAllDownloads(): List<DownloadItem>
+    fun getAllDownloads(): Flow<List<DownloadItem>>
 }

@@ -4,6 +4,7 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.fold
+import kotlinx.coroutines.flow.first
 import me.cniekirk.jellydroid.core.domain.model.error.CheckAuthStateError
 import me.cniekirk.jellydroid.core.domain.model.servers.User
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
@@ -16,7 +17,7 @@ class CheckAuthStateUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Result<User, CheckAuthStateError> {
-        val currentServerId = appPreferencesRepository.getCurrentServer()
+        val currentServerId = appPreferencesRepository.getCurrentServer().first()
         if (currentServerId.isEmpty()) return Err(CheckAuthStateError.NoPreviousAuth)
 
         val serverResult = jellyfinRepository.getServerWithUsersById(currentServerId)

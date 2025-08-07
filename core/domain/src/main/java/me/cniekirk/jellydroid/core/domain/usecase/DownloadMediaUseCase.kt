@@ -5,6 +5,7 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.coroutines.coroutineBinding
 import com.github.michaelbull.result.map
+import kotlinx.coroutines.flow.first
 import me.cniekirk.jellydroid.core.domain.model.download.DownloadParameters
 import me.cniekirk.jellydroid.core.domain.model.error.NetworkError
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
@@ -19,7 +20,7 @@ class DownloadMediaUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(mediaId: String): Result<Unit, NetworkError> = coroutineBinding {
-        val userId = appPreferencesRepository.getLoggedInUser()
+        val userId = appPreferencesRepository.getLoggedInUser().first()
 
         val mediaDetails = jellyfinRepository.getMediaDetails(mediaId, userId).bind()
         val baseUrl = jellyfinRepository.getServerBaseUrl().bind()

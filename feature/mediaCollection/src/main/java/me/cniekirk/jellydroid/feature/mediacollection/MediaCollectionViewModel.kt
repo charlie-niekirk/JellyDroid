@@ -23,12 +23,10 @@ internal class MediaCollectionViewModel @AssistedInject constructor(
     override val container = container<MediaCollectionState, MediaCollectionEffect>(
         MediaCollectionState(collectionId = args.collectionId, collectionName = args.collectionName)
     ) {
-        println("onCreate CALLED")
         loadCollection(args.collectionId, args.collectionType)
     }
 
     private fun loadCollection(collectionId: String, collectionType: CollectionType) = intent {
-        println("loadCollection CALLED")
         val kind = when (collectionType) {
             CollectionType.MOVIES -> CollectionKind.MOVIES
             CollectionType.SERIES -> CollectionKind.SERIES

@@ -1,5 +1,8 @@
 package me.cniekirk.jellydroid.core.data.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import me.cniekirk.jellydroid.core.data.mapping.toDownloadItem
 import me.cniekirk.jellydroid.core.datastore.AppPreferencesDataSource
 import me.cniekirk.jellydroid.core.domain.model.download.DownloadItem
 import me.cniekirk.jellydroid.core.domain.repository.AppPreferencesRepository
@@ -17,14 +20,14 @@ internal class AppPreferencesRepositoryImpl @Inject constructor(
         appPreferencesDataSource.setCurrentServer(serverId)
     }
 
-    override suspend fun getCurrentServer(): String =
+    override fun getCurrentServer(): Flow<String> =
         appPreferencesDataSource.getCurrentServer()
 
     override suspend fun setLoggedInUser(userId: String) {
         appPreferencesDataSource.setLoggedInUser(userId)
     }
 
-    override suspend fun getLoggedInUser(): String =
+    override fun getLoggedInUser(): Flow<String> =
         appPreferencesDataSource.getLoggedInUser()
 
     override suspend fun addDownload(
@@ -36,15 +39,8 @@ internal class AppPreferencesRepositoryImpl @Inject constructor(
         appPreferencesDataSource.addDownload(downloadId, mediaId, mediaName, mediaThumbnailUrl)
     }
 
-    override suspend fun getAllDownloads(): List<DownloadItem> {
+    override fun getAllDownloads(): Flow<List<DownloadItem>> {
         return appPreferencesDataSource.getAllDownloads()
-            .map { download ->
-                DownloadItem(
-                    mediaId = download.mediaId,
-                    downloadId = download.downloadId,
-                    itemName = download.mediaName,
-                    mediaThumbnailUrl = download.mediaThumbnail
-                )
-            }
+            .map { downloads -> downloads.map { it.toDownloadItem() } }
     }
 }
